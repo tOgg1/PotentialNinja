@@ -8,5 +8,7 @@ package model;
  * To change this template use File | Settings | File Templates.
  */
 public class Sau {
-	
+    public static void main(String[] args){
+        boolean potet = true;
+    }
 }

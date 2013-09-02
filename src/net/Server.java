@@ -25,7 +25,7 @@ public class Server {
         serverSocket = new ServerSocket(NetConfig.port);
         }catch(IOException e){
             System.err.println();
-            throw new PotentialNinjaException("ServerSocket unable to instantiate.")
+            throw new PotentialNinjaException("ServerSocket unable to instantiate.");
         }
 
         Log.initLogFile();

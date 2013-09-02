@@ -1,5 +1,9 @@
 package net;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mayacat
@@ -9,5 +13,12 @@ package net;
  */
 public class Client
 {
+    Socket socket;
+    ObjectInputStream ois;
+    ObjectOutputStream oos;
 
+    public Client(Socket socket){
+        this.socket = socket;
+
+    }
 }

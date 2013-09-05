@@ -8,13 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 9/2/13
- * Time: 3:05 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Log {
     private static File logFile;
     private static BufferedWriter logWriter;

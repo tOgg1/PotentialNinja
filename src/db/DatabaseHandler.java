@@ -50,16 +50,17 @@ public class DatabaseHandler {
      */
     public int authenticate(String account, String password){
         try {
-            PreparedStatement query = db.prepareStatement("SELECT password, Farmer_id FROM user WHERE username = ?");
-            query.setString(0, account);
+            PreparedStatement query = db.prepareStatement("SELECT id, password FROM user WHERE username = ?");
+            query.setString(1, account);
             ResultSet result = query.executeQuery();
 
             if(!result.next())
                 return -1;
 
             String hash = encryptPassword(password);
+            System.out.println(hash);
             if(hash.equals(result.getString("password")))
-                return result.getInt("Farmer_id");
+                return result.getInt("id");
             return -1;
         } catch (SQLException e) {
             return -1;
@@ -81,18 +82,20 @@ public class DatabaseHandler {
             int id = getNextAutoIncrement("farmer", "id");
 
             PreparedStatement query = db.prepareStatement("INSERT INTO farmer(name, default_pos_x, default_pos_y) VALUES (?,?,?)");
-            query.setString(0, farmerName);
-            query.setFloat(1, pos_x);
-            query.setFloat(2, pos_y);
+            query.setString(1, farmerName);
+            query.setFloat(2, pos_x);
+            query.setFloat(3, pos_y);
+            query.executeUpdate();
 
             query = db.prepareStatement("INSERT INTO user(id, username, password) VALUES (?,?,?)");
-            query.setInt(0, id);
-            query.setString(1, accountname);
-            query.setString(2, encryptPassword(password));
+            query.setInt(1, id);
+            query.setString(2, accountname);
+            query.setString(3, encryptPassword(password));
             query.executeUpdate();
 
             return id;
         } catch (SQLException e) {
+            e.printStackTrace();
             return -1;
         }
     }
@@ -105,7 +108,7 @@ public class DatabaseHandler {
     public Object[] getFarmerInformation(int id){
         try {
             PreparedStatement query = db.prepareStatement("SELECT (name, default_pos_x, default_pos_y) FROM farmer WHERE id = ?");
-            query.setInt(0, id);
+            query.setInt(1, id);
             ResultSet rs = query.executeQuery();
 
             if(!rs.next())
@@ -119,6 +122,8 @@ public class DatabaseHandler {
 
             return returnData;
         } catch (SQLException e) {
+            e.printStackTrace();
+
             return null;
         }
     }
@@ -130,7 +135,7 @@ public class DatabaseHandler {
     public ArrayList<Alarm> getAlarms(int farmerID){
         try {
             PreparedStatement query = db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid)");
-            query.setInt(0, farmerID);
+            query.setInt(1, farmerID);
             ResultSet rs = query.executeQuery();
 
             if(!rs.next())
@@ -145,6 +150,8 @@ public class DatabaseHandler {
 
             return results;
         } catch (SQLException e) {
+            e.printStackTrace();
+
             return null;
         }
     }
@@ -152,7 +159,7 @@ public class DatabaseHandler {
     public ArrayList<Sheep> getSheeps(int farmerID){
         try{
             PreparedStatement query = db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ?");
-            query.setInt(0,farmerID);
+            query.setInt(1,farmerID);
             ResultSet rs = query.executeQuery();
 
             if(!rs.next())
@@ -166,6 +173,8 @@ public class DatabaseHandler {
 
             return results;
         } catch (SQLException e) {
+            e.printStackTrace();
+
             return null;
         }
     }
@@ -173,7 +182,7 @@ public class DatabaseHandler {
     public SheepHistory getSheepHistory(int sheepid){
         try{
             PreparedStatement query = db.prepareStatement("SELECT * FROM sheephistory WHERE sheepid = ?");
-            query.setInt(0,sheepid);
+            query.setInt(1,sheepid);
             ResultSet rs = query.executeQuery();
 
             if(!rs.next())
@@ -189,6 +198,8 @@ public class DatabaseHandler {
             return new SheepHistory(posHistory, sheepid);
 
         } catch (SQLException e) {
+            e.printStackTrace();
+
             return null;
         }
     }
@@ -214,6 +225,8 @@ public class DatabaseHandler {
             }
             return buffer.toString();
         } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+
             return "NINJA!";
         }
     }

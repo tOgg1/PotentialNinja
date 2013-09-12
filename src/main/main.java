@@ -13,5 +13,8 @@ public class Main {
             e.printStackTrace();
         }
         DatabaseHandler handler = new DatabaseHandler();
+
+        int accountid = handler.authenticate("bjornarsuperfarm", "johnny");
+        System.out.println(""+accountid);
     }
 }

@@ -1,6 +1,6 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,18 +11,18 @@ import java.util.ArrayList;
  */
 public class SheepHistory {
     private int sheepID;
-    private ArrayList<Pos> history;
+    private TreeMap<Long, Pos> history;
 
-    public SheepHistory(ArrayList<Pos> history, int sheepID) {
+    public SheepHistory(TreeMap<Long, Pos> history, int sheepID) {
         this.history = history;
         this.sheepID = sheepID;
     }
 
-    public ArrayList<Pos> getHistory() {
+    public TreeMap<Long, Pos> getHistory() {
         return history;
     }
 
-    public void setHistory(ArrayList<Pos> history) {
+    public void setHistory(TreeMap<Long, Pos> history) {
         this.history = history;
     }
 

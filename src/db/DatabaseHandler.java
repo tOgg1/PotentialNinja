@@ -2,13 +2,16 @@ package db;
 
 
 import model.Alarm;
+import model.Pos;
 import model.Sheep;
+import model.SheepHistory;
 import util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * DatabaseHandler class, deals with getting and setting data
@@ -167,8 +170,27 @@ public class DatabaseHandler {
         }
     }
 
-    public void getSheepHistory(){
+    public SheepHistory getSheepHistory(int sheepid){
+        try{
+            PreparedStatement query = db.prepareStatement("SELECT * FROM sheephistory WHERE sheepid = ?");
+            query.setInt(0,sheepid);
+            ResultSet rs = query.executeQuery();
 
+            if(!rs.next())
+                return null;
+
+            TreeMap<Long, Pos> posHistory = new TreeMap<Long, Pos>();
+            posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+
+            while(rs.next()){
+                posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+            }
+
+            return new SheepHistory(posHistory, sheepid);
+
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     public void setSheepHealthFlag(){

@@ -2,12 +2,11 @@ package model;
 
 public class Pos {
 
-    public float x, y, z;
+    public float x, y;
 
-    public Pos(float x, float y, float z)
+    public Pos(float x, float y)
     {
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 }

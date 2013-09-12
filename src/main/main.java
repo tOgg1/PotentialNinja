@@ -14,7 +14,6 @@ public class Main {
         }
         DatabaseHandler handler = new DatabaseHandler();
 
-        int accountid = handler.authenticate("bjornarsuperfarm", "johnny");
-        System.out.println(""+accountid);
+        handler.addSheep("Stian", 21, 0xFFFFFFFF, 1337.0f, 1337.0f, 3);
     }
 }

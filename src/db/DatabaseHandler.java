@@ -76,14 +76,14 @@ public class DatabaseHandler {
      * @param pos_y
      * @param ownerid
      */
-    public void addSheep(String name, int age, int healthflags,  int pos_x, int pos_y, int ownerid){
+    public void addSheep(String name, int age, int healthflags, float pos_x, float pos_y, int ownerid){
         try {
-            PreparedStatement query = db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmeid) VALUES(?,?,?,?,?)");
+            PreparedStatement query = db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmerid) VALUES(?,?,?,?,?,?)");
             query.setString(1,name);
             query.setInt(2, age);
             query.setInt(3, healthflags);
-            query.setInt(4, pos_x);
-            query.setInt(5, pos_y);
+            query.setFloat(4, pos_x);
+            query.setFloat(5, pos_y);
             query.setInt(6, ownerid);
             query.executeUpdate();
 
@@ -154,7 +154,7 @@ public class DatabaseHandler {
     }
 
     /**
-     * Fetches all alarms
+     * Gets all alarms to sheeps that are owned by a farmer
      * @param farmerID
      */
     public ArrayList<Alarm> getAlarms(int farmerID){
@@ -238,10 +238,28 @@ public class DatabaseHandler {
         }
     }
 
-    public void setSheepHealthFlag(){
-
+    /**
+     * Sets the sheep's health flag
+     */
+    public boolean setSheepHealthFlag(){
+        return true;
     }
 
+    /**
+     * Adds a setting to the sheep's health flag
+     * @return
+     */
+    public boolean addSheepHealthFlag(){
+        return true;
+    }
+
+    /**
+     * Find the next autoincrement of column 'column' in table 'table'
+     * @param table
+     * @param column
+     * @return
+     * @throws SQLException
+     */
     private int getNextAutoIncrement(String table, String column) throws SQLException{
         PreparedStatement query = db.prepareStatement("SELECT MAX("+column+") as max FROM "+table);
         ResultSet rs = query.executeQuery();
@@ -249,6 +267,11 @@ public class DatabaseHandler {
         return rs.getInt("max")+1;
     }
 
+    /**
+     * Encrypt a password with the SHA1 algorithm
+     * @param string
+     * @return
+     */
     private String encryptPassword(String string){
         try {
             MessageDigest mDigest = MessageDigest.getInstance("SHA1");

@@ -68,6 +68,31 @@ public class DatabaseHandler {
     }
 
     /**
+     * Adds a sheep to the database
+     * @param name
+     * @param age
+     * @param healthflags
+     * @param pos_x
+     * @param pos_y
+     * @param ownerid
+     */
+    public void addSheep(String name, int age, int healthflags,  int pos_x, int pos_y, int ownerid){
+        try {
+            PreparedStatement query = db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmeid) VALUES(?,?,?,?,?)");
+            query.setString(1,name);
+            query.setInt(2, age);
+            query.setInt(3, healthflags);
+            query.setInt(4, pos_x);
+            query.setInt(5, pos_y);
+            query.setInt(6, ownerid);
+            query.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    /**
      * Creates a farmer account, and returns the new farmer id of the account
      * @param accountname
      * @param password
@@ -151,11 +176,15 @@ public class DatabaseHandler {
             return results;
         } catch (SQLException e) {
             e.printStackTrace();
-
             return null;
         }
     }
 
+    /**
+     * Gets all sheeps of farmer
+     * @param farmerID
+     * @return
+     */
     public ArrayList<Sheep> getSheeps(int farmerID){
         try{
             PreparedStatement query = db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ?");
@@ -179,6 +208,11 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Gets all history of sheep
+     * @param sheepid
+     * @return
+     */
     public SheepHistory getSheepHistory(int sheepid){
         try{
             PreparedStatement query = db.prepareStatement("SELECT * FROM sheephistory WHERE sheepid = ?");

@@ -6,12 +6,22 @@ public class Sheep
     int ownerid;
     int age;
     int mileage;
+    int healthflags;
 
-    public Sheep(int age, int id, int mileage, int ownerid) {
+    public Sheep(int id, int age, int healthflags, int mileage, int ownerid) {
         this.age = age;
         this.id = id;
         this.mileage = mileage;
         this.ownerid = ownerid;
+        this.healthflags = healthflags;
+    }
+
+    public int getHealthflags() {
+        return healthflags;
+    }
+
+    public void setHealthflags(int healthflags) {
+        this.healthflags = healthflags;
     }
 
     public int getAge() {

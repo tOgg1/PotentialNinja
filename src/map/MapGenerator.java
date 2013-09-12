@@ -3,8 +3,8 @@ package map;
 public class MapGenerator
 {
 	private String zoomlvl;
-	private String dimensjonX;
-	private String dimensjonY;
+	private String dimensionX;
+	private String dimensionY;
 	private String center;
 	
 	public void setZoomlvl (String zoom)
@@ -12,19 +12,19 @@ public class MapGenerator
 		zoomlvl = zoom;
 	}
 	
-	public void setDimensjon (String dimX, String dimY)
+	public void setDimension (String dimX, String dimY)
 	{
-		dimensjonX = dimX;
-		dimensjonY = dimY;
+		dimensionX = dimX;
+		dimensionY = dimY;
 	}
 	
-	public void setCenter (String adresse)
+	public void setCenter (String center)
 	{
-		center = adresse;
+		this.center = center;
 	}
 	
-	public String kart ()
+	public String generateMap ()
 	{
-		return "http://maps.google.com/maps/api/staticmap?center="+center+"&zoom="+zoomlvl+"&size="+dimensjonX+"x"+dimensjonY+"&maptype=roadmap&sensor=true";
+		return "http://maps.google.com/maps/api/staticmap?center="+center+"&zoom="+zoomlvl+"&size="+dimensionX+"x"+dimensionY+"&maptype=roadmap&sensor=true";
 	}
 }

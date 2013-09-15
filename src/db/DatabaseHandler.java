@@ -274,7 +274,15 @@ public class DatabaseHandler {
         return new SheepHistory(posHistory, sheepid);
     }
 
-    public Pos getSheepCurrentPosition(int sheepid) throws SQLException{}
+    public Pos getSheepCurrentPosition(int sheepid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT pos_x, pos_y FROM sheep WHERE id = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        return new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y"));
+    }
 
     /**
      * Sets the sheep's health flag, overrides all current healthflags, use with caution.

@@ -1,14 +1,8 @@
 package main;
 
 import db.DatabaseHandler;
-import model.Alarm;
-import model.Pos;
-import model.SheepHistory;
 import util.Log;
 import util.PotentialNinjaException;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Main class, entry point and highest layer of control
@@ -50,7 +44,7 @@ public class Main {
 
             System.out.println("Welcome to SheepTracker 2013 "+ farmerName+"!");
 
-            //testFunction();
+            testFunction();
             handler.close();
         }
         catch(Exception f){
@@ -64,9 +58,13 @@ public class Main {
      *  Do all database testing here
      */
     public static void testFunction() throws Exception{
+
         DatabaseHandler handler = new DatabaseHandler();
 
-        System.out.println(""+handler.authenticate("bjornarsuperfarm", "johnny"));
+        System.out.println(""+handler.getFarmerContactInformation(3)[0]);
+
+
+        /*System.out.println(""+handler.authenticate("bjornarsuperfarm", "johnny"));
 
         System.out.println("\nFarmer 3 INFO\n--------------");
         System.out.println(""+handler.getFarmerInformation(3)[0]);
@@ -87,5 +85,6 @@ public class Main {
         }
 
         handler.close();
+        */
     }
 }

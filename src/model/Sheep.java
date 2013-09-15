@@ -7,13 +7,23 @@ public class Sheep
     int age;
     int mileage;
     int healthflags;
+    String name;
 
-    public Sheep(int id, int age, int healthflags, int mileage, int ownerid) {
+    public Sheep(int id, int age, int healthflags, int mileage, int ownerid, String name) {
         this.age = age;
         this.id = id;
         this.mileage = mileage;
         this.ownerid = ownerid;
         this.healthflags = healthflags;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getHealthflags() {

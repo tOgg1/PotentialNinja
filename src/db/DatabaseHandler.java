@@ -242,10 +242,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid")));
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid")));
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
         }
 
         return results;
@@ -273,6 +273,8 @@ public class DatabaseHandler {
 
         return new SheepHistory(posHistory, sheepid);
     }
+
+    public Pos getSheepCurrentPosition(int sheepid) throws SQLException{}
 
     /**
      * Sets the sheep's health flag, overrides all current healthflags, use with caution.

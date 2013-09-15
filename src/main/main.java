@@ -15,13 +15,55 @@ import java.util.Map;
  */
 public class Main {
 
-    //TODO: Throws Exception is temporary, implement exception-handling
-    public static void main(String[] args) throws Exception {
+    //Login variables
+    int farmerID;
+    String farmerName;
+    float defaultPosX, defaultPosY;
+
+
+    public static void main(String[] args){
+        Main main = new Main();
+        main.initialize();
+    }
+
+    public void initialize(){
         try{
-            Log.initLogFile();
-        }catch(PotentialNinjaException e){
-            e.printStackTrace();
+
+            try{
+                Log.initLogFile();
+            }catch(PotentialNinjaException e){
+                e.printStackTrace();
+            }
+
+            DatabaseHandler handler = new DatabaseHandler();
+
+            //Log in
+            if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){
+                System.exit(1);
+            }
+            Object[] farmerDetails = handler.getFarmerInformation(this.farmerID);
+            if(farmerDetails == null)
+                throw new Exception("Unable to find farmer information");
+            this.farmerName = (String)farmerDetails[0];
+            this.defaultPosX = (Float)farmerDetails[1];
+            this.defaultPosY = (Float)farmerDetails[2];
+
+            System.out.println("Welcome to SheepTracker 2013 "+ farmerName+"!");
+
+            //testFunction();
+            handler.close();
         }
+        catch(Exception f){
+            f.printStackTrace();
+            throw new RuntimeException("Error initializing program with error message: " + f.getMessage() + ". Please contact system administrator");
+        }
+    }
+
+
+    /**
+     *  Do all database testing here
+     */
+    public static void testFunction() throws Exception{
         DatabaseHandler handler = new DatabaseHandler();
 
         System.out.println(""+handler.authenticate("bjornarsuperfarm", "johnny"));

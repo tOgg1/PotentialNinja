@@ -7,5 +7,5 @@ package ai;
  * Time: 9:37 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SheepHandler {
+public class SheepDaemon {
 }

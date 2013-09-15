@@ -7,5 +7,5 @@ package ai;
  * Time: 9:38 AM
  * To change this template use File | Settings | File Templates.
  */
-public class WolfHandler {
+public class WolfDaemon {
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
- * DatabaseHandler class, deals with getting and setting data
+ * DatabaseHandler class, deals with getting and setting data in the database.
  *
  */
 public class DatabaseHandler {
@@ -24,9 +24,10 @@ public class DatabaseHandler {
     public DatabaseHandler(){
         try{
 
+            //Connects to database
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            db = DriverManager.getConnection(DatabaseSettings.db_url, DatabaseSettings.db_user, DatabaseSettings.db_pw);
-            Log.d("Database", "It works!");
+            this.db = DriverManager.getConnection(DatabaseSettings.db_url, DatabaseSettings.db_user, DatabaseSettings.db_pw);
+            Log.d("Database", "Database connection established");
 
         }catch(ClassNotFoundException  | InstantiationException | IllegalAccessException | SQLException e){
             Log.e("Database", "You suck, " + e.getMessage());
@@ -36,7 +37,8 @@ public class DatabaseHandler {
 
     public void close(){
         try {
-            db.close();
+            //Closing connection
+            this.db.close();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -46,11 +48,11 @@ public class DatabaseHandler {
      * Takes in an account-name and password, authenticates, and returns the farmerid
      * @param account
      * @param password
-     * @return -1 is returned if farmer is not found, or there were trouble authenticating
+     * @return -1 is returned if farmer is not found, or if there were trouble authenticating
      */
-    public int authenticate(String account, String password){
+    public int authenticate(String account, String password) {
         try {
-            PreparedStatement query = db.prepareStatement("SELECT id, password FROM user WHERE username = ?");
+            PreparedStatement query = this.db.prepareStatement("SELECT id, password FROM user WHERE username = ?");
             query.setString(1, account);
             ResultSet result = query.executeQuery();
 
@@ -58,11 +60,10 @@ public class DatabaseHandler {
                 return -1;
 
             String hash = encryptPassword(password);
-            System.out.println(hash);
             if(hash.equals(result.getString("password")))
                 return result.getInt("id");
             return -1;
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
             return -1;
         }
     }
@@ -76,20 +77,29 @@ public class DatabaseHandler {
      * @param pos_y
      * @param ownerid
      */
-    public void addSheep(String name, int age, int healthflags, float pos_x, float pos_y, int ownerid){
-        try {
-            PreparedStatement query = db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmerid) VALUES(?,?,?,?,?,?)");
-            query.setString(1,name);
-            query.setInt(2, age);
-            query.setInt(3, healthflags);
-            query.setFloat(4, pos_x);
-            query.setFloat(5, pos_y);
-            query.setInt(6, ownerid);
-            query.executeUpdate();
+    public void addSheep(String name, int age, int healthflags, float pos_x, float pos_y, int ownerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmerid) VALUES(?,?,?,?,?,?)");
+        query.setString(1,name);
+        query.setInt(2, age);
+        query.setInt(3, healthflags);
+        query.setFloat(4, pos_x);
+        query.setFloat(5, pos_y);
+        query.setInt(6, ownerid);
+        query.executeUpdate();
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+    /**
+     * Adds an alarm to the database
+     * @param sheepID
+     * @param alarmflag
+     * @throws SQLException
+     */
+    public void addAlarm(int sheepID, int alarmflag) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO alarm(alarmflags, sheepid, isactive) VALUES(?,?,?)");
+        query.setInt(1, alarmflag);
+        query.setInt(2, sheepID);
+        query.setInt(3, 1);
+        query.executeUpdate();
     }
 
     /**
@@ -101,25 +111,25 @@ public class DatabaseHandler {
      * @param pos_y
      * @return
      */
-    public int createAccount(String accountname, String password, String farmerName, float pos_x, float pos_y){
+    public int createAccount(String accountname, String password, String farmerName, float pos_x, float pos_y) throws SQLException{
         try {
 
             int id = getNextAutoIncrement("farmer", "id");
 
-            PreparedStatement query = db.prepareStatement("INSERT INTO farmer(name, default_pos_x, default_pos_y) VALUES (?,?,?)");
+            PreparedStatement query = this.db.prepareStatement("INSERT INTO farmer(name, default_pos_x, default_pos_y) VALUES (?,?,?)");
             query.setString(1, farmerName);
             query.setFloat(2, pos_x);
             query.setFloat(3, pos_y);
             query.executeUpdate();
 
-            query = db.prepareStatement("INSERT INTO user(id, username, password) VALUES (?,?,?)");
+            query = this.db.prepareStatement("INSERT INTO user(id, username, password) VALUES (?,?,?)");
             query.setInt(1, id);
             query.setString(2, accountname);
             query.setString(3, encryptPassword(password));
             query.executeUpdate();
 
             return id;
-        } catch (SQLException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return -1;
         }
@@ -130,9 +140,9 @@ public class DatabaseHandler {
      * @param id
      * @return
      */
-    public Object[] getFarmerInformation(int id){
+    public Object[] getFarmerInformation(int id) throws SQLException{
         try {
-            PreparedStatement query = db.prepareStatement("SELECT (name, default_pos_x, default_pos_y) FROM farmer WHERE id = ?");
+            PreparedStatement query = this.db.prepareStatement("SELECT name, default_pos_x, default_pos_y FROM farmer WHERE id = ?");
             query.setInt(1, id);
             ResultSet rs = query.executeQuery();
 
@@ -157,27 +167,21 @@ public class DatabaseHandler {
      * Gets all alarms to sheeps that are owned by a farmer
      * @param farmerID
      */
-    public ArrayList<Alarm> getAlarms(int farmerID){
-        try {
-            PreparedStatement query = db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid)");
-            query.setInt(1, farmerID);
-            ResultSet rs = query.executeQuery();
+    public ArrayList<Alarm> getAlarms(int farmerID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid)");
+        query.setInt(1, farmerID);
+        ResultSet rs = query.executeQuery();
 
-            if(!rs.next())
-                return null;
-
-            ArrayList<Alarm> results = new ArrayList<Alarm>();
-            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
-
-            while(rs.next()){
-                results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
-            }
-
-            return results;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(!rs.next())
             return null;
+
+        ArrayList<Alarm> results = new ArrayList<Alarm>();
+        results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+
+        while(rs.next()){
+            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
         }
+        return results;
     }
 
     /**
@@ -185,27 +189,21 @@ public class DatabaseHandler {
      * @param farmerID
      * @return
      */
-    public ArrayList<Sheep> getSheeps(int farmerID){
-        try{
-            PreparedStatement query = db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ?");
-            query.setInt(1,farmerID);
-            ResultSet rs = query.executeQuery();
+    public ArrayList<Sheep> getSheeps(int farmerID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ?");
+        query.setInt(1,farmerID);
+        ResultSet rs = query.executeQuery();
 
-            if(!rs.next())
-                return null;
-            ArrayList<Sheep> results = new ArrayList<Sheep>();
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid")));
-
-            while(rs.next()){
-                results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid")));
-            }
-
-            return results;
-        } catch (SQLException e) {
-            e.printStackTrace();
-
+        if(!rs.next())
             return null;
+        ArrayList<Sheep> results = new ArrayList<Sheep>();
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid")));
+
+        while(rs.next()){
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid")));
         }
+
+        return results;
     }
 
     /**
@@ -213,44 +211,50 @@ public class DatabaseHandler {
      * @param sheepid
      * @return
      */
-    public SheepHistory getSheepHistory(int sheepid){
-        try{
-            PreparedStatement query = db.prepareStatement("SELECT * FROM sheephistory WHERE sheepid = ?");
-            query.setInt(1,sheepid);
-            ResultSet rs = query.executeQuery();
+    public SheepHistory getSheepHistory(int sheepid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheephistory WHERE sheepid = ?");
+        query.setInt(1,sheepid);
+        ResultSet rs = query.executeQuery();
 
-            if(!rs.next())
-                return null;
-
-            TreeMap<Long, Pos> posHistory = new TreeMap<Long, Pos>();
-            posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
-
-            while(rs.next()){
-                posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
-            }
-
-            return new SheepHistory(posHistory, sheepid);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
+        if(!rs.next())
             return null;
+
+        TreeMap<Long, Pos> posHistory = new TreeMap<Long, Pos>();
+        posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+
+        while(rs.next()){
+            posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
         }
+
+        return new SheepHistory(posHistory, sheepid);
     }
 
     /**
-     * Sets the sheep's health flag
+     * Sets the sheep's health flag, overrides all current healthflags, use with caution.
      */
-    public boolean setSheepHealthFlag(){
-        return true;
+    public void setSheepHealthFlag(int sheepID, int flag) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET healthflags = ? WHERE id = ?");
+        query.setInt(1, flag);
+        query.setInt(2, sheepID);
+        query.executeUpdate();
     }
 
     /**
      * Adds a setting to the sheep's health flag
      * @return
      */
-    public boolean addSheepHealthFlag(){
-        return true;
+    public void addSheepHealthFlag(int sheepID, int flag) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT healthflags FROM sheep WHERE id = ?");
+        query.setInt(1, sheepID);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            throw new SQLException("Couldn't find sheep");
+
+        int mFlags = rs.getInt("healthflags");
+        mFlags |= flag;
+
+        this.setSheepHealthFlag(sheepID, mFlags);
     }
 
     /**
@@ -261,7 +265,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     private int getNextAutoIncrement(String table, String column) throws SQLException{
-        PreparedStatement query = db.prepareStatement("SELECT MAX("+column+") as max FROM "+table);
+        PreparedStatement query = this.db.prepareStatement("SELECT MAX("+column+") as max FROM "+table);
         ResultSet rs = query.executeQuery();
         rs.next();
         return rs.getInt("max")+1;
@@ -272,19 +276,13 @@ public class DatabaseHandler {
      * @param string
      * @return
      */
-    private String encryptPassword(String string){
-        try {
-            MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-            byte[] result = mDigest.digest(string.getBytes());
-            StringBuffer buffer = new StringBuffer();
-            for(int i = 0; i < result.length; i++){
-                buffer.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            return buffer.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-
-            return "NINJA!";
+    private String encryptPassword(String string) throws NoSuchAlgorithmException{
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(string.getBytes());
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < result.length; i++){
+            buffer.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
         }
+        return buffer.toString();
     }
 }

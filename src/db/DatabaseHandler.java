@@ -138,29 +138,74 @@ public class DatabaseHandler {
     /**
      * Fetches all farmer information for given farmer id
      * @param id
-     * @return
+     * @return Returns an Object[] array of length three as follows {name, posx, posy}, returns null if farmer is not found
+     * @throws SQLException
      */
     public Object[] getFarmerInformation(int id) throws SQLException{
-        try {
-            PreparedStatement query = this.db.prepareStatement("SELECT name, default_pos_x, default_pos_y FROM farmer WHERE id = ?");
-            query.setInt(1, id);
-            ResultSet rs = query.executeQuery();
+        PreparedStatement query = this.db.prepareStatement("SELECT name, default_pos_x, default_pos_y FROM farmer WHERE id = ?");
+        query.setInt(1, id);
+        ResultSet rs = query.executeQuery();
 
-            if(!rs.next())
-                return null;
-
-            Object[] returnData = new Object[3];
-
-            returnData[0] = rs.getString("name");
-            returnData[1] = rs.getFloat("default_pos_x");
-            returnData[2] = rs.getFloat("default_pos_y");
-
-            return returnData;
-        } catch (SQLException e) {
-            e.printStackTrace();
-
+        if(!rs.next())
             return null;
-        }
+
+        return new Object[]{rs.getString("name"), rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y")};
+    }
+
+    /**
+     * Fetches all information about given farmers contact
+     * @param id
+     * @return Returns an Object[] array of length three as follows {name, number, email}, returns null if a contact is not found
+     * @throws SQLException
+     */
+    public Object[] getFarmerContactInformation(int id) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT name, number, email FROM contact WHERE id = (SELECT Contact_id from farmer where farmer.id = ?)");
+        query.setInt(1, id);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        return new Object[]{rs.getString("name"), rs.getString("number"), rs.getString("email")};
+    }
+
+    /**
+     *
+     * @param name
+     * @param number
+     * @param email
+     * @return Returns false if an error occurs
+     */
+    public void setFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
+        int id = getNextAutoIncrement("Contact", "id");
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO contact(name, number, email) VALUES (?,?,?)");
+        query.setString(1,name);
+        query.setString(2,number);
+        query.setString(3,email);
+        query.executeUpdate();
+
+        query = this.db.prepareStatement("UPDATE farmer SET Contact_id = ? WHERE id = ?");
+        query.setInt(1, id);
+        query.setInt(2, farmerID);
+        query.executeUpdate();
+    }
+
+    /**
+     *
+     * @param sheepID
+     * @return  Returns an Object[] array of length four as follows {age, mileage, healthflags, name}, returns null if sheep is not found
+     * @throws SQLException
+     */
+    public Object[] getSheepInformation(int sheepID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT age, mileage, healthflags, name FROM sheep WHERE id = ?");
+        query.setInt(1, sheepID);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        return new Object[]{rs.getInt("age"), rs.getInt("mileage"), rs.getInt("healthflags"), rs.getString("name")};
+
     }
 
     /**

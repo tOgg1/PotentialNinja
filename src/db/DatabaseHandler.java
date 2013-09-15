@@ -10,8 +10,7 @@ import util.Log;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * DatabaseHandler class, deals with getting and setting data in the database.
@@ -90,14 +89,14 @@ public class DatabaseHandler {
 
     /**
      * Adds an alarm to the database
-     * @param sheepID
+     * @param sheepid
      * @param alarmflag
      * @throws SQLException
      */
-    public void addAlarm(int sheepID, int alarmflag) throws SQLException{
+    public void addAlarm(int sheepid, int alarmflag) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("INSERT INTO alarm(alarmflags, sheepid, isactive) VALUES(?,?,?)");
         query.setInt(1, alarmflag);
-        query.setInt(2, sheepID);
+        query.setInt(2, sheepid);
         query.setInt(3, 1);
         query.executeUpdate();
     }
@@ -192,13 +191,13 @@ public class DatabaseHandler {
 
     /**
      *
-     * @param sheepID
+     * @param sheepid
      * @return  Returns an Object[] array of length four as follows {age, mileage, healthflags, name}, returns null if sheep is not found
      * @throws SQLException
      */
-    public Object[] getSheepInformation(int sheepID) throws SQLException{
+    public Object[] getSheepInformation(int sheepid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT age, mileage, healthflags, name FROM sheep WHERE id = ?");
-        query.setInt(1, sheepID);
+        query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
@@ -274,7 +273,13 @@ public class DatabaseHandler {
         return new SheepHistory(posHistory, sheepid);
     }
 
-    public Pos getSheepCurrentPosition(int sheepid) throws SQLException{
+    /**
+     * Gets a sheeps current position
+     * @param sheepid
+     * @return
+     * @throws SQLException
+     */
+    public Pos getSheepPosition(int sheepid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT pos_x, pos_y FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
@@ -285,12 +290,50 @@ public class DatabaseHandler {
     }
 
     /**
+     * Sets a sheeps current position, stores the previous position in sheephistory
+     * @param sheepid
+     * @param posX
+     * @param posY
+     * @throws SQLException
+     */
+    public void setSheepPosition(int sheepid, float posX, float posY) throws SQLException{
+        //Get current position
+        PreparedStatement query = this.db.prepareStatement("SELECT pos_x, pos_y FROM sheep WHERE id = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            throw new SQLException("Unable to find sheep");
+
+        float tempX, tempY;
+        tempX = rs.getFloat("pos_x");
+        tempY = rs.getFloat("pos_y");
+
+        //Store current position in history
+        query = this.db.prepareStatement("INSERT INTO sheephistory(sheepid, pos_x, pos_y, timestamp) VALUES (?,?,?,?)");
+
+        long timeStamp = (new java.util.Date()).getTime();
+        query.setInt(1, sheepid);
+        query.setFloat(2, tempX);
+        query.setFloat(3, tempY);
+        query.setLong(4, timeStamp);
+        query.executeUpdate();
+
+        //Set new position
+        query = this.db.prepareStatement("UPDATE sheep SET pos_x = ?, pos_y = ? WHERE id = ?");
+        query.setFloat(1, posX);
+        query.setFloat(2, posY);
+        query.setInt(3, sheepid);
+        query.executeUpdate();
+    }
+
+    /**
      * Sets the sheep's health flag, overrides all current healthflags, use with caution.
      */
-    public void setSheepHealthFlag(int sheepID, int flag) throws SQLException{
+    public void setSheepHealthFlag(int sheepid, int flag) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET healthflags = ? WHERE id = ?");
         query.setInt(1, flag);
-        query.setInt(2, sheepID);
+        query.setInt(2, sheepid);
         query.executeUpdate();
     }
 
@@ -298,9 +341,9 @@ public class DatabaseHandler {
      * Adds a setting to the sheep's health flag
      * @return
      */
-    public void addSheepHealthFlag(int sheepID, int flag) throws SQLException{
+    public void addSheepHealthFlag(int sheepid, int flag) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT healthflags FROM sheep WHERE id = ?");
-        query.setInt(1, sheepID);
+        query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
@@ -309,7 +352,7 @@ public class DatabaseHandler {
         int mFlags = rs.getInt("healthflags");
         mFlags |= flag;
 
-        this.setSheepHealthFlag(sheepID, mFlags);
+        this.setSheepHealthFlag(sheepid, mFlags);
     }
 
     /**

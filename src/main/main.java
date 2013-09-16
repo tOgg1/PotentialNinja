@@ -61,7 +61,7 @@ public class Main {
 
         DatabaseHandler handler = new DatabaseHandler();
 
-        System.out.println(""+handler.getFarmerContactInformation(3)[0]);
+        handler.setSheepPosition(1,26,25);
 
 
         /*System.out.println(""+handler.authenticate("bjornarsuperfarm", "johnny"));

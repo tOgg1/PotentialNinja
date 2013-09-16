@@ -309,7 +309,7 @@ public class DatabaseHandler {
         tempX = rs.getFloat("pos_x");
         tempY = rs.getFloat("pos_y");
 
-        //Store current position in history
+        //Store current position in history                                                              h
         query = this.db.prepareStatement("INSERT INTO sheephistory(sheepid, pos_x, pos_y, timestamp) VALUES (?,?,?,?)");
 
         long timeStamp = (new java.util.Date()).getTime();

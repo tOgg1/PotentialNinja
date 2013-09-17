@@ -22,7 +22,6 @@ public class Main {
 
     public void initialize(){
         try{
-
             try{
                 Log.initLogFile();
             }catch(PotentialNinjaException e){

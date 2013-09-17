@@ -7,14 +7,16 @@ public class Sheep
     int age;
     int mileage;
     int healthflags;
+    int birthdate;
     String name;
 
-    public Sheep(int id, int age, int healthflags, int mileage, int ownerid, String name) {
+    public Sheep(int id, int age, int healthflags, int mileage, int birthdate, int ownerid, String name) {
         this.age = age;
         this.id = id;
         this.mileage = mileage;
         this.ownerid = ownerid;
         this.healthflags = healthflags;
+        this.birthdate = birthdate;
         this.name = name;
     }
 

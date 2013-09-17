@@ -1,16 +1,14 @@
 package db;
 
 
-import model.Alarm;
-import model.Pos;
-import model.Sheep;
-import model.SheepHistory;
+import model.*;
 import util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 /**
  * DatabaseHandler class, deals with getting and setting data in the database.
@@ -169,7 +167,7 @@ public class DatabaseHandler {
     }
 
     /**
-     *
+     * Set farmers contact
      * @param name
      * @param number
      * @param email
@@ -207,6 +205,8 @@ public class DatabaseHandler {
 
     }
 
+
+
     /**
      * Gets all alarms to sheeps that are owned by a farmer
      * @param farmerID
@@ -241,10 +241,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
         }
 
         return results;
@@ -271,6 +271,24 @@ public class DatabaseHandler {
         }
 
         return new SheepHistory(posHistory, sheepid);
+    }
+
+    public SheepMedicalHistory getSheepMedicalHistory(int sheepid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheepmedicalhistory WHERE sheepid = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        TreeMap<Long, Integer> medHistory= new TreeMap<Long, Integer>();
+        medHistory.put(rs.getLong("timestamp"), rs.getInt("healthflag"));
+
+        while(rs.next()){
+            medHistory.put(rs.getLong("timestamp"), rs.getInt("healthflag"));
+        }
+
+        return new SheepMedicalHistory(medHistory, sheepid);
     }
 
     /**
@@ -309,7 +327,7 @@ public class DatabaseHandler {
         tempX = rs.getFloat("pos_x");
         tempY = rs.getFloat("pos_y");
 
-        //Store current position in history                                                              h
+        //Store current position in history
         query = this.db.prepareStatement("INSERT INTO sheephistory(sheepid, pos_x, pos_y, timestamp) VALUES (?,?,?,?)");
 
         long timeStamp = (new java.util.Date()).getTime();
@@ -328,9 +346,23 @@ public class DatabaseHandler {
     }
 
     /**
-     * Sets the sheep's health flag, overrides all current healthflags, use with caution.
+     * Overwrites the flag to passed in variable. Use with caution as already set flags will be removed.
+     * The boolean parameter is in place to avoid story multiple history versions as the method is called internally from "addSheepHealthFlag".
+     * @param sheepid
+     * @param flag
+     * @param storeHistory
+     * @throws SQLException
      */
-    public void setSheepHealthFlag(int sheepid, int flag) throws SQLException{
+    public void setSheepHealthFlag(int sheepid, int flag, boolean storeHistory) throws SQLException{
+
+        if(storeHistory){
+            PreparedStatement query = this.db.prepareStatement("INSERT INTO sheepmedicalhistory(healthflag, timestamp, sheepid) VALUES(?,?,?)");
+            query.setInt(1, flag);
+            query.setLong(2, new Date().getTime());
+            query.setInt(3, sheepid);
+            query.executeUpdate();
+        }
+
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET healthflags = ? WHERE id = ?");
         query.setInt(1, flag);
         query.setInt(2, sheepid);
@@ -338,11 +370,20 @@ public class DatabaseHandler {
     }
 
     /**
-     * Adds a setting to the sheep's health flag
-     * @return
+     * Adds a health flag to the sheep
+     * @param sheepid
+     * @param flag
+     * @throws SQLException
      */
     public void addSheepHealthFlag(int sheepid, int flag) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT healthflags FROM sheep WHERE id = ?");
+
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheepmedicalhistory(healthflag, timestamp, sheepid) VALUES(?,?,?)");
+        query.setInt(1, flag);
+        query.setLong(2, new Date().getTime());
+        query.setInt(3, sheepid);
+        query.executeUpdate();
+
+        query = this.db.prepareStatement("SELECT healthflags FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
@@ -352,7 +393,20 @@ public class DatabaseHandler {
         int mFlags = rs.getInt("healthflags");
         mFlags |= flag;
 
-        this.setSheepHealthFlag(sheepid, mFlags);
+        this.setSheepHealthFlag(sheepid, mFlags, false);
+    }
+
+    /**
+     * Set name of sheep
+     * @param sheepid
+     * @param name
+     * @throws SQLException
+     */
+    public void setSheepName(int sheepid, String name) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET name = ? WHERE id = ?");
+        query.setString(1, name);
+        query.setInt(2, sheepid);
+        query.executeUpdate();
     }
 
     /**

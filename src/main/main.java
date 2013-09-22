@@ -5,8 +5,8 @@ import util.Log;
 import util.PotentialNinjaException;
 
 /**
- * Main class, entry point and highest layer of control
- */
+* Main class, entry point and highest layer of control
+*/
 public class Main {
 
     //Login variables

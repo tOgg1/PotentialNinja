@@ -24,25 +24,6 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
     //ArrayList of all added mapMarkers.
     private ArrayList<MapMarkerDot> mapMarkers;
 
-    /**
-     * Get the viewer of the map
-     *
-     * @return
-     */
-    private JMapViewer map(){
-        return treeMap.getViewer();
-    }
-
-
-    /**
-     * Helper function for creating coordinates
-     * @param lat
-     * @param lon
-     * @return
-     */
-    private static Coordinate c(double lat, double lon) {
-        return new Coordinate(lat, lon);
-    }
 
     /**
      * Constructor
@@ -72,6 +53,24 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
     public void processCommand(JMVCommandEvent jmvCommandEvent) {
     }
 
+    /**
+     * Get the viewer of the map
+     *
+     * @return
+     */
+    private JMapViewer map(){
+        return treeMap.getViewer();
+    }
+
+    /**
+     * Helper function for creating coordinates
+     * @param lat
+     * @param lon
+     * @return
+     */
+    private static Coordinate c(double lat, double lon) {
+        return new Coordinate(lat, lon);
+    }
 
     /**
      * Helper function to add MapMarkers.
@@ -108,7 +107,6 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
         }
     }
 
-
     /**
      * Helper function to set the center of the map
      *
@@ -120,6 +118,11 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
         map().setDisplayPositionByLatLon(lat,lon,zoom);
     }
 
+
+    /**
+     * Entry point
+     * @param args
+     */
     public static void main(String[] args){
         new MapViewer();
     }

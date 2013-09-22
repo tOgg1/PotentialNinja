@@ -12,12 +12,10 @@ import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MapViewer extends JFrame implements JMapViewerEventListener{
+public class MapViewer implements JMapViewerEventListener{
 
     private JMapViewerTree treeMap = null;
 
@@ -29,19 +27,14 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
      * Constructor
      */
     public MapViewer(){
-        super("Map Viewer");
 
         treeMap = new JMapViewerTree("Zones");
-
-        add(treeMap, BorderLayout.CENTER);
 
         mapMarkers = new ArrayList<MapMarkerDot>();
 
         testMapMarkers();
         setCenter(63.44,10.37, 10);
 
-        setSize(700,700);
-        setVisible(true);
     }
 
 
@@ -58,7 +51,7 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
      *
      * @return
      */
-    private JMapViewer map(){
+    public JMapViewer getMap(){
         return treeMap.getViewer();
     }
 
@@ -81,7 +74,7 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
     public void addMarker(String name, double lat, double lon){
         MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
         mapMarkers.add(dot);
-        map().addMapMarker(dot);
+        getMap().addMapMarker(dot);
     }
 
     /**
@@ -89,17 +82,17 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
      */
     public void removeMarkers(){
        mapMarkers.clear();
-       map().removeAllMapMarkers();
+       getMap().removeAllMapMarkers();
     }
 
     /**
      * Generate random MapMarkers
      */
-    public void testMapMarkers(){
+    private void testMapMarkers(){
         Random r = new Random();
 
-        for (int i = 0; i<10; i++){
-
+        //Creates 10 random dots and adds them to the world map.
+        for (int i = 1; i<11; i++){
             String name = "dot" + i;
             double randomValue1 = 70*r.nextDouble();
             double randomValue2 = 70*r.nextDouble();
@@ -115,15 +108,7 @@ public class MapViewer extends JFrame implements JMapViewerEventListener{
      * @param zoom
      */
     public void setCenter(double lat, double lon, int zoom){
-        map().setDisplayPositionByLatLon(lat,lon,zoom);
+        getMap().setDisplayPositionByLatLon(lat,lon,zoom);
     }
 
-
-    /**
-     * Entry point
-     * @param args
-     */
-    public static void main(String[] args){
-        new MapViewer();
-    }
 }

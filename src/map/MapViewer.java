@@ -32,8 +32,9 @@ public class MapViewer implements JMapViewerEventListener{
 
         mapMarkers = new ArrayList<MapMarkerDot>();
 
-        testMapMarkers();
-        setCenter(63.44,10.37, 10);
+        MapDaemon daemon = new MapDaemon(100);
+        daemon.start();
+        setCenter(63.44,10.37,10);
 
     }
 
@@ -110,5 +111,62 @@ public class MapViewer implements JMapViewerEventListener{
     public void setCenter(double lat, double lon, int zoom){
         getMap().setDisplayPositionByLatLon(lat,lon,zoom);
     }
+
+    class MapDaemon extends Thread{
+
+        double[] positions;
+        double[] velocities;
+        String[] names;
+        public boolean running;
+
+        public MapDaemon(int count){
+            Random ran = new Random();
+            positions = new double[2*count];
+            velocities = new double[2*count];
+            names = new String[count];
+            for(int i = 0; i < 2*count; ++i){
+                names[i/2] = sheepNames[ran.nextInt(MapViewer.sheepNames.length)];
+                positions[i] =
+                        63.391829 + ran.nextDouble() *0.1;
+                positions[++i] =  10.242294 + 0.1*ran.nextDouble();
+                velocities[i-1] = 0.05*ran.nextDouble();
+                velocities[i] = 0.05*ran.nextDouble();
+            }
+            running = true;
+        }
+
+        @Override
+        public void run() {
+            while(running){
+                MapViewer.this.removeMarkers();
+                for(int i = 0; i < 2*positions.length -1; ++i){
+                    if(i/2 > 99)
+                        break;
+                    MapViewer.this.addMarker(names[(int)Math.floor(i/2)], positions[i], positions[++i]);
+                    positions[i-1] += velocities[i-1];
+                    positions[i] += velocities[i];
+                }
+                try {
+                    Thread.sleep(1000/30);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+        }
+    }
+
+    public static String[] sheepNames = {
+            "Ragnar",
+            "Bjørnar",
+            "Gudrun",
+            "Arne",
+            "Simon",
+            "Huldra",
+            "Jørunn",
+            "Sigrid",
+            "Anders",
+            "Torleif",
+            "Thor"
+    };
 
 }

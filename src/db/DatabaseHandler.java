@@ -205,8 +205,6 @@ public class DatabaseHandler {
 
     }
 
-
-
     /**
      * Gets all alarms to sheeps that are owned by a farmer
      * @param farmerID
@@ -273,6 +271,12 @@ public class DatabaseHandler {
         return new SheepHistory(posHistory, sheepid);
     }
 
+    /**
+     * Get all medical history of sheep
+     * @param sheepid
+     * @return
+     * @throws SQLException
+     */
     public SheepMedicalHistory getSheepMedicalHistory(int sheepid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheepmedicalhistory WHERE sheepid = ?");
         query.setInt(1, sheepid);
@@ -347,7 +351,7 @@ public class DatabaseHandler {
 
     /**
      * Overwrites the flag to passed in variable. Use with caution as already set flags will be removed.
-     * The boolean parameter is in place to avoid story multiple history versions as the method is called internally from "addSheepHealthFlag".
+     * The boolean parameter is in place to avoid storing multiple history versions as the method is called internally from "addSheepHealthFlag".
      * @param sheepid
      * @param flag
      * @param storeHistory

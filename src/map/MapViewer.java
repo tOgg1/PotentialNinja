@@ -32,7 +32,7 @@ public class MapViewer implements JMapViewerEventListener{
 
         mapMarkers = new ArrayList<MapMarkerDot>();
 
-        MapDaemon daemon = new MapDaemon(100);
+        MapDaemon daemon = new MapDaemon(25);
         daemon.start();
         setCenter(63.44,10.37,10);
 
@@ -116,36 +116,67 @@ public class MapViewer implements JMapViewerEventListener{
 
         double[] positions;
         double[] velocities;
+        double[] accelerations;
         String[] names;
         public boolean running;
+        long counter;
 
         public MapDaemon(int count){
             Random ran = new Random();
+
             positions = new double[2*count];
             velocities = new double[2*count];
+            accelerations = new double[2*count];
+
             names = new String[count];
             for(int i = 0; i < 2*count; ++i){
                 names[i/2] = sheepNames[ran.nextInt(MapViewer.sheepNames.length)];
-                positions[i] =
-                        63.391829 + ran.nextDouble() *0.1;
-                positions[++i] =  10.242294 + 0.1*ran.nextDouble();
-                velocities[i-1] = 0.05*ran.nextDouble();
-                velocities[i] = 0.05*ran.nextDouble();
+                positions[i] = 63.391829 + ran.nextDouble() *0.08 - 0.04;
+                positions[++i] =  10.242294 + ran.nextDouble()*0.08 - 0.04;
+                velocities[i-1] = 5e-6*ran.nextDouble() - 2.5e-6;
+                velocities[i] = 5e-6*ran.nextDouble() - 2.5e-6;
+                accelerations[i-1] = 5e-8*ran.nextDouble() - 2.5e-8;
+                accelerations[i] = 5e-8*ran.nextDouble() - 2.5e-8;
             }
             running = true;
+            counter = 0;
         }
 
         @Override
         public void run() {
+            Random ran = new Random();
             while(running){
+
+                // Markers from 2 thousand and late
                 MapViewer.this.removeMarkers();
-                for(int i = 0; i < 2*positions.length -1; ++i){
-                    if(i/2 > 99)
-                        break;
-                    MapViewer.this.addMarker(names[(int)Math.floor(i/2)], positions[i], positions[++i]);
+                counter++;
+
+                // Newton integration is really cool
+                for(int i = 0; i < positions.length; ++i){
+                    MapViewer.this.addMarker(names[i/2], positions[i], positions[++i]);
                     positions[i-1] += velocities[i-1];
                     positions[i] += velocities[i];
+                    velocities[i-1] += accelerations[i-1];
+                    velocities[i] += accelerations[i];
                 }
+
+                // Pseudo-Randomized acceleration for scientifically accurate sheep-like behaviour
+                if(counter % 100 == 0){
+                    for(int i = 0; i < positions.length; ++i){
+                        if(ran.nextInt(4) > 3){
+                            accelerations[++i-1] = 5e-8*ran.nextDouble() - 2.5e-8;
+                        }   accelerations[i] = 5e-8*ran.nextDouble() - 2.5e-8;
+                    }
+                }
+
+                // Slow sheep down periodically, to avoid sheep throwing a fit
+                if((counter+10) % 100 == 0){
+                    for(int i = 0; i < positions.length; ++i){
+                        accelerations[++i-1] = -0.05*velocities[i-1];
+                        accelerations[i] = -0.05*velocities[i];
+                    }
+                }
+
                 try {
                     Thread.sleep(1000/30);
                 } catch (InterruptedException e) {
@@ -156,6 +187,12 @@ public class MapViewer implements JMapViewerEventListener{
     }
 
     public static String[] sheepNames = {
+            "Stian the sheepminator",
+            "Sondre, sheep of doom",
+            "Nora, the sheepmother",
+            "Vigdis, sheep of trikom",
+            "Vilde, queen of sheeps",
+            "Tormod, sheep of sweat",
             "Ragnar",
             "Bjørnar",
             "Gudrun",
@@ -165,8 +202,30 @@ public class MapViewer implements JMapViewerEventListener{
             "Jørunn",
             "Sigrid",
             "Anders",
+            "Oddleif",
             "Torleif",
-            "Thor"
+            "Thor",
+            "Gud",
+            "Jesus",
+            "Messias",
+            "Moses",
+            "Abraham",
+            "Paul",
+            "Isaac",
+            "Mordi",
+            "Sebastian",
+            "Fredrik",
+            "Frederik",
+            "Kristoffer",
+            "Mikkel",
+            "Nicolas",
+            "Nikolai",
+            "Bernt",
+            "Bjarne",
+            "Berit",
+            "Bertil",
+            "Martine",
+            "Marte"
     };
 
 }

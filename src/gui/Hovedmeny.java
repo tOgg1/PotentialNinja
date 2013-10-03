@@ -15,6 +15,9 @@ public class Hovedmeny extends javax.swing.JFrame {
      */
     public Hovedmeny() {
         initComponents();
+     // TODO finne bonden
+        String bonde = dennebonden;
+        label2.setText(bonde);
     }
 
     /**

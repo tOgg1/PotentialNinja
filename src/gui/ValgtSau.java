@@ -15,6 +15,9 @@ public class ValgtSau extends javax.swing.JFrame {
      */
     public ValgtSau() {
         initComponents();
+     // TODO finne bonden
+        String bonde = dennebonden;
+        label2.setText(bonde);
     }
 
     /**

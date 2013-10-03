@@ -165,7 +165,8 @@ public class MapViewer implements JMapViewerEventListener{
                     for(int i = 0; i < positions.length; ++i){
                         if(ran.nextInt(4) > 3){
                             accelerations[++i-1] = 5e-8*ran.nextDouble() - 2.5e-8;
-                        }   accelerations[i] = 5e-8*ran.nextDouble() - 2.5e-8;
+                            accelerations[i] = 5e-8*ran.nextDouble() - 2.5e-8;
+                        }
                     }
                 }
 
@@ -225,7 +226,8 @@ public class MapViewer implements JMapViewerEventListener{
             "Berit",
             "Bertil",
             "Martine",
-            "Marte"
+            "Marte",
+            "Judas"
     };
 
 }

@@ -5,15 +5,14 @@ import util.Log;
 import util.PotentialNinjaException;
 
 /**
- * Main class, entry point and highest layer of control
- */
-public class Main {
+* Main class, entry point and highest layer of control
+*/
+public class Main{
 
     //Login variables
     int farmerID;
     String farmerName;
     float defaultPosX, defaultPosY;
-
 
     public static void main(String[] args){
         Main main = new Main();
@@ -22,7 +21,6 @@ public class Main {
 
     public void initialize(){
         try{
-
             try{
                 Log.initLogFile();
             }catch(PotentialNinjaException e){
@@ -61,7 +59,7 @@ public class Main {
 
         DatabaseHandler handler = new DatabaseHandler();
 
-        System.out.println(""+handler.getFarmerContactInformation(3)[0]);
+        handler.setSheepPosition(1,26,25);
 
 
         /*System.out.println(""+handler.authenticate("bjornarsuperfarm", "johnny"));

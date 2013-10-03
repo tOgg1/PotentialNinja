@@ -7,15 +7,48 @@ public class Sheep
     int age;
     int mileage;
     int healthflags;
+    int birthdate;
     String name;
 
-    public Sheep(int id, int age, int healthflags, int mileage, int ownerid, String name) {
+    SheepHistory posHistory;
+    SheepMedicalHistory medicalHistory;
+
+    public int getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(int birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public SheepMedicalHistory getMedicalHistory() {
+        return medicalHistory;
+    }
+
+    public void setMedicalHistory(SheepMedicalHistory medicalHistory) {
+        this.medicalHistory = medicalHistory;
+    }
+
+    public SheepHistory getPosHistory() {
+        return posHistory;
+    }
+
+    public void setPosHistory(SheepHistory posHistory) {
+        this.posHistory = posHistory;
+    }
+
+    public Sheep(int id, int age, int healthflags, int mileage, int birthdate, int ownerid, String name) {
         this.age = age;
         this.id = id;
         this.mileage = mileage;
         this.ownerid = ownerid;
         this.healthflags = healthflags;
+        this.birthdate = birthdate;
         this.name = name;
+    }
+
+    public boolean hasFlag(int flag){
+        return (healthflags & flag) > 0;
     }
 
     public String getName() {

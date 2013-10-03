@@ -226,6 +226,18 @@ public class DatabaseHandler {
         return results;
     }
 
+
+    public Sheep getSheep(int sheepID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE id = ?");
+        query.setInt(1, sheepID);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        return new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name"));
+    }
+
     /**
      * Gets all sheeps of farmer
      * @param farmerID

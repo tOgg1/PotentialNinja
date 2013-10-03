@@ -1,7 +1,9 @@
 package main;
 
+import db.DatabaseHandler;
 import model.Sheep;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -13,32 +15,98 @@ import java.util.ArrayList;
  */
 public class Register {
 
-    ArrayList<Sheep> activeSheeps;
+    private DatabaseHandler mHandler;
+    private ArrayList<Sheep> activeSheeps;
 
-    public Register(){
-
+    public Register(DatabaseHandler handler){
+        this.mHandler = handler;
     }
 
-
-    public void containsSheep(Sheep sheep){
-
+    /**
+     * Checks if register contains sheep by class
+     * @param sheep
+     * @return
+     */
+    public boolean containsSheep(Sheep sheep){
+        return this.activeSheeps.contains(sheep);
     }
 
-    public void containsSheepById(int id){
-
+    /**
+     * Checks if register contains sheep by id
+     * @param id
+     * @return
+     */
+    public boolean containsSheepById(int id){
+        for(Sheep s : this.activeSheeps){
+            if(s.getId() == id)
+                return true;
+        }
+        return false;
     }
 
+    /**
+     * Adds sheep by class
+     * @param sheep
+     */
+    public void addSheep(Sheep sheep){
+        this.activeSheeps.add(sheep);
+    }
+
+   /**
+     * Fetches sheep from database by id.
+     * @param id
+     */
     public void addSheepById(int id){
-
+        try {
+            Sheep sheep = mHandler.getSheep(id);
+            if(sheep != null)
+                 this.activeSheeps.add(sheep);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
+    /**
+     * Fetches all sheeps for farmer from database.
+     * @param id
+     */
     public void addSheepsByFarmerId(int id){
-
+        try {
+            ArrayList<Sheep> farmerSheeps = mHandler.getSheeps(id);
+            if(!farmerSheeps.isEmpty())
+                this.activeSheeps.addAll(farmerSheeps);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
-    public void getAllFarmerSheeps(int id){
+    /**
+     * Gets sheep by id if it exists. Returns null if sheep is not found
+     * @param id
+     */
+    public Sheep getSheepById(int id){
+        for(Sheep s : this.activeSheeps){
+            if(s.getId() == id)
+                return s;
+        }
+        return null;
+    }
 
+    /**
+     * Get all sheeps for farmerID. Returns null if no sheeps are found
+     * @param id
+     * @return
+     */
+    public ArrayList<Sheep> getAllFarmerSheeps(int id){
+        ArrayList<Sheep> farmerSheeps = new ArrayList<Sheep>();
 
+        for(Sheep s : this.activeSheeps){
+            if(s.getOwnerid() == id)
+                farmerSheeps.add(s);
+        }
+        if(farmerSheeps.isEmpty())
+            return null;
+        return farmerSheeps;
     }
 
 

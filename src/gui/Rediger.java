@@ -63,7 +63,7 @@ public class Rediger extends javax.swing.JFrame {
         label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label4.setText("Rediger sau");
 
-        label1.setText("ID pÃ¥ sauen");
+        label1.setText("ID på sauen");
 
         jButton1.setText("Lagre");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +87,7 @@ public class Rediger extends javax.swing.JFrame {
 
         checkbox5.setLabel("Klostridieinfeksjoner");
 
-        checkbox1.setLabel("HjernebarksÃ¥r");
+        checkbox1.setLabel("Hjernebarksår");
 
         checkbox4.setLabel("Annet");
 
@@ -101,7 +101,7 @@ public class Rediger extends javax.swing.JFrame {
 
         checkbox3.setLabel("Koli-infeksjon");
 
-        checkbox7.setLabel("BlÃ¥tunge");
+        checkbox7.setLabel("Blåtunge");
 
         checkbox6.setLabel("Vaksinert mot klostidieinfeksjoner");
 
@@ -109,13 +109,13 @@ public class Rediger extends javax.swing.JFrame {
 
         checkbox11.setLabel("Sjodogg");
 
-        label3.setText("FÃ¸dselsdato");
+        label3.setText("Fødselsdato");
 
-        label2.setText("KjÃ¸nn");
+        label2.setText("Kjønn");
 
         textField1.setText("(id.nr.)");
 
-        checkbox13.setLabel("Ã˜yesykdom");
+        checkbox13.setLabel("Øyesykdom");
 
         jMenu1.setText("File");
 

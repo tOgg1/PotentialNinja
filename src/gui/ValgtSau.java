@@ -16,8 +16,8 @@ public class ValgtSau extends javax.swing.JFrame {
     public ValgtSau() {
         initComponents();
      // TODO finne bonden
-        String bonde = dennebonden;
-        label2.setText(bonde);
+     //   String bonde = dennebonden;
+     //   label2.setText(bonde);
     }
 
     /**
@@ -56,6 +56,7 @@ public class ValgtSau extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -79,13 +80,18 @@ public class ValgtSau extends javax.swing.JFrame {
             }
         });
 
+        jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
+        
+        textField2.setEditable(false);
+        
+        textField3.setEditable(false);
 
-        label3.setText("FÃ¸dselsdato");
+        label3.setText("Fødselsdato");
 
-        label4.setText("KjÃ¸nn");
+        label4.setText("Kjønn");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setText("Sykdomshistorie");
@@ -104,7 +110,7 @@ public class ValgtSau extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("DÃ¸d");
+        jButton4.setText("Død");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);

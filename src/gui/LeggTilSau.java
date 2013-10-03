@@ -63,21 +63,21 @@ public class LeggTilSau extends javax.swing.JFrame {
         label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label4.setText("Legg til sau");
 
-        label1.setText("ID pÃ¥ sauen");
+        label1.setText("ID på sauen");
 
         textField1.setText("(id.nr.)");
 
-        label2.setText("KjÃ¸nn");
+        label2.setText("Kjønn");
 
-        label3.setText("FÃ¸dselsdato");
+        label3.setText("Fødselsdato");
 
         label5.setText("Har");
 
-        checkbox7.setLabel("BlÃ¥tunge");
+        checkbox7.setLabel("Blåtunge");
 
         checkbox15.setLabel("Drektighetsforgiftning");
 
-        checkbox1.setLabel("HjernebarksÃ¥r");
+        checkbox1.setLabel("Hjernebarksår");
 
         checkbox5.setLabel("Klostridieinfeksjoner");
 
@@ -97,7 +97,7 @@ public class LeggTilSau extends javax.swing.JFrame {
 
         checkbox4.setLabel("Annet");
 
-        checkbox13.setLabel("Ã˜yesykdom");
+        checkbox13.setLabel("Øesykdom");
 
         checkbox14.setLabel("Trommesyke");
 

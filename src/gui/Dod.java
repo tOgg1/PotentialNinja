@@ -33,7 +33,7 @@ public class Dod extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel1.setText("Sauen din er nÃ¥ registrert som dÃ¸d.");
+        jLabel1.setText("Sauen din er nå registrert som død.");
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

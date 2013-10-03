@@ -57,11 +57,11 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
 
         label5.setText("E-post");
 
-        label6.setText("NÃ¥r du trykker \"Send info\" vil du fÃ¥ en e-post");
+        label6.setText("Når du trykker \"Send info\" vil du få en e-post");
 
         label7.setText("med brukernavnet ditt og nytt passord.");
 
-        label8.setText("Logg deg sÃ¥ inn pÃ¥ \"MinSide\" og bytt passordet.");
+        label8.setText("Logg deg så inn på \"MinSide\" og bytt passordet.");
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

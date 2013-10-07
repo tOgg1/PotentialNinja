@@ -17,6 +17,7 @@ public class ValgtSau extends javax.swing.JFrame {
 	private Hovedmeny hovedmeny;
 	private Rediger rediger;
 	private Dod dod;
+	private ValgtSau valgtsau;
 	
     public ValgtSau() {
         initComponents();
@@ -42,6 +43,13 @@ public class ValgtSau extends javax.swing.JFrame {
     	dod.dispose();
     	initComponents();
     }
+    
+    public ValgtSau (ValgtSau valgtsau){
+    	this.valgtsau = valgtsau;
+    	valgtsau.dispose();
+    	initComponents();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -279,6 +287,8 @@ public class ValgtSau extends javax.swing.JFrame {
         //Sykdomshistorie hører til jList1
         //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
 
+        ValgtSau valgtsau = new ValgtSau (this);
+        valgtsau.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

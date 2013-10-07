@@ -16,10 +16,11 @@ import java.util.ArrayList;
 public class Register {
 
     private DatabaseHandler mHandler;
-    private ArrayList<Sheep> activeSheeps;
+    private ArrayList<Sheep> mActiveSheeps;
 
     public Register(DatabaseHandler handler){
         this.mHandler = handler;
+        this.mActiveSheeps = new ArrayList<Sheep>();
     }
 
     /**
@@ -28,7 +29,7 @@ public class Register {
      * @return
      */
     public boolean containsSheep(Sheep sheep){
-        return this.activeSheeps.contains(sheep);
+        return this.mActiveSheeps.contains(sheep);
     }
 
     /**
@@ -37,7 +38,7 @@ public class Register {
      * @return
      */
     public boolean containsSheepById(int id){
-        for(Sheep s : this.activeSheeps){
+        for(Sheep s : this.mActiveSheeps){
             if(s.getId() == id)
                 return true;
         }
@@ -49,7 +50,7 @@ public class Register {
      * @param sheep
      */
     public void addSheep(Sheep sheep){
-        this.activeSheeps.add(sheep);
+        this.mActiveSheeps.add(sheep);
     }
 
    /**
@@ -60,7 +61,7 @@ public class Register {
         try {
             Sheep sheep = mHandler.getSheep(id);
             if(sheep != null)
-                 this.activeSheeps.add(sheep);
+                 this.mActiveSheeps.add(sheep);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -74,7 +75,7 @@ public class Register {
         try {
             ArrayList<Sheep> farmerSheeps = mHandler.getSheeps(id);
             if(!farmerSheeps.isEmpty())
-                this.activeSheeps.addAll(farmerSheeps);
+                this.mActiveSheeps.addAll(farmerSheeps);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -85,7 +86,7 @@ public class Register {
      * @param id
      */
     public Sheep getSheepById(int id){
-        for(Sheep s : this.activeSheeps){
+        for(Sheep s : this.mActiveSheeps){
             if(s.getId() == id)
                 return s;
         }
@@ -100,7 +101,7 @@ public class Register {
     public ArrayList<Sheep> getAllFarmerSheeps(int id){
         ArrayList<Sheep> farmerSheeps = new ArrayList<Sheep>();
 
-        for(Sheep s : this.activeSheeps){
+        for(Sheep s : this.mActiveSheeps){
             if(s.getOwnerid() == id)
                 farmerSheeps.add(s);
         }

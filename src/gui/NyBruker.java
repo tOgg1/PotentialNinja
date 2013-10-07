@@ -13,8 +13,18 @@ public class NyBruker extends javax.swing.JFrame {
     /**
      * Creates new form NyBruker
      */
+	
+	private Velkommen velkommen;
+	
+	public NyBruker(Velkommen velkommen){
+		this.velkommen = velkommen;
+		initComponents();
+		velkommen.dispose();
+	}
+	
     public NyBruker() {
         initComponents();
+        
     }
 
     /**
@@ -203,7 +213,11 @@ public class NyBruker extends javax.swing.JFrame {
 
     //Tilbake-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:       
+        
+        Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
+    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

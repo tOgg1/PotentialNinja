@@ -13,8 +13,60 @@ public class Velkommen extends javax.swing.JFrame {
     /**
      * Creates new form Velkommen
      */
+	
+	private NyBruker nybruker;
+	private Glemt_bru_pwd glemt;
+	private Hovedmeny hovedmeny;
+	private LeggTilSau leggtil;
+	private ValgtSau valgtsau;
+	private Rediger rediger;
+	private MinSide minside;
+	
     public Velkommen() {
         initComponents();
+        
+    }
+    
+    public Velkommen(NyBruker nybruker) {
+    	this.nybruker = nybruker;
+    	nybruker.dispose();
+    	initComponents();
+    }	
+    
+    public Velkommen(Glemt_bru_pwd glemt) {
+    	this.glemt = glemt;
+    	glemt.dispose();
+    	initComponents();
+    }
+    
+    public Velkommen(Hovedmeny hovedmeny){
+    	this.hovedmeny = hovedmeny;
+    	hovedmeny.dispose();
+    	initComponents();
+    }
+    
+    public Velkommen (LeggTilSau leggtil){
+    	this.leggtil = leggtil;
+    	leggtil.dispose();
+    	initComponents();
+    }
+    
+    public Velkommen (ValgtSau valgtsau){
+    	this.valgtsau = valgtsau;
+    	valgtsau.dispose();
+    	initComponents();
+    }
+    
+    public Velkommen(Rediger rediger){
+    	this.rediger = rediger;
+    	rediger.dispose();
+    	initComponents();
+    }
+    
+    public Velkommen (MinSide minside){
+    	this.minside = minside;
+    	minside.dispose();
+    	initComponents();
     }
 
     /**
@@ -130,11 +182,20 @@ public class Velkommen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Stenge vinduet
+    //public void pullThePlug() {
+    //    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+    //    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+    //}
+    
+    
     // Ny Bruker-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         // Ny bruker skal åpnes her
         
+        NyBruker nybruker = new NyBruker(this);
+        nybruker.setVisible(true);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -144,11 +205,18 @@ public class Velkommen extends javax.swing.JFrame {
         String brukernavn = textField1.getText();
         String psw = jPasswordField1.getText();
         
+        Hovedmeny hovedmeny = new Hovedmeny(this);
+        hovedmeny.setVisible(true);
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //Glemt brukernavn og passor-knapp
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+    	Glemt_bru_pwd glemt = new Glemt_bru_pwd(this);
+    	glemt.setVisible(true);
+    	
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

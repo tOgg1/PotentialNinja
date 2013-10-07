@@ -13,6 +13,17 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
     /**
      * Creates new form Glemt_bru_pwd
      */
+	
+	
+	private Velkommen velkommen;
+	
+	public Glemt_bru_pwd (Velkommen velkommen) {
+    	this.velkommen = velkommen;
+    	velkommen.dispose();
+    	initComponents();
+    	
+    }
+    
     public Glemt_bru_pwd() {
         initComponents();
     }
@@ -173,8 +184,7 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
         String mobilnr = jTextField1.getText();
         String epost = jTextField4.getText();
         
-        
-        
+       
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -182,6 +192,8 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
     //Tilbake-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

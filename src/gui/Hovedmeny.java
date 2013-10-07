@@ -13,12 +13,51 @@ public class Hovedmeny extends javax.swing.JFrame {
     /**
      * Creates new form Hovedmeny
      */
+	
+	private Velkommen velkommen;
+	private LeggTilSau leggtil;
+	private ValgtSau valgtsau;
+	private Rediger rediger;
+	private MinSide minside;
+	
     public Hovedmeny() {
         initComponents();
      // TODO finne bonden
      //   String bonde = dennebonden;
      //   label2.setText(bonde);
     }
+    
+    
+    public Hovedmeny(Velkommen velkommen){
+		this.velkommen = velkommen;
+		initComponents();
+		velkommen.dispose();
+	}
+    
+    public Hovedmeny (LeggTilSau leggtil){
+    	this.leggtil = leggtil;
+    	initComponents();
+    	leggtil.dispose();
+    }
+    
+    public Hovedmeny(ValgtSau valgtsau){
+    	this.valgtsau = valgtsau;
+    	initComponents();
+    	valgtsau.dispose();
+    }
+    
+    public Hovedmeny (Rediger rediger){
+    	this.rediger = rediger;
+    	rediger.dispose();
+    	initComponents();
+    }
+    
+    public Hovedmeny(MinSide minside){
+    	this.minside = minside;
+    	minside.dispose();
+    	initComponents();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,6 +189,10 @@ public class Hovedmeny extends javax.swing.JFrame {
     //Legg til sau-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+    	
+    	LeggTilSau leggtil = new LeggTilSau(this);
+    	leggtil.setVisible(true);
+    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
     //OK-knapp
@@ -157,7 +200,11 @@ public class Hovedmeny extends javax.swing.JFrame {
         // TODO add your handling code here:
         String id = jTextField1.getText();
         
-        //Hvilken bonde som er pÃ¥logget hÃ¸rer til label 2 - dette mÃ¥ vi se om kan brukes
+        ValgtSau valgtsau = new ValgtSau(this);
+        valgtsau.setVisible(true);
+        
+        
+        //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
         
         
         
@@ -166,11 +213,17 @@ public class Hovedmeny extends javax.swing.JFrame {
     // Logg ut-menyBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //MinSide - MenuBar
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
+    	MinSide minside = new MinSide(this);
+    	minside.setVisible(true);
+    	
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**

@@ -19,6 +19,7 @@ public class Hovedmeny extends javax.swing.JFrame {
 	private ValgtSau valgtsau;
 	private Rediger rediger;
 	private MinSide minside;
+	private Dod dod;
 	
     public Hovedmeny() {
         initComponents();
@@ -55,6 +56,12 @@ public class Hovedmeny extends javax.swing.JFrame {
     public Hovedmeny(MinSide minside){
     	this.minside = minside;
     	minside.dispose();
+    	initComponents();
+    }
+    
+    public Hovedmeny(Dod dod){
+    	this.dod = dod;
+    	dod.dispose();
     	initComponents();
     }
     

@@ -16,7 +16,6 @@ public class ValgtSau extends javax.swing.JFrame {
 	
 	private Hovedmeny hovedmeny;
 	private Rediger rediger;
-	private Dod dod;
 	private ValgtSau valgtsau;
 	
     public ValgtSau() {
@@ -35,12 +34,6 @@ public class ValgtSau extends javax.swing.JFrame {
     public ValgtSau(Rediger rediger){
     	this.rediger = rediger;
     	rediger.dispose();
-    	initComponents();
-    }
-    
-    public ValgtSau(Dod dod){
-    	this.dod = dod;
-    	dod.dispose();
     	initComponents();
     }
     

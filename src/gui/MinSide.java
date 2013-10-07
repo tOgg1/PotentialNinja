@@ -13,8 +13,38 @@ public class MinSide extends javax.swing.JFrame {
     /**
      * Creates new form MinSide
      */
+	
+	private LeggTilSau leggtil;
+	private Hovedmeny hovedmeny;
+	private ValgtSau valgtsau;
+	private Rediger rediger;	
+	
     public MinSide() {
         initComponents();
+    }
+    
+    public MinSide (LeggTilSau leggtil){
+    	this.leggtil = leggtil;
+    	leggtil.dispose();
+    	initComponents();
+    }
+    
+    public MinSide (Hovedmeny hovedmeny){
+    	this.hovedmeny = hovedmeny;
+    	hovedmeny.dispose();
+    	initComponents();
+    }
+    
+    public MinSide (ValgtSau valgtsau){
+    	this.valgtsau = valgtsau;
+    	valgtsau.dispose();
+    	initComponents();
+    }
+    
+    public MinSide (Rediger rediger){
+    	this.rediger = rediger;
+    	rediger.dispose();
+    	initComponents();
     }
 
     /**
@@ -280,11 +310,15 @@ public class MinSide extends javax.swing.JFrame {
     // Logg ut-menyBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+    	Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //Til Hovedmeny - menyBar
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	hovedmeny.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**

@@ -13,11 +13,34 @@ public class ValgtSau extends javax.swing.JFrame {
     /**
      * Creates new form ValgtSau
      */
+	
+	private Hovedmeny hovedmeny;
+	private Rediger rediger;
+	private Dod dod;
+	
     public ValgtSau() {
         initComponents();
      // TODO finne bonden
      //   String bonde = dennebonden;
      //   label2.setText(bonde);
+    }
+    
+    public ValgtSau(Hovedmeny hovedmeny){
+    	this.hovedmeny = hovedmeny;
+    	hovedmeny.dispose();
+    	initComponents();
+    }
+    
+    public ValgtSau(Rediger rediger){
+    	this.rediger = rediger;
+    	rediger.dispose();
+    	initComponents();
+    }
+    
+    public ValgtSau(Dod dod){
+    	this.dod = dod;
+    	dod.dispose();
+    	initComponents();
     }
 
     /**
@@ -241,6 +264,9 @@ public class ValgtSau extends javax.swing.JFrame {
     //Legg til sau-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+    	LeggTilSau leggtilsau = new LeggTilSau(this);
+    	leggtilsau.setVisible(true);
+    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
     //OK-knapp
@@ -259,26 +285,41 @@ public class ValgtSau extends javax.swing.JFrame {
     //Rediger-knapp
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+    	Rediger rediger = new Rediger(this);
+    	rediger.setVisible(true);
+    	
+    	
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    //DÃ¸d-knapp
+    //Død-knapp
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+    	
+    	Dod dod = new Dod(this);
+    	dod.setVisible(true);
+    	
     }//GEN-LAST:event_jButton4ActionPerformed
 
     //Logg ut - menuBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+    	Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //MinSide - menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+    	MinSide minside = new MinSide(this);
+    	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Til hovedmeny - menuBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	hovedmeny.setVisible(true);
+    	
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**

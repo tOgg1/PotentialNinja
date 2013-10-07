@@ -13,8 +13,17 @@ public class Rediger extends javax.swing.JFrame {
     /**
      * Creates new form Rediger
      */
+	
+	private ValgtSau valgtsau;
+	
     public Rediger() {
         initComponents();
+    }
+    
+    public Rediger (ValgtSau valgtsau){
+    	this.valgtsau = valgtsau;
+    	valgtsau.dispose();
+    	initComponents();
     }
 
     /**
@@ -306,21 +315,31 @@ public class Rediger extends javax.swing.JFrame {
     //Tilbake-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+    	
+    	ValgtSau valgtsau = new ValgtSau(this);
+    	valgtsau.setVisible(true);
+    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
     //Logg ut - menuBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+    	Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     //MinSide - menuBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+    	MinSide minside = new MinSide(this);
+    	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //Til hovedmeny - menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	hovedmeny.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**

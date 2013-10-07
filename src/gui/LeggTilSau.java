@@ -13,9 +13,27 @@ public class LeggTilSau extends javax.swing.JFrame {
     /**
      * Creates new form LeggTilSau
      */
+	
+	private Hovedmeny hovedmeny;
+	private ValgtSau valgtsau;
+	
     public LeggTilSau() {
         initComponents();
     }
+    
+    
+    public LeggTilSau(Hovedmeny hovedmeny) {
+    	this.hovedmeny = hovedmeny;
+		initComponents();
+		hovedmeny.dispose();
+    }
+    
+    public LeggTilSau (ValgtSau valgtsau){
+    	this.valgtsau = valgtsau;
+    	initComponents();
+    	valgtsau.dispose();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,7 +121,7 @@ public class LeggTilSau extends javax.swing.JFrame {
 
         checkbox6.setLabel("Vaksinert mot klostidieinfeksjoner");
 
-        jButton2.setText("Tilbake");
+        jButton2.setText("Til hovedmeny");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -274,16 +292,22 @@ public class LeggTilSau extends javax.swing.JFrame {
     //Til hovedmeny-menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	hovedmeny.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //MinSide-menyBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+    	MinSide minside = new MinSide(this);
+    	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //Logg ut-menyBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+    	Velkommen velkommen = new Velkommen(this);
+        velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     //Exit-menyBar
@@ -294,6 +318,11 @@ public class LeggTilSau extends javax.swing.JFrame {
     //Tilbake-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	hovedmeny.setVisible(true);
+    	    	
+    	
+    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
     //Lagre-knapp

@@ -1,8 +1,12 @@
 package ai;
 
+import db.DatabaseHandler;
 import model.Sheep;
+import util.Vec2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Timer;
 
 /**
@@ -14,22 +18,45 @@ import java.util.Timer;
  */
 public class SheepDaemon extends Thread {
 
-    Timer timer;
+    private DatabaseHandler handler;
 
-    ArrayList<Sheep> mSheeps;
-    float[] velocities;
-    float[] accelerations;
+    private Timer timer;
 
-    public SheepDaemon(ArrayList<Sheep> mSheeps) {
+    private ArrayList<Sheep> mSheeps;
+
+    //Hasing the IDs are safer than hashing the objects
+    private HashMap<Integer, Vec2> velocities;
+    private HashMap<Integer, Vec2> accelerations;
+
+    public SheepDaemon(DatabaseHandler handler, ArrayList<Sheep> mSheeps) {
+        this.handler = handler;
         this.mSheeps = mSheeps;
+        this.timer = new Timer("SheepDaemon", true);
+        this.velocities = new HashMap<Integer,Vec2>();
+        this.accelerations = new HashMap<Integer,Vec2>();
     }
 
     @Override
     public void run() {
+        Random ran = new Random();
+        for(int i = 0; i < mSheeps.size(); ++i){
 
+            //Velocities and accelerations stored in range [-0.5f, 0.5f]
+            this.velocities.put(mSheeps.get(i).getId(), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
+            this.accelerations.put(mSheeps.get(i).getId(), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
+        }
     }
 
     public void moveSheeps(){
+        ArrayList<Vec2> sheepPositions;
+        for(int i = 0; i < mSheeps.size(); ++i){
+            mSheeps.get(i).
+        }
+    }
+
+    public void updateSheeps(ArrayList<Sheep> sheeps){
 
     }
+
+
 }

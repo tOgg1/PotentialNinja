@@ -1,5 +1,7 @@
 package ai;
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mayacat
@@ -7,5 +9,14 @@ package ai;
  * Time: 9:37 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SheepDaemon {
+public class SheepDaemon extends Thread {
+
+    public SheepDaemon(ArrayList<Integer> sheepIDs) {
+    }
+
+    @Override
+    public void run() {
+
+
+    }
 }

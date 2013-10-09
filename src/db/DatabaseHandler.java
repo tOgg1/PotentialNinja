@@ -84,6 +84,7 @@ public class DatabaseHandler {
         query.setInt(6, ownerid);
         query.setBoolean(7, true);
         query.executeUpdate();
+        updateState();
     }
 
     /**
@@ -98,6 +99,7 @@ public class DatabaseHandler {
         query.setInt(2, sheepid);
         query.setInt(3, 1);
         query.executeUpdate();
+        updateState();
     }
 
     /**
@@ -124,7 +126,7 @@ public class DatabaseHandler {
             query.setString(2, accountname);
             query.setString(3, encryptPassword(password));
             query.executeUpdate();
-
+            updateState();
             return id;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -145,7 +147,6 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-
         return new Object[]{rs.getString("name"), rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y")};
     }
 
@@ -162,7 +163,6 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-
         return new Object[]{rs.getString("name"), rs.getString("number"), rs.getString("email")};
     }
 
@@ -185,6 +185,7 @@ public class DatabaseHandler {
         query.setInt(1, id);
         query.setInt(2, farmerID);
         query.executeUpdate();
+        updateState();
     }
 
     /**
@@ -200,9 +201,7 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-
         return new Object[]{rs.getInt("age"), rs.getInt("mileage"), rs.getInt("healthflags"), rs.getString("name")};
-
     }
 
     /**
@@ -212,11 +211,12 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public boolean isSheepDead(int sheepid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT alive FROM sheep WHERE sheepid = ?");
+        PreparedStatement query = this.db.prepareStatement("SELECT alive FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
-
-        return rs.next();
+        if(!rs.next())
+            throw new SQLException("Cant find sheep");
+        return !rs.getBoolean(1);
     }
 
     /**
@@ -226,7 +226,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public boolean killSheep(int sheepid, int cause) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET VALUES (alive = ?) WHERE id = ?");
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET alive = ? WHERE id = ?");
         query.setBoolean(1, false);
         query.setInt(2, sheepid);
 
@@ -239,6 +239,7 @@ public class DatabaseHandler {
         query.setLong(2, (new Date()).getTime());
         query.setInt(3, cause);
         query.executeUpdate();
+        updateState();
         return true;
     }
 
@@ -254,7 +255,7 @@ public class DatabaseHandler {
         if(!isSheepDead(sheepid))
             return true;
 
-        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET VALUES(alive = ?) WHERE id = ?");
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET alive = ? WHERE id = ?");
         query.setBoolean(1, true);
         query.setInt(2, sheepid);
 
@@ -265,6 +266,7 @@ public class DatabaseHandler {
         query = this.db.prepareStatement("DELETE FROM deadsheep WHERE sheepid = ?");
         query.setInt(1, sheepid);
         query.executeUpdate();
+        updateState();
         return true;
     }
 
@@ -297,7 +299,6 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-
         return new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name"));
     }
 
@@ -319,7 +320,6 @@ public class DatabaseHandler {
         while(rs.next()){
             results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
         }
-
         return results;
     }
 
@@ -342,7 +342,6 @@ public class DatabaseHandler {
         while(rs.next()){
             posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
         }
-
         return new SheepHistory(posHistory, sheepid);
     }
 
@@ -366,7 +365,6 @@ public class DatabaseHandler {
         while(rs.next()){
             medHistory.put(rs.getLong("timestamp"), rs.getInt("healthflag"));
         }
-
         return new SheepMedicalHistory(medHistory, sheepid);
     }
 
@@ -422,6 +420,7 @@ public class DatabaseHandler {
         query.setFloat(2, posY);
         query.setInt(3, sheepid);
         query.executeUpdate();
+        updateState();
     }
 
     /**
@@ -446,6 +445,7 @@ public class DatabaseHandler {
         query.setInt(1, flag);
         query.setInt(2, sheepid);
         query.executeUpdate();
+        updateState();
     }
 
     /**
@@ -473,6 +473,7 @@ public class DatabaseHandler {
         mFlags |= flag;
 
         this.setSheepHealthFlag(sheepid, mFlags, false);
+        updateState();
     }
 
     /**
@@ -485,6 +486,31 @@ public class DatabaseHandler {
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET name = ? WHERE id = ?");
         query.setString(1, name);
         query.setInt(2, sheepid);
+        query.executeUpdate();
+        updateState();
+    }
+
+    /**
+     * Gets the state of the database
+     * @return
+     * @throws SQLException
+     */
+    public int getState() throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT value FROM state WHERE id = 1");
+        ResultSet rs = query.executeQuery();
+
+        rs.next();
+
+        return rs.getInt(1);
+    }
+
+    private void updateState() throws SQLException{
+        int state = getState();
+
+        state+=1;
+
+        PreparedStatement query = this.db.prepareStatement("UPDATE state SET value = ?");
+        query.setInt(1,state);
         query.executeUpdate();
     }
 

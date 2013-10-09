@@ -7,5 +7,13 @@ package ai;
  * Time: 9:38 AM
  * To change this template use File | Settings | File Templates.
  */
-public class WolfDaemon {
+public class WolfDaemon extends Thread {
+
+    public WolfDaemon(){
+
+    }
+
+    @Override
+    public void run() {
+    }
 }

@@ -11,11 +11,13 @@ import db.DatabaseHandler;
  */
 public class Test {
 
-    public static void main(String[] args ){
+    public static void main(String[] args ) throws Exception{
 
         DatabaseHandler handler = new DatabaseHandler();
 
-
+        handler.killSheep(3, 14);
+        System.out.println(""+handler.getState());
 
     }
+
 }

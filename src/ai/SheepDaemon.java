@@ -104,6 +104,8 @@ public class SheepDaemon extends Thread {
         for(int i = 0; i < this.mSheeps.size(); ++i){
             int id = this.mSheeps.get(i);
             Vec2 pos = sheepPositions.get(i);
+            pos.x += velocities.get(id).x*multiplier;
+            pos.y += velocities.get(id).y*multiplier;
             this.velocities.get(id).add(this.accelerations.get(id));
             try {
                 this.mHandler.setSheepPosition(id, pos.x, pos.y);

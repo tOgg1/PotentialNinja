@@ -27,6 +27,8 @@ public class SheepDaemon extends Thread {
     private HashMap<Integer, Vec2> accelerations;
 
     private float multiplier = 1e-5f;
+
+    //Required because we have two threads accessing functions simultaneously (possibly)
     private boolean lockEverything;
 
     public SheepDaemon(DatabaseHandler mHandler) {

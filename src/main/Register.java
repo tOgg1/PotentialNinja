@@ -18,6 +18,8 @@ public class Register {
     private DatabaseHandler mHandler;
     private ArrayList<Sheep> mActiveSheeps;
 
+    private int farmerID;
+
     public Register(DatabaseHandler handler){
         this.mHandler = handler;
         this.mActiveSheeps = new ArrayList<Sheep>();
@@ -110,5 +112,11 @@ public class Register {
         return farmerSheeps;
     }
 
+    public int getFarmerID() {
+        return farmerID;
+    }
 
+    public void setFarmerID(int farmerID) {
+        this.farmerID = farmerID;
+    }
 }

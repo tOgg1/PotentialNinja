@@ -1,6 +1,7 @@
 package main;
 
 import db.DatabaseHandler;
+import gui.Velkommen;
 import util.Log;
 import util.PotentialNinjaException;
 
@@ -28,6 +29,10 @@ public class Main{
             }
 
             DatabaseHandler handler = new DatabaseHandler();
+            Register register = new Register(handler);
+
+            Velkommen login = new Velkommen();
+            login.setVisible(true);
 
             //Log in
             if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){
@@ -39,6 +44,8 @@ public class Main{
             this.farmerName = (String)farmerDetails[0];
             this.defaultPosX = (Float)farmerDetails[1];
             this.defaultPosY = (Float)farmerDetails[2];
+
+            register.setFarmerID(this.farmerID);
 
             System.out.println("Welcome to SheepTracker 2013 "+ farmerName+"!");
 

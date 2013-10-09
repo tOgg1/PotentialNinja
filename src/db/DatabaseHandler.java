@@ -75,13 +75,14 @@ public class DatabaseHandler {
      * @param ownerid
      */
     public void addSheep(String name, int age, int healthflags, float pos_x, float pos_y, int ownerid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmerid) VALUES(?,?,?,?,?,?)");
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmerid, alive) VALUES(?,?,?,?,?,?,?)");
         query.setString(1,name);
         query.setInt(2, age);
         query.setInt(3, healthflags);
         query.setFloat(4, pos_x);
         query.setFloat(5, pos_y);
         query.setInt(6, ownerid);
+        query.setBoolean(7, true);
         query.executeUpdate();
     }
 
@@ -110,7 +111,6 @@ public class DatabaseHandler {
      */
     public int createAccount(String accountname, String password, String farmerName, float pos_x, float pos_y) throws SQLException{
         try {
-
             int id = getNextAutoIncrement("farmer", "id");
 
             PreparedStatement query = this.db.prepareStatement("INSERT INTO farmer(name, default_pos_x, default_pos_y) VALUES (?,?,?)");
@@ -203,6 +203,69 @@ public class DatabaseHandler {
 
         return new Object[]{rs.getInt("age"), rs.getInt("mileage"), rs.getInt("healthflags"), rs.getString("name")};
 
+    }
+
+    /**
+     * Checks if a deadsheep exists
+     * @param sheepid
+     * @return
+     * @throws SQLException
+     */
+    public boolean isSheepDead(int sheepid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT alive FROM sheep WHERE sheepid = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        return rs.next();
+    }
+
+    /**
+     * Flags a sheep as dead
+     * @param sheepid
+     * @return
+     * @throws SQLException
+     */
+    public boolean killSheep(int sheepid, int cause) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET VALUES (alive = ?) WHERE id = ?");
+        query.setBoolean(1, false);
+        query.setInt(2, sheepid);
+
+        if(!(query.executeUpdate() > 0)){
+            return false;
+        }
+
+        query = this.db.prepareStatement("INSERT INTO deadsheep(sheepid, timeofdeath, causeofdeath) VALUES(?,?,?)");
+        query.setInt(1, sheepid);
+        query.setLong(2, (new Date()).getTime());
+        query.setInt(3, cause);
+        query.executeUpdate();
+        return true;
+    }
+
+    /**
+     * Revives a sheep that is dead
+     * @param sheepid
+     * @return
+     * @throws SQLException
+     */
+    public boolean reviveSheep(int sheepid) throws SQLException{
+
+        //Sheep is already alive, hurray!
+        if(!isSheepDead(sheepid))
+            return true;
+
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET VALUES(alive = ?) WHERE id = ?");
+        query.setBoolean(1, true);
+        query.setInt(2, sheepid);
+
+        if(!(query.executeUpdate() > 0)){
+            return false;
+        }
+
+        query = this.db.prepareStatement("DELETE FROM deadsheep WHERE sheepid = ?");
+        query.setInt(1, sheepid);
+        query.executeUpdate();
+        return true;
     }
 
     /**

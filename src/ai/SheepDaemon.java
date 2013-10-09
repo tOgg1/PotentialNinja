@@ -31,7 +31,7 @@ public class SheepDaemon extends Thread {
 
     public SheepDaemon(DatabaseHandler mHandler) {
         this.mHandler = mHandler;
-        this.mSheeps = mSheeps;
+        this.mSheeps = new ArrayList<Integer>();
         this.timer = new Timer("SheepDaemon", true);
         this.velocities = new HashMap<Integer,Vec2>();
         this.accelerations = new HashMap<Integer,Vec2>();
@@ -50,13 +50,17 @@ public class SheepDaemon extends Thread {
             this.velocities.put(this.mSheeps.get(i), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
             this.accelerations.put(this.mSheeps.get(i), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
         }
+        scheduleAndMove();
     }
 
-    public void reScheduleAndMove(){
+    /**
+     * Schedulerfunction
+     */
+    public void scheduleAndMove(){
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                reScheduleAndMove();
+                scheduleAndMove();
             }
         };
         timer.schedule(task, 60*60*8);
@@ -111,6 +115,10 @@ public class SheepDaemon extends Thread {
         randomizeAccelerations();
     }
 
+    /**
+     * Gets sheepupdates from database
+     * @param sheeps
+     */
     public void updateSheeps(ArrayList<Sheep> sheeps){
         if(lockEverything)
             return;

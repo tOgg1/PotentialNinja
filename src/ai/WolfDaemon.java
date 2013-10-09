@@ -25,21 +25,26 @@ public class WolfDaemon extends Thread {
 
     public WolfDaemon(DatabaseHandler mHandler){
         this.mHandler = mHandler;
-        mSheeps = new ArrayList<Integer>();
+        this.mSheeps = new ArrayList<Integer>();
     }
 
+    /**
+     * Run the daemon
+     */
     @Override
     public void run() {
         timer = new Timer("WolfDaemon", true);
-
-        reScheduleAttack();
+        scheduleAndAttack();
     }
 
-    public void reScheduleAttack(){
+    /**
+     * Schedulerfunction
+     */
+    public void scheduleAndAttack(){
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                reScheduleAttack();
+                scheduleAndAttack();
             }
         };
         Random ran = new Random();
@@ -47,6 +52,9 @@ public class WolfDaemon extends Thread {
         doAttack();
     }
 
+    /**
+     * Carry out an attack on an innocent sheep
+     */
     public void doAttack(){
 
         if(mSheeps.size() == 0)
@@ -68,6 +76,10 @@ public class WolfDaemon extends Thread {
         }
     }
 
+    /**
+     * Gets sheepupdates from database
+     * @param sheeps
+     */
     public void updateSheeps(ArrayList<Sheep> sheeps){
         ArrayList<Integer> newSheeps = new ArrayList<Integer>();
         for(Sheep sheep : sheeps){

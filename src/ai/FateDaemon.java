@@ -31,9 +31,9 @@ public class FateDaemon extends Thread {
         handler = new DatabaseHandler();
 
         databaseState = getDBState(handler);
-        reFetchAllData();
         sheepThread = new SheepDaemon(handler);
         wolfThread = new WolfDaemon(handler);
+        reFetchAllData();
         keepScheduling = false;
     }
 

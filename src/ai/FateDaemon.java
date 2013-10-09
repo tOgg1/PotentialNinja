@@ -3,6 +3,7 @@ package ai;
 import db.DatabaseHandler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,18 +20,21 @@ public class FateDaemon extends Thread {
     private WolfDaemon wolfThread;
 
     private Timer timer;
-    private boolean keepPolling;
+    private boolean keepScheduling;
 
     int databaseState;
+
+    private ArrayList<Integer> sheepIDs;
 
     public FateDaemon(){
         handler = new DatabaseHandler();
 
         databaseState = getDBState(handler);
+        reFetchAllData();
 
         sheepThread = new SheepDaemon(null);
         wolfThread = new WolfDaemon();
-        keepPolling = false;
+        keepScheduling = false;
     }
 
     public static int getDBState(DatabaseHandler handler){
@@ -41,24 +45,41 @@ public class FateDaemon extends Thread {
         }
     }
 
+    public void reFetchAllData(){
+
+    }
+
+    public void cascadeData(){
+
+    }
+
     @Override
     public void run() {
-        sheepThread.start();
-        wolfThread.start();
+        this.sheepThread.start();
+        this.wolfThread.start();
 
-        keepPolling = true;
+        this.keepScheduling = true;
 
-        timer = new Timer("FateTimer", true);
+        this.timer = new Timer("FateTimer", true);
         scheduleAndUpdate();
     }
 
     private void scheduleAndUpdate(){
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                scheduleAndUpdate();
-            }
-        };
-        timer.schedule(task, 10000);
+        if(keepScheduling){
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    scheduleAndUpdate();
+                }
+            };
+            this.timer.schedule(task, 10000);
+        }
+
+        int newState = getDBState(this.handler);
+
+        if(newState != this.databaseState){
+            this.reFetchAllData();
+            this.cascadeData();
+        }
     }
 }

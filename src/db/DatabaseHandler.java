@@ -303,6 +303,26 @@ public class DatabaseHandler {
     }
 
     /**
+     * Returns ALL sheeps in database. CAUTION, may be slow!
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Sheep> getAllSheeps() throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep");
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        ArrayList<Sheep> results = new ArrayList<Sheep>();
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
+
+        while(rs.next()){
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
+        }
+        return results;
+    }
+
+    /**
      * Gets all sheeps of farmer
      * @param farmerID
      * @return

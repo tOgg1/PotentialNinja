@@ -1,6 +1,9 @@
 package ai;
 
+import model.Sheep;
+
 import java.util.ArrayList;
+import java.util.Timer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,12 +14,22 @@ import java.util.ArrayList;
  */
 public class SheepDaemon extends Thread {
 
-    public SheepDaemon(ArrayList<Integer> sheepIDs) {
+    Timer timer;
+
+    ArrayList<Sheep> mSheeps;
+    float[] velocities;
+    float[] accelerations;
+
+    public SheepDaemon(ArrayList<Sheep> mSheeps) {
+        this.mSheeps = mSheeps;
     }
 
     @Override
     public void run() {
 
+    }
+
+    public void moveSheeps(){
 
     }
 }

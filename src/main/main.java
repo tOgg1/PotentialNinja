@@ -8,7 +8,7 @@ import util.PotentialNinjaException;
 /**
 * Main class, entry point and highest layer of control
 */
-public class Main{
+public class main{
 
     //Login variables
     int farmerID;
@@ -16,7 +16,7 @@ public class Main{
     float defaultPosX, defaultPosY;
 
     public static void main(String[] args){
-        Main main = new Main();
+        main main = new main();
         main.initialize();
     }
 

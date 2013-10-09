@@ -1,6 +1,7 @@
 package ai;
 
 import db.DatabaseHandler;
+import model.Sheep;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,9 +32,8 @@ public class FateDaemon extends Thread {
 
         databaseState = getDBState(handler);
         reFetchAllData();
-
-        sheepThread = new SheepDaemon(null);
-        wolfThread = new WolfDaemon();
+        sheepThread = new SheepDaemon(handler);
+        wolfThread = new WolfDaemon(handler);
         keepScheduling = false;
     }
 
@@ -46,11 +46,17 @@ public class FateDaemon extends Thread {
     }
 
     public void reFetchAllData(){
-
+        try {
+            ArrayList<Sheep> sheeps = handler.getAllSheeps();
+            this.cascadeData(sheeps);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
-    public void cascadeData(){
-
+    private void cascadeData(ArrayList<Sheep> sheeps){
+        sheepThread.updateSheeps(sheeps);
+        wolfThread.updateSheeps(sheeps);
     }
 
     @Override
@@ -79,7 +85,11 @@ public class FateDaemon extends Thread {
 
         if(newState != this.databaseState){
             this.reFetchAllData();
-            this.cascadeData();
         }
+    }
+
+    public static void main(String[] args){
+        FateDaemon daemon = new FateDaemon();
+        daemon.start();
     }
 }

@@ -24,4 +24,10 @@ public class FlagData {
     public static int OYESYKDOM = 8192;
     public static int ANNET = 16384;
     public static int VAKSINE = 32768;
+
+    public static int DEATHBYWOLF = 1;
+    public static int DEATHBYFALL = 2;
+    public static int DEATHBYDISEASE = 3;
+    public static int DEATHBYHUMAN = 4;
+    public static int DEATHUNKNOWN = 5;
 }

@@ -15,4 +15,9 @@ public class Vec2 {
         this.y = y;
 
     }
+
+    public void add(Vec2 vec){
+        this.x += vec.x;
+        this.y += vec.y;
+    }
 }

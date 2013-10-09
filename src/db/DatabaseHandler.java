@@ -3,12 +3,14 @@ package db;
 
 import model.*;
 import util.Log;
+import util.Vec2;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.TreeMap;
 
 /**
  * DatabaseHandler class, deals with getting and setting data in the database.
@@ -356,11 +358,11 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
 
-        TreeMap<Long, Pos> posHistory = new TreeMap<Long, Pos>();
-        posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+        TreeMap<Long, Vec2> posHistory = new TreeMap<Long, Vec2>();
+        posHistory.put(rs.getLong("timestamp"), new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
 
         while(rs.next()){
-            posHistory.put(rs.getLong("timestamp"), new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+            posHistory.put(rs.getLong("timestamp"), new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
         }
         return new SheepHistory(posHistory, sheepid);
     }
@@ -394,14 +396,14 @@ public class DatabaseHandler {
      * @return
      * @throws SQLException
      */
-    public Pos getSheepPosition(int sheepid) throws SQLException{
+    public Vec2 getSheepPosition(int sheepid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT pos_x, pos_y FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
             return null;
-        return new Pos(rs.getFloat("pos_x"), rs.getFloat("pos_y"));
+        return new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y"));
     }
 
     /**

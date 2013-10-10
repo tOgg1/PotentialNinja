@@ -1,7 +1,14 @@
 package map;
 
+import db.DatabaseHandler;
+import main.Register;
+import model.Sheep;
+import util.Vec2;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,24 +20,51 @@ import java.awt.*;
 public class MapTesting extends JFrame {
 
     private MapViewer map;
+    private float lat,lon;
 
     /**
      * Creates a JFrame containing map.
      */
-    public MapTesting(){
+    public MapTesting() throws SQLException {
         super("Map Viewer");
         map = new MapViewer();
+
+        DatabaseHandler db = new DatabaseHandler();
+        Register register = new Register(db);
+
+        int userid = db.authenticate("farm","farm");
+        int farmerid = db.getFarmerId(userid);
+
+
+        ArrayList<Vec2> position = new ArrayList<>();
+        ArrayList<Sheep> activeSheep = db.getSheeps(farmerid);
+
+        for (Sheep s : activeSheep){
+            position.add(db.getSheepPosition(s.getId()));
+        }
+
+        int counter = 0;
+
+        for (Vec2 v : position){
+          this.lon = v.y;
+          this.lat = v.x;
+          map.addMarker(activeSheep.get(counter).getName(),this.lat,this.lon);
+          counter += 1;
+        }
+
 
         add(map.getMap(), BorderLayout.CENTER);
 
         setSize(700,700);
         setVisible(true);
 
+        //System.exit(1);
 
     }
     
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
+
         new MapTesting();
 
     }

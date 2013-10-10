@@ -31,8 +31,9 @@ public class MapTesting extends JFrame {
 
         DatabaseHandler db = new DatabaseHandler();
 
+        int userid = db.authenticate("farm","farm");
+        int farmerid = db.getFarmerId(userid);
 
-        int farmerid = db.authenticate("farm","farm");
         Register register = new Register(db, farmerid);
 
         ArrayList<Vec2> position = new ArrayList<>();

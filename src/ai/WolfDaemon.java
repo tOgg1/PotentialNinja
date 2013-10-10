@@ -22,10 +22,12 @@ public class WolfDaemon extends Thread {
     private Timer timer;
 
     private ArrayList<Integer> mSheeps;
+    private boolean keepScheduling;
 
     public WolfDaemon(DatabaseHandler mHandler){
         this.mHandler = mHandler;
         this.mSheeps = new ArrayList<Integer>();
+        this.keepScheduling = true;
     }
 
     /**
@@ -35,12 +37,21 @@ public class WolfDaemon extends Thread {
     public void run() {
         timer = new Timer("WolfDaemon", true);
         scheduleAndAttack();
+        while(keepScheduling){
+            try {
+                Thread.sleep(60*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
     }
 
     /**
      * Schedulerfunction
      */
     public void scheduleAndAttack(){
+        if(!keepScheduling)
+            return;
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -48,7 +59,7 @@ public class WolfDaemon extends Thread {
             }
         };
         Random ran = new Random();
-        timer.schedule(task, (long)3600*ran.nextInt(36));
+        timer.schedule(task, (long)1000*3600*ran.nextInt(36));
         doAttack();
     }
 
@@ -62,11 +73,10 @@ public class WolfDaemon extends Thread {
 
         Random ran = new Random();
         int randomSheep = (int)ran.nextFloat()*(mSheeps.size()-1);
-
         randomSheep = randomSheep < 0 ? 0 : randomSheep;
 
         //See flagdata for causes
-        int cause = ran.nextInt(4) + 1;
+        int cause = ran.nextInt(5) + 1;
 
         try {
             mHandler.killSheep(mSheeps.get(randomSheep), cause);

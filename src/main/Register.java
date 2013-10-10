@@ -21,14 +21,12 @@ public class Register {
 
     private int farmerID;
 
-    public Register(DatabaseHandler handler){
+    public Register(DatabaseHandler handler, int farmerID){
         this.mHandler = handler;
-        try{
-            activeSheeps = mHandler.getAllSheeps();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
+        this.farmerID = farmerID;
+
+        activeSheeps = getAllFarmerSheeps(farmerID);
+
     }
 
     /**

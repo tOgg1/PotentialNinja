@@ -3,6 +3,9 @@ package ai;
 import db.DatabaseHandler;
 import model.Sheep;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -68,6 +71,13 @@ public class FateDaemon extends Thread {
 
         this.timer = new Timer("FateTimer", true);
         scheduleAndUpdate();
+        while(keepScheduling){
+            try {
+                Thread.sleep(60*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
     }
 
     private void scheduleAndUpdate(){
@@ -80,7 +90,6 @@ public class FateDaemon extends Thread {
             };
             this.timer.schedule(task, 10000);
         }
-
         int newState = getDBState(this.handler);
 
         if(newState != this.databaseState){
@@ -91,5 +100,33 @@ public class FateDaemon extends Thread {
     public static void main(String[] args){
         FateDaemon daemon = new FateDaemon();
         daemon.start();
+        FateDaemon.InputManager iManage = new FateDaemon.InputManager();
+    }
+
+    static class InputManager implements Runnable{
+
+        private BufferedReader input;
+
+        public InputManager(){
+            input = new BufferedReader(new InputStreamReader(System.in));
+        }
+
+        @Override
+        public void run() {
+            try {
+                String string;
+
+                while((string = input.readLine()) != null){
+                    decryptAndExecute(string);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+
+        public void decryptAndExecute(String args){
+
+        }
+
     }
 }

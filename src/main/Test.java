@@ -24,8 +24,8 @@ public class Test extends JFrame{
     public Test() throws Exception{
 
         DatabaseHandler handler = new DatabaseHandler();
-        int userid = handler.authenticate("farm", "farm");
-        int farmerid = handler.getFarmerId(userid);
+        int farmerid = handler.authenticate("farm", "farm");
+
         MapViewer map = new MapViewer();
 
         MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);

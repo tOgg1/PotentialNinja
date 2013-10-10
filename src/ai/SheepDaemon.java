@@ -30,6 +30,7 @@ public class SheepDaemon extends Thread {
 
     //Required because we have two threads accessing functions simultaneously (possibly)
     private boolean lockEverything;
+    private boolean keepScheduling;
 
     public SheepDaemon(DatabaseHandler mHandler) {
         this.mHandler = mHandler;
@@ -38,6 +39,7 @@ public class SheepDaemon extends Thread {
         this.velocities = new HashMap<Integer,Vec2>();
         this.accelerations = new HashMap<Integer,Vec2>();
         this.lockEverything = false;
+        this.keepScheduling = true;
     }
 
     /**
@@ -53,19 +55,29 @@ public class SheepDaemon extends Thread {
             this.accelerations.put(this.mSheeps.get(i), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
         }
         scheduleAndMove();
+        while(keepScheduling){
+            try {
+                Thread.sleep(60*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
     }
 
     /**
      * Schedulerfunction
      */
     public void scheduleAndMove(){
+        if(!keepScheduling)
+            return;
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 scheduleAndMove();
             }
         };
-        timer.schedule(task, 60*60*8);
+        timer.schedule(task, 1000*600);
+
         moveSheeps();
     }
 

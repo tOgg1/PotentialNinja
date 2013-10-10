@@ -29,5 +29,6 @@ public class FlagData {
     public static int DEATHBYFALL = 2;
     public static int DEATHBYDISEASE = 3;
     public static int DEATHBYHUMAN = 4;
-    public static int DEATHUNKNOWN = 5;
+    public static int DEATHBYSHEP = 5;
+    public static int DEATHUNKNOWN = 6;
 }

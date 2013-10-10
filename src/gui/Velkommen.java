@@ -4,6 +4,8 @@
  */
 package gui;
 
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -21,10 +23,17 @@ public class Velkommen extends javax.swing.JFrame {
 	private ValgtSau valgtsau;
 	private Rediger rediger;
 	private MinSide minside;
+	private FeilPsw feilpsw;
 	
-    public Velkommen() {
+	private DatabaseHandler mHandler;
+	
+	public Velkommen(){
+		initComponents();
+	}
+	
+    public Velkommen(DatabaseHandler mHandler) {
         initComponents();
-        
+        this.mHandler = mHandler;        
     }
     
     public Velkommen(NyBruker nybruker) {
@@ -66,6 +75,12 @@ public class Velkommen extends javax.swing.JFrame {
     public Velkommen (MinSide minside){
     	this.minside = minside;
     	minside.dispose();
+    	initComponents();
+    }
+    
+    public Velkommen (FeilPsw feilpsw){
+    	this.feilpsw = feilpsw;
+    	feilpsw.dispose();
     	initComponents();
     }
 
@@ -191,10 +206,9 @@ public class Velkommen extends javax.swing.JFrame {
     
     // Ny Bruker-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         // Ny bruker skal åpnes her
         
-        NyBruker nybruker = new NyBruker(this);
+        NyBruker nybruker = new NyBruker(this, mHandler);
         nybruker.setVisible(true);
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -202,18 +216,26 @@ public class Velkommen extends javax.swing.JFrame {
     // Logg inn-knapp
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String brukernavn = textField1.getText();
-        String psw = jPasswordField1.getText();
+        String account = textField1.getText();
+        String password = jPasswordField1.getText();
+        // System.out.println(password);
+        int farmerID;
         
-        Hovedmeny hovedmeny = new Hovedmeny(this);
-        hovedmeny.setVisible(true);
+        if ((farmerID = mHandler.authenticate(account, password)) == -1){
+        	FeilPsw feilpsw = new FeilPsw (this);
+        	feilpsw.setVisible(true);
+        }
+        
+        else {
+        	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler);
+        	hovedmeny.setVisible(true);        	
+        }
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //Glemt brukernavn og passor-knapp
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
     	Glemt_bru_pwd glemt = new Glemt_bru_pwd(this);
     	glemt.setVisible(true);
     	
@@ -249,7 +271,7 @@ public class Velkommen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Velkommen().setVisible(true);
+                new Velkommen(new DatabaseHandler()).setVisible(true);
             }
         });   
     }

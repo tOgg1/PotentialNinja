@@ -4,6 +4,8 @@
  */
 package gui;
 
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -15,9 +17,11 @@ public class NyBruker extends javax.swing.JFrame {
      */
 	
 	private Velkommen velkommen;
+	private DatabaseHandler mHandler;
 	
-	public NyBruker(Velkommen velkommen){
+	public NyBruker(Velkommen velkommen, DatabaseHandler mHandler){
 		this.velkommen = velkommen;
+		this.mHandler = mHandler;
 		initComponents();
 		velkommen.dispose();
 	}
@@ -201,11 +205,19 @@ public class NyBruker extends javax.swing.JFrame {
         String fornavn = jTextField4.getText();
         String etternavn = jTextField3.getText();
         String mobilnr = jTextField2.getText();
-        String epost = jTextField5.getText();
-        String brukernavn = jTextField1.getText();
+        String email = jTextField5.getText();
+        String accountname = jTextField1.getText();
         String psw = jPasswordField1.getText();
         String psw_G = jPasswordField2.getText();
+        String farmerName = fornavn + etternavn;
         
+        if (psw == psw_G){
+        	int farmerID = mHandler.createAccount(accountname, psw, farmerName, pos_x, pos_y);
+        	mHandler.setFarmerContact(farmerID, name, number, email);
+        }
+        else{
+        	
+        }
         
         
         

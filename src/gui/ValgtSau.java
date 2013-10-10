@@ -4,6 +4,8 @@
  */
 package gui;
 
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -18,6 +20,9 @@ public class ValgtSau extends javax.swing.JFrame {
 	private Rediger rediger;
 	private ValgtSau valgtsau;
 	
+	private DatabaseHandler mHandler;
+	private int sheepid;
+	
     public ValgtSau() {
         initComponents();
      // TODO finne bonden
@@ -25,10 +30,14 @@ public class ValgtSau extends javax.swing.JFrame {
      //   label2.setText(bonde);
     }
     
-    public ValgtSau(Hovedmeny hovedmeny){
+    public ValgtSau(Hovedmeny hovedmeny, int sheepid, DatabaseHandler mHandler){
     	this.hovedmeny = hovedmeny;
+    	this.sheepid = sheepid;
+    	this.mHandler = mHandler;
     	hovedmeny.dispose();
     	initComponents();
+    	
+    	Object[] sheepInfo = mHandler.getSheepInformation(sheepid);
     }
     
     public ValgtSau(Rediger rediger){
@@ -264,7 +273,6 @@ public class ValgtSau extends javax.swing.JFrame {
 
     //Legg til sau-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
     	LeggTilSau leggtilsau = new LeggTilSau(this);
     	leggtilsau.setVisible(true);
     	
@@ -305,21 +313,18 @@ public class ValgtSau extends javax.swing.JFrame {
 
     //Logg ut - menuBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
     	Velkommen velkommen = new Velkommen(this);
         velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //MinSide - menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
     	MinSide minside = new MinSide(this);
     	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Til hovedmeny - menuBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
     	Hovedmeny hovedmeny = new Hovedmeny(this);
     	hovedmeny.setVisible(true);
     	

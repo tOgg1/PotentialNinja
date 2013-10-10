@@ -4,6 +4,8 @@
  */
 package gui;
 
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -21,18 +23,23 @@ public class Hovedmeny extends javax.swing.JFrame {
 	private MinSide minside;
 	private Dod dod;
 	
+	private DatabaseHandler mHandler;
+	
     public Hovedmeny() {
         initComponents();
      // TODO finne bonden
      //   String bonde = dennebonden;
      //   label2.setText(bonde);
+        
+        
     }
     
     
-    public Hovedmeny(Velkommen velkommen){
+    public Hovedmeny(Velkommen velkommen, DatabaseHandler mHandler){
 		this.velkommen = velkommen;
 		initComponents();
 		velkommen.dispose();
+		this.mHandler = mHandler;
 	}
     
     public Hovedmeny (LeggTilSau leggtil){
@@ -195,9 +202,7 @@ public class Hovedmeny extends javax.swing.JFrame {
 
     //Legg til sau-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    	
-    	LeggTilSau leggtil = new LeggTilSau(this);
+        LeggTilSau leggtil = new LeggTilSau(this);
     	leggtil.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -205,9 +210,10 @@ public class Hovedmeny extends javax.swing.JFrame {
     //OK-knapp
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String id = jTextField1.getText();
+        int sheepid;
+        sheepid = Integer.parseInt(jTextField1.getText());  //Hvilken sau som skal velges
         
-        ValgtSau valgtsau = new ValgtSau(this);
+        ValgtSau valgtsau = new ValgtSau(this, sheepid, mHandler);
         valgtsau.setVisible(true);
         
         
@@ -219,7 +225,6 @@ public class Hovedmeny extends javax.swing.JFrame {
 
     // Logg ut-menyBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
         Velkommen velkommen = new Velkommen(this);
         velkommen.setVisible(true);
         
@@ -227,7 +232,6 @@ public class Hovedmeny extends javax.swing.JFrame {
 
     //MinSide - MenuBar
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
     	MinSide minside = new MinSide(this);
     	minside.setVisible(true);
     	

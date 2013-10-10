@@ -4,6 +4,8 @@
  */
 package gui;
 
+import util.FlagData;
+
 /**
  *
  * @author Kumii
@@ -331,6 +333,24 @@ public class LeggTilSau extends javax.swing.JFrame {
         String id = textField1.getText();
         String kjonn = textField2.getText();
         String fodsel = textField3.getText();
+        
+        int healthflag = 0;
+        
+        healthflag |= checkbox7.getState() == true ? FlagData.BLATUNGE : 0;
+        healthflag |= checkbox15.getState() == true ? FlagData.DREKTIGHETSFORGIFTNING : 0;
+        healthflag |= checkbox1.getState() == true ? FlagData.HJERNEBARKSAR : 0;
+        healthflag |= checkbox5.getState() == true ? FlagData.KLOSTIDIEINFEKSJONER : 0;
+        healthflag |= checkbox3.getState() == true ? FlagData.KOLIINFEKSJON : 0;
+        healthflag |= checkbox2.getState() == true ? FlagData.LEVERBETENNELSE : 0;
+        healthflag |= checkbox8.getState() == true ? FlagData.LUNGEBETENNELSE : 0;
+        healthflag |= checkbox9.getState() == true ? FlagData.MASTITT : 0;
+        healthflag |= checkbox10.getState() == true ? FlagData.MUNNSKURV : 0;
+        healthflag |= checkbox11.getState() == true ? FlagData.SJODOGG : 0;
+        healthflag |= checkbox12.getState() == true ? FlagData.SKRAPESYKE : 0;
+        healthflag |= checkbox14.getState() == true ? FlagData.TROMMESYKE : 0;
+        healthflag |= checkbox13.getState() == true ? FlagData.OYESYKDOM : 0;
+        healthflag |= checkbox4.getState() == true ? FlagData.ANNET : 0;
+        healthflag |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
         // Blåtunge = checkbox7
         // Drektighetsforgiftning = checkbox15

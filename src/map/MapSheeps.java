@@ -1,10 +1,11 @@
 package map;
 
-import java.util.ArrayList;
 import db.DatabaseHandler;
-import model.Sheep;
 import main.Register;
+import model.Sheep;
 import util.Vec2;
+
+import java.util.ArrayList;
 
 public class MapSheeps 
 {
@@ -16,7 +17,7 @@ public class MapSheeps
 	
 	public MapSheeps (DatabaseHandler handler, int farmerId, MapViewer map)
 	{
-		register = new Register (handler);
+		register = new Register (handler, farmerId);
 		currentSheeps = new ArrayList ();
 		this.farmerId = farmerId;
         this.map = map;

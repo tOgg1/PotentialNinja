@@ -103,9 +103,12 @@ public class SheepDaemon extends Thread {
     private void randomizeAcceleration(int sheepID){
         if(lockEverything)
             return;
-
+        lockEverything = true;
         Random ran = new Random();
-        Vec2 acc = accelerations.get(sheepID)
+        Vec2 acc = accelerations.get(sheepID);
+        acc.x = ran.nextFloat() - 0.5f;
+        acc.y = ran.nextFloat() - 0.5f;
+        lockEverything = false;
     }
 
     public void moveSheep(int sheepID){

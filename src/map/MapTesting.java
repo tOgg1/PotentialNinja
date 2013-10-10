@@ -30,11 +30,10 @@ public class MapTesting extends JFrame {
         map = new MapViewer();
 
         DatabaseHandler db = new DatabaseHandler();
-        Register register = new Register(db);
 
-        int userid = db.authenticate("farm","farm");
-        int farmerid = db.getFarmerId(userid);
 
+        int farmerid = db.authenticate("farm","farm");
+        Register register = new Register(db, farmerid);
 
         ArrayList<Vec2> position = new ArrayList<>();
         ArrayList<Sheep> activeSheep = db.getSheeps(farmerid);

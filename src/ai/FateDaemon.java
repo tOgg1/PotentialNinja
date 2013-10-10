@@ -72,6 +72,8 @@ public class FateDaemon extends Thread {
 
         this.timer = new Timer("FateTimer", true);
         scheduleAndUpdate();
+        InputManager iManage = new InputManager();
+        iManage.start();
         while(keepScheduling){
             try {
                 Thread.sleep(60*1000);
@@ -103,11 +105,16 @@ public class FateDaemon extends Thread {
         daemon.start();
     }
 
-    class InputManager implements Runnable{
+    class InputManager extends Thread{
 
         private BufferedReader input;
 
+        private String mStartUp = "Command Parser v0.1 for fateDaemon Software\nCreated by tOgg1\n";
+        private String mReady = "Ready for commands ...";
+        private final boolean debug = true;
+
         public InputManager(){
+            System.out.println(mStartUp);
             input = new BufferedReader(new InputStreamReader(System.in));
         }
 
@@ -115,9 +122,17 @@ public class FateDaemon extends Thread {
         public void run() {
             try {
                 String string;
+                System.out.println(mReady);
 
                 while((string = input.readLine()) != null){
                     String args[] = string.split("-");
+                    if(debug){
+                        System.out.println("Argument length: " + args.length);
+                        System.out.print("\nArguments: ");
+                        for(String s : args){
+                            System.out.print(s + " ");
+                        }
+                    }
                     decryptAndExecute(args);
                 }
             } catch (IOException e) {
@@ -129,22 +144,27 @@ public class FateDaemon extends Thread {
             args[0] = args[0].toLowerCase();
             if(args[0].equals("exit")){
                 FateDaemon.this.keepScheduling = false;
+                System.exit(0);
             }
             else if(args[0].equals("kill")){
-                if(args.length > 1){
+                if(args.length > 2){
                     args[1] = args[1].toLowerCase();
-                    if(args[1].equals("wolf"))
-                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYWOLF);
-                    else if(args[1].equals("fall"))
-                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYFALL);
-                    else if(args[1].equals("disease"))
-                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYDISEASE);
-                    else if(args[1].equals("human"))
-                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYHUMAN);
-                    else if(args[1].equals("sheep"))
-                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYSHEEP);
-                    else
-                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHUNKNOWN);
+                    if(args[1].equals("cause")){
+                        args[2] = args[2].toLowerCase();
+                        if(args[1].equals("wolf"))
+                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYWOLF);
+                        else if(args[1].equals("fall"))
+                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYFALL);
+                        else if(args[1].equals("disease"))
+                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYDISEASE);
+                        else if(args[1].equals("human"))
+                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYHUMAN);
+                        else if(args[1].equals("sheep"))
+                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYSHEEP);
+                        else
+                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHUNKNOWN);
+                    }
+
                 }
                 else{
                     FateDaemon.this.wolfThread.doAttack();
@@ -169,7 +189,7 @@ public class FateDaemon extends Thread {
                             System.out.println("Invalid id for command \"move -id\"");
                             return;
                         }
-                        FateDaemon.this.sheepThread.moveSheep();
+                        FateDaemon.this.sheepThread.moveSheep(id);
 
                     }
                 }

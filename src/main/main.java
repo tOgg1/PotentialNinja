@@ -29,15 +29,16 @@ public class main{
             }
 
             DatabaseHandler handler = new DatabaseHandler();
-            Register register = new Register(handler);
 
-            Velkommen login = new Velkommen();
-            login.setVisible(true);
 
             //Log in
             if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){
                 System.exit(1);
             }
+            Register register = new Register(handler, this.farmerID);
+
+            Velkommen login = new Velkommen();
+            login.setVisible(true);
             Object[] farmerDetails = handler.getFarmerInformation(this.farmerID);
             if(farmerDetails == null)
                 throw new Exception("Unable to find farmer information");

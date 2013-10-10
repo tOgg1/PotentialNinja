@@ -53,14 +53,14 @@ public class DatabaseHandler {
         try {
             PreparedStatement query = this.db.prepareStatement("SELECT id, password FROM user WHERE username = ?");
             query.setString(1, account);
-            ResultSet result = query.executeQuery();
+            ResultSet rs = query.executeQuery();
 
-            if(!result.next())
+            if(!rs.next())
                 return -1;
 
             String hash = encryptPassword(password);
-            if(hash.equals(result.getString("password")))
-                return result.getInt("id");
+            if(hash.equals(rs.getString("password")))
+                return this.getFarmerId(rs.getInt("id"));
             return -1;
         } catch (SQLException | NoSuchAlgorithmException e) {
             return -1;
@@ -76,14 +76,13 @@ public class DatabaseHandler {
     public int getFarmerId(int userid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT farmerid FROM user WHERE id = ?");
         query.setInt(1, userid);
-        ResultSet result = query.executeQuery();
+        ResultSet rs = query.executeQuery();
 
-        if (!result.next()){
+        if(!rs.next()){
             return -1;
         }
 
-        return result.getInt("farmerid");
-
+        return rs.getInt("farmerid");
     }
 
     /**

@@ -2,6 +2,7 @@ package main;
 
 import db.DatabaseHandler;
 import model.Sheep;
+import util.Vec2;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -124,4 +125,29 @@ public class Register {
     public void setFarmerID(int farmerID) {
         this.farmerID = farmerID;
     }
+
+
+    /**
+     * Fetches sheep positions from database.
+     * @param farmerID
+     * @return
+     */
+    public ArrayList<Vec2> getSheepPositions(int farmerID){
+        try{
+            ArrayList<Vec2> positions = new ArrayList<Vec2>();
+            ArrayList<Sheep> farmerSheep = this.getAllFarmerSheeps(farmerID);
+
+            for(Sheep s : farmerSheep){
+                int sheepID = s.getId();
+                positions.add(mHandler.getSheepPosition(sheepID));
+            }
+            return positions;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

@@ -93,17 +93,47 @@ public class SheepDaemon extends Thread {
         for(int i = 0; i < this.accelerations.size(); i++){
             Collection<Vec2> accs = this.accelerations.values();
             for(Vec2 vec : accs){
-                vec.x = ran.nextFloat();
-                vec.y = ran.nextFloat();
+                vec.x = ran.nextFloat() - 0.5f;
+                vec.y = ran.nextFloat() - 0.5f;
             }
         }
         lockEverything = false;
+    }
+
+    private void randomizeAcceleration(int sheepID){
+        if(lockEverything)
+            return;
+
+        Random ran = new Random();
+        Vec2 acc = accelerations.get(sheepID)
+    }
+
+    public void moveSheep(int sheepID){
+        if(!mSheeps.contains(sheepID))
+            return;
+
+        if(lockEverything)
+            return;
+
+        lockEverything = true;
+
+        try {
+            Vec2 pos = mHandler.getSheepPosition(sheepID);
+            pos.add(velocities.get(sheepID));
+            velocities.get(sheepID).add(accelerations.get(sheepID));
+        } catch (SQLException e){
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        lockEverything = false;
+        randomizeAcceleration(sheepID);
     }
 
     /**
      * Moves all sheeps and increments velocities by accelerations. Finishes off by randomizing accelerations
      */
     public void moveSheeps(){
+        if(lockEverything)
+            return;
         lockEverything = true;
         ArrayList<Vec2> sheepPositions = new ArrayList<Vec2>();
 

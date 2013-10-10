@@ -2,6 +2,7 @@ package model;
 
 import util.Vec2;
 
+import java.util.Collection;
 import java.util.TreeMap;
 
 /**
@@ -18,6 +19,15 @@ public class SheepHistory {
     public SheepHistory(TreeMap<Long, Vec2> history, int sheepID) {
         this.history = history;
         this.sheepID = sheepID;
+    }
+
+    public void superFunction(){
+        Collection<Vec2> pairs = history.values();
+
+        Vec2[] array = new Vec2[pairs.size()];
+        pairs.toArray(array);
+
+        Vec2 yoMamaIsSoFat = array[array.length - 1];
     }
 
     public TreeMap<Long, Vec2> getHistory() {

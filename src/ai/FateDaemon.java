@@ -2,6 +2,7 @@ package ai;
 
 import db.DatabaseHandler;
 import model.Sheep;
+import util.FlagData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -116,14 +117,63 @@ public class FateDaemon extends Thread {
                 String string;
 
                 while((string = input.readLine()) != null){
-                    decryptAndExecute(string);
+                    String args[] = string.split("-");
+                    decryptAndExecute(args);
                 }
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
 
-        public void decryptAndExecute(String args){
+        public void decryptAndExecute(String[] args){
+            args[0] = args[0].toLowerCase();
+            if(args[0].equals("exit")){
+                FateDaemon.this.keepScheduling = false;
+            }
+            else if(args[0].equals("kill")){
+                if(args.length > 1){
+                    args[1] = args[1].toLowerCase();
+                    if(args[1].equals("wolf"))
+                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYWOLF);
+                    else if(args[1].equals("fall"))
+                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYFALL);
+                    else if(args[1].equals("disease"))
+                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYDISEASE);
+                    else if(args[1].equals("human"))
+                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYHUMAN);
+                    else if(args[1].equals("sheep"))
+                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYSHEEP);
+                    else
+                        FateDaemon.this.wolfThread.doAttack(FlagData.DEATHUNKNOWN);
+                }
+                else{
+                    FateDaemon.this.wolfThread.doAttack();
+                }
+            }
+            else if(args[0].equals("move")){
+                if(args.length > 1){
+                    args[1] = args[1].toLowerCase();
+                    if(args[1].equals("all")){
+                        FateDaemon.this.sheepThread.moveSheeps();
+                    }
+                    else if(args[1].equals("id")){
+                        String[] argc = args[1].split(" ");
+                        if(argc.length != 2){
+                            System.out.println("Invalid arguments for command \"move\"");
+                            return;
+                        }
+                        int id = 0;
+                        try{
+                        id = Integer.parseInt(argc[1]);
+                        }catch(Throwable t){
+                            System.out.println("Invalid id for command \"move -id\"");
+                            return;
+                        }
+                        FateDaemon.this.sheepThread.moveSheep();
+
+                    }
+                }
+            }
 
         }
 

@@ -100,10 +100,9 @@ public class FateDaemon extends Thread {
     public static void main(String[] args){
         FateDaemon daemon = new FateDaemon();
         daemon.start();
-        FateDaemon.InputManager iManage = new FateDaemon.InputManager();
     }
 
-    static class InputManager implements Runnable{
+    class InputManager implements Runnable{
 
         private BufferedReader input;
 

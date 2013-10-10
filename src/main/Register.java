@@ -25,8 +25,11 @@ public class Register {
         this.mHandler = handler;
         this.farmerID = farmerID;
 
-        activeSheeps = getAllFarmerSheeps(farmerID);
-
+        try {
+            this.activeSheeps = handler.getSheeps(this.farmerID);
+        } catch (SQLException e) {
+            activeSheeps = new ArrayList<Sheep>();
+        }
     }
 
     /**

@@ -68,6 +68,25 @@ public class DatabaseHandler {
     }
 
     /**
+     * Takes in userid and returns farmerid
+     * @param userid
+     * @return
+     * @throws SQLException
+     */
+    public int getFarmerId(int userid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT farmerid FROM user WHERE id = ?");
+        query.setInt(1, userid);
+        ResultSet result = query.executeQuery();
+
+        if (!result.next()){
+            return -1;
+        }
+
+        return result.getInt("farmerid");
+
+    }
+
+    /**
      * Adds a sheep to the database
      * @param name
      * @param age

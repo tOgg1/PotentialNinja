@@ -12,15 +12,14 @@ import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class MapViewer implements JMapViewerEventListener{
 
     private JMapViewerTree treeMap = null;
-
-    //ArrayList of all added mapMarkers.
-    private ArrayList<MapMarkerDot> mapMarkers;
+    private JMapViewer map = null;
 
 
     /**
@@ -29,11 +28,10 @@ public class MapViewer implements JMapViewerEventListener{
     public MapViewer(){
 
         treeMap = new JMapViewerTree("Zones");
+        map = this.getMap();
 
-        mapMarkers = new ArrayList<MapMarkerDot>();
-
-        MapDaemon daemon = new MapDaemon(25);
-        daemon.start();
+        //MapDaemon daemon = new MapDaemon(25);
+        //daemon.start();
         setCenter(63.44,10.37,10);
 
     }
@@ -74,16 +72,36 @@ public class MapViewer implements JMapViewerEventListener{
      */
     public void addMarker(String name, double lat, double lon){
         MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
-        mapMarkers.add(dot);
-        getMap().addMapMarker(dot);
+        map.addMapMarker(dot);
+    }
+
+    /**
+     * Helper function to add MapMarker with different background color
+     * @param name
+     * @param lat
+     * @param lon
+     * @param color
+     */
+    public void addMarker(String name, double lat, double lon, Color color){
+        MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
+        dot.setBackColor(color);
+        map.addMapMarker(dot);
     }
 
     /**
      * Removes all MapMarkers from the map
      */
     public void removeMarkers(){
-       mapMarkers.clear();
-       getMap().removeAllMapMarkers();
+       map.removeAllMapMarkers();
+    }
+
+
+    /**
+     * Set MapMarker visibility
+     * @param visibility
+     */
+    public void setMarkerVisiblity(boolean visibility){
+        map.setMapMarkerVisible(visibility);
     }
 
     /**

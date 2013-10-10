@@ -1,18 +1,21 @@
 package map;
 
-import db.DatabaseHandler;
-import main.Register;
-import model.Sheep;
-import util.Vec2;
-
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeMap;
+
+import db.DatabaseHandler;
+import model.Sheep;
+import main.Register;
+import model.SheepHistory;
+import util.Vec2;
 
 public class MapSheeps 
 {
 	private Register register;
 	private ArrayList <Sheep> currentSheeps;
 	private int farmerId;
-	private int [][] position; //kanskje, m� se mer p� det der etterp�, n�r eg komemr litt lengre
     private MapViewer map;
 	
 	public MapSheeps (DatabaseHandler handler, int farmerId, MapViewer map)
@@ -23,7 +26,8 @@ public class MapSheeps
         this.map = map;
 
 		setSheeps();
-        setCurrentSheepPositions();
+        //setCurrentSheepPositions();
+        setHistoricSheepPosition(7);
 	}
 	
 	public void setSheeps ()
@@ -50,6 +54,43 @@ public class MapSheeps
             lon = v.y;
             map.addMarker(currentSheeps.get(counter).getName(), lat, lon);
             counter += 1;
+        }
+    }
+
+    /**
+     * Finds the three last positions of sheep and adds them to map.
+     * @param sheepid
+     */
+    public void setHistoricSheepPosition(int sheepid){
+        float lat, lon;
+        Color color = null;
+
+        SheepHistory history = register.getSheepHistory(sheepid);
+        TreeMap<Long, Vec2> sheepHistory = history.getHistory();
+
+        Collection<Vec2> pairs = sheepHistory.values();
+        Vec2[] array = new Vec2[pairs.size()];
+        pairs.toArray(array);
+
+        for (int i = 1; i < 4; i++){
+            Vec2 position = array[array.length-i];
+            lat = position.x;
+            lon = position.y;
+
+            System.out.println(lat + " " + lon);
+
+            switch(i){
+                case 1:
+                    color = Color.YELLOW;
+                    break;
+                case 2:
+                    color = Color.BLUE;
+                    break;
+                case 3:
+                    color = Color.RED;
+                    break;
+            }
+            map.addMarker(lat,lon,color);
         }
     }
 	

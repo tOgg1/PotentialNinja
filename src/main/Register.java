@@ -2,6 +2,7 @@ package main;
 
 import db.DatabaseHandler;
 import model.Sheep;
+import model.SheepHistory;
 import util.Vec2;
 
 import java.sql.SQLException;
@@ -146,6 +147,20 @@ public class Register {
 
         } catch (SQLException e){
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Helper method to grab sheep history
+     * @param sheepID
+     * @return
+     */
+    public SheepHistory getSheepHistory(int sheepID){
+        try {
+            return mHandler.getSheepHistory(sheepID);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;
     }

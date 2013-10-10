@@ -21,15 +21,6 @@ public class SheepHistory {
         this.sheepID = sheepID;
     }
 
-    public void superFunction(){
-        Collection<Vec2> pairs = history.values();
-
-        Vec2[] array = new Vec2[pairs.size()];
-        pairs.toArray(array);
-
-        Vec2 yoMamaIsSoFat = array[array.length - 1];
-    }
-
     public TreeMap<Long, Vec2> getHistory() {
         return history;
     }

@@ -77,13 +77,12 @@ public class MapViewer implements JMapViewerEventListener{
 
     /**
      * Helper function to add MapMarker with different background color
-     * @param name
      * @param lat
      * @param lon
      * @param color
      */
-    public void addMarker(String name, double lat, double lon, Color color){
-        MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
+    public void addMarker(double lat, double lon, Color color){
+        MapMarkerDot dot = new MapMarkerDot(c(lat,lon));
         dot.setBackColor(color);
         map.addMapMarker(dot);
     }

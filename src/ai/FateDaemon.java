@@ -122,16 +122,17 @@ public class FateDaemon extends Thread {
         public void run() {
             try {
                 String string;
-                System.out.println(mReady);
+                p(mReady);
 
                 while((string = input.readLine()) != null){
                     String args[] = string.split("-");
                     if(debug){
-                        System.out.println("Argument length: " + args.length);
+                        p("Argument length: " + args.length);
                         System.out.print("\nArguments: ");
                         for(String s : args){
                             System.out.print(s + " ");
                         }
+                        System.out.print("\n");
                     }
                     decryptAndExecute(args);
                 }
@@ -140,31 +141,85 @@ public class FateDaemon extends Thread {
             }
         }
 
+        private String hasArgument(String[] args, String argument){
+            for(String arg : args){
+                if(arg.split(" ")[0].equals(argument))
+                    return arg;
+            }
+            return null;
+        }
+
         public void decryptAndExecute(String[] args){
             args[0] = args[0].toLowerCase();
+            args[0] = args[0].replace(" ", "");
             if(args[0].equals("exit")){
                 FateDaemon.this.keepScheduling = false;
                 System.exit(0);
             }
             else if(args[0].equals("kill")){
-                if(args.length > 2){
-                    args[1] = args[1].toLowerCase();
-                    if(args[1].equals("cause")){
-                        args[2] = args[2].toLowerCase();
-                        if(args[1].equals("wolf"))
-                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYWOLF);
-                        else if(args[1].equals("fall"))
-                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYFALL);
-                        else if(args[1].equals("disease"))
-                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYDISEASE);
-                        else if(args[1].equals("human"))
-                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYHUMAN);
-                        else if(args[1].equals("sheep"))
-                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHBYSHEEP);
+                int id = -1, cause = -1;
+
+                if(args.length > 1){
+                    String argv;
+
+                    if((argv = hasArgument(args, "cause")) != null){
+                        p(argv);
+                        String[] argc = argv.split(" ");
+                        if(argc.length == 1){
+                            p("Missing value for argument \"cause\"");
+                            return;
+                        }
+                        if(argc[1].equals("wolf"))
+                            cause = FlagData.DEATHBYWOLF;
+                        else if(argc[1].equals("fall"))
+                            cause = FlagData.DEATHBYFALL;
+                        else if(argc[1].equals("disease"))
+                            cause = FlagData.DEATHBYDISEASE;
+                        else if(argc[1].equals("human"))
+                            cause = FlagData.DEATHBYHUMAN;
+                        else if(argc[1].equals("sheep"))
+                            cause = FlagData.DEATHBYSHEEP;
                         else
-                            FateDaemon.this.wolfThread.doAttack(FlagData.DEATHUNKNOWN);
+                            cause = FlagData.DEATHUNKNOWN;
                     }
 
+                    if((argv = hasArgument(args, "id")) != null){
+                        id = 0;
+                        String[] argc = argv.split(" ");
+                        if(argc.length < 2){
+                            p("Missing id for command \"kill -id\"");
+                            return;
+                        }
+                        try{
+                            p(argv);
+                            id = Integer.parseInt(argc[1]);
+                        }catch(Throwable t){
+                            p("Invalid id for command \"kill -id\"");
+                            return;
+                        }
+                    }
+
+                    if(id != -1 && cause != -1){
+                        FateDaemon.this.wolfThread.doAttack(id, cause);
+                        if(debug)
+                            p("Command Executed: kill -id -cause");
+                        return;
+                    }
+                    if(id != -1){
+                        FateDaemon.this.wolfThread.doAttackById(id);
+                        if(debug)
+                            p("Command Executed: kill -id");
+
+                        return;
+                    }
+
+                    if(cause != -1){
+                        FateDaemon.this.wolfThread.doAttack(cause);
+                        if(debug)
+                            p("Command Executed: kill -cause");
+                        return;
+                    }
+                    p("Invalid arguments for command \"kill\"");
                 }
                 else{
                     FateDaemon.this.wolfThread.doAttack();
@@ -172,30 +227,40 @@ public class FateDaemon extends Thread {
             }
             else if(args[0].equals("move")){
                 if(args.length > 1){
-                    args[1] = args[1].toLowerCase();
-                    if(args[1].equals("all")){
+                    String argv;
+                    if((argv = hasArgument(args, "all")) != null){
                         FateDaemon.this.sheepThread.moveSheeps();
+                        if(debug)
+                            p("All sheeps moved");
                     }
-                    else if(args[1].equals("id")){
-                        String[] argc = args[1].split(" ");
+                    else if((argv = hasArgument(args, "id")) != null){
+                        String[] argc = argv.split(" ");
                         if(argc.length != 2){
-                            System.out.println("Invalid arguments for command \"move\"");
+                            p("Invalid arguments for command \"move\"");
                             return;
                         }
                         int id = 0;
                         try{
-                        id = Integer.parseInt(argc[1]);
+                            id = Integer.parseInt(argc[1]);
                         }catch(Throwable t){
-                            System.out.println("Invalid id for command \"move -id\"");
+                            p("Invalid id for command \"move -id\"");
                             return;
                         }
                         FateDaemon.this.sheepThread.moveSheep(id);
-
+                        if(debug)
+                            p("Sheep "+id+" moved");
+                    }
+                    else{
+                        p("Argument "+args[1]+" to command \"move\" not regocnized");
                     }
                 }
             }
-
         }
 
     }
+    public static void p(String s){
+        System.out.println(s);
+    }
 }
+
+

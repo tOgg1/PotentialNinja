@@ -64,6 +64,25 @@ public class WolfDaemon extends Thread {
     }
 
     /**
+     * Carry out an attack on a not-so-innocent sheep
+     */
+    public void doAttackById(int id){
+        if(mSheeps.size() == 0)
+            return;
+
+        Random ran = new Random();
+
+        //See flagdata for causes
+        int cause = ran.nextInt(5) + 1;
+
+        try {
+            mHandler.killSheep(id, cause);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    /**
      * Carry out an attack on an innocent sheep
      */
     public void doAttack(){

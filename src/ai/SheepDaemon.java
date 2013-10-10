@@ -26,7 +26,7 @@ public class SheepDaemon extends Thread {
     private HashMap<Integer, Vec2> velocities;
     private HashMap<Integer, Vec2> accelerations;
 
-    private float multiplier = 1e-5f;
+    private float multiplier = 1e-3f;
 
     //Required because we have two threads accessing functions simultaneously (possibly)
     private boolean lockEverything;
@@ -76,7 +76,7 @@ public class SheepDaemon extends Thread {
                 scheduleAndMove();
             }
         };
-        timer.schedule(task, 1000*600);
+        timer.schedule(task, 1000*3600);
 
         moveSheeps();
     }

@@ -53,6 +53,8 @@ public class MapTesting extends JFrame {
         }
 
 
+
+
         add(map.getMap(), BorderLayout.CENTER);
 
         setSize(700,700);

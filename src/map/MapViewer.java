@@ -11,9 +11,10 @@ package map;
 import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
+import org.openstreetmap.gui.jmapviewer.tilesources.OsmTileSource;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public class MapViewer implements JMapViewerEventListener{
@@ -30,9 +31,16 @@ public class MapViewer implements JMapViewerEventListener{
         treeMap = new JMapViewerTree("Zones");
         map = this.getMap();
 
+        //Sets the map type.
+        map.setTileSource(new OsmTileSource.CycleMap());
+
+        //Sets the movement mouse button to mouse1
+        DefaultMapController mapController = new DefaultMapController(map);
+        mapController.setMovementMouseButton(MouseEvent.BUTTON1);
+
         //MapDaemon daemon = new MapDaemon(25);
         //daemon.start();
-        setCenter(63.44,10.37,10);
+        setCenter(63.44, 10.37, 10);
 
     }
 

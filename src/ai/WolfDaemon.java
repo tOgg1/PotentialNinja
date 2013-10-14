@@ -59,7 +59,7 @@ public class WolfDaemon extends Thread {
             }
         };
         Random ran = new Random();
-        timer.schedule(task, (long)1000*3600*ran.nextInt(36));
+        timer.schedule(task, (long)1000*3600*24*ran.nextInt(7)/(mSheeps.size() + 1));
         doAttack();
     }
 

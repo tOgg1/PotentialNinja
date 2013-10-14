@@ -57,7 +57,7 @@ public class SheepDaemon extends Thread {
         scheduleAndMove();
         while(keepScheduling){
             try {
-                Thread.sleep(60*1000);
+                Thread.sleep(1000*3600*8);
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -76,7 +76,7 @@ public class SheepDaemon extends Thread {
                 scheduleAndMove();
             }
         };
-        timer.schedule(task, 1000*3600);
+        timer.schedule(task, 1000*3600*8);
 
         moveSheeps();
     }

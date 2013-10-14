@@ -11,15 +11,30 @@ package map;
 import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
+import org.openstreetmap.gui.jmapviewer.tilesources.OsmTileSource;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MapViewer implements JMapViewerEventListener{
+public class MapViewer extends MouseAdapter implements JMapViewerEventListener, MouseListener {
 
     private JMapViewerTree treeMap = null;
     private JMapViewer map = null;
+
+    //ArrayList of all current dots.
+    private ArrayList<MapMarkerDot> mapDots = null;
+    private ArrayList<String> mouseDotName = null;
+
+    private final DecimalFormat df = new DecimalFormat("#.0");
+
+    //variables to keep track of where the mouse is
+    private double mouseX;
+    private double mouseY;
 
 
     /**
@@ -30,12 +45,75 @@ public class MapViewer implements JMapViewerEventListener{
         treeMap = new JMapViewerTree("Zones");
         map = this.getMap();
 
+        mapDots = new ArrayList<MapMarkerDot>();
+        mouseDotName = new ArrayList<String>();
+
+        //Sets the map type.
+        map.setTileSource(new OsmTileSource.CycleMap());
+
+        //Sets the movement mouse button to mouse1
+        DefaultMapController mapController = new DefaultMapController(map);
+        mapController.setMovementMouseButton(MouseEvent.BUTTON1);
+
+        //Adds a mouse listener to capture mouse activity.
+        map.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+
+                    /**
+                     * When user clicks left mouse button, this method will get the mouse position
+                     */
+                    public void mouseClicked(MouseEvent e) {
+                        if(e.getButton() == MouseEvent.BUTTON1){
+
+                            Coordinate pos = getMap().getPosition(e.getX(),e.getY());
+                            mouseX = pos.getLat();
+                            mouseY = pos.getLon();
+                            setMouseDotName();
+                        }
+
+                    }
+                }
+        );
+
         //MapDaemon daemon = new MapDaemon(25);
         //daemon.start();
-        setCenter(63.44,10.37,10);
+        setCenter(63.44, 10.37, 10);
 
     }
 
+    /**
+     * Adds the dots from the (x,y) location of the mouse to an ArrayList.
+     */
+    public void setMouseDotName(){
+
+        if(!mouseDotName.isEmpty()){
+            mouseDotName.clear();
+        }
+
+        for (MapMarkerDot d : mapDots){
+
+            String dotLat = df.format(d.getLat());
+            String dotLon = df.format(d.getLon());
+            String mouseLat = df.format(mouseX);
+            String mouseLon = df.format(mouseY);
+
+            if (dotLat.equals(mouseLat) && dotLon.equals(mouseLon)){
+
+                mouseDotName.add(d.getName());
+                System.out.println(d.getName());
+
+            }
+        }
+    }
+
+    public ArrayList<String> getMouseDotName(){
+        if(!mouseDotName.isEmpty()){
+            return mouseDotName;
+        }
+
+        return null;
+    }
 
     /**
      * Process commands from the JMapViewerTree
@@ -52,6 +130,14 @@ public class MapViewer implements JMapViewerEventListener{
      */
     public JMapViewer getMap(){
         return treeMap.getViewer();
+    }
+
+    public Coordinate getPosition(int mapPointX, int mapPointY){
+        return map.getPosition(mapPointX, mapPointY);
+    }
+
+    public ArrayList<MapMarkerDot> getCurrentMapMarkers(){
+        return mapDots;
     }
 
     /**
@@ -72,6 +158,8 @@ public class MapViewer implements JMapViewerEventListener{
      */
     public void addMarker(String name, double lat, double lon){
         MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
+        mapDots.add(dot);
+
         map.addMapMarker(dot);
     }
 
@@ -91,6 +179,7 @@ public class MapViewer implements JMapViewerEventListener{
      * Removes all MapMarkers from the map
      */
     public void removeMarkers(){
+       mapDots.clear();
        map.removeAllMapMarkers();
     }
 

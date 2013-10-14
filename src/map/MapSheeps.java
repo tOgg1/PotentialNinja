@@ -11,33 +11,32 @@ import main.Register;
 import model.SheepHistory;
 import util.Vec2;
 
-public class MapSheeps 
+public class MapSheeps
 {
 	private Register register;
 	private ArrayList <Sheep> currentSheeps;
 	private int farmerId;
     private MapViewer map;
+
 	
 	public MapSheeps (DatabaseHandler handler, int farmerId, MapViewer map)
 	{
 		register = new Register (handler, farmerId);
-		currentSheeps = new ArrayList ();
+		currentSheeps = new ArrayList<Sheep> ();
 		this.farmerId = farmerId;
         this.map = map;
 
 		setSheeps();
-        //setCurrentSheepPositions();
-        setHistoricSheepPosition(7);
+        setCurrentSheepPositions();
+        //setHistoricSheepPosition(7);
 	}
-	
+
+    /**
+     * adds all of the farmers sheep to currentSheeps.
+     */
 	public void setSheeps ()
 	{
 		currentSheeps = register.getAllFarmerSheeps(farmerId);
-	}
-	
-	public void setOldSheeps (ArrayList<Sheep> newSheep, ArrayList<Sheep> oldSheep) 
-	{
-		oldSheep = newSheep;
 	}
 
     /**

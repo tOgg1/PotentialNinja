@@ -13,20 +13,21 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class Rediger extends javax.swing.JFrame {
+public class EditSheep extends javax.swing.JFrame {
 
     /**
-     * Creates new form Rediger
+     * Creates new form EditSheep
      */
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
+	private String sheepid;
 	
-    public Rediger() {
+    public EditSheep() {
         initComponents();
     }
     
-    public Rediger(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    public EditSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -78,7 +79,7 @@ public class Rediger extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        label4.setText("Rediger sau");
+        label4.setText("EditSheep sau");
 
         label1.setText("ID på sauen");
 
@@ -288,14 +289,20 @@ public class Rediger extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
        System.exit(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    // Lagre-knapp
+    /**
+     * Saves the info from the textFields to the given sheep
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String id = textField1.getText();
+        this.sheepid = id;
         String kjonn = textField2.getText();
         String fodsel = textField3.getText();
         
@@ -316,40 +323,45 @@ public class Rediger extends javax.swing.JFrame {
         // Annet = checkbox4
         // Vaksinert mot = checkbox6
         
-        mHandler.addSheepHealthFlag(sheepID, flag);
+        mHandler.addSheepHealthFlag(id, flag);
         
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    //Tilbake-knapp
+    /**
+     * Go back to TheChosenSheep
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    	
-    	ValgtSau valgtsau = new ValgtSau(this, mHandler, mRegister);
-    	valgtsau.setVisible(true);
+ 
+    	//TODO
+    	TheChosenSheep chosen = new TheChosenSheep(this, sheepid, mHandler, mRegister);
+    	chosen.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    //Logg ut - menuBar
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    	Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+    	Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    //MinSide - menuBar
+    /**
+     * Go to MyPage, from the Menu Bar
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    	MinSide minside = new MinSide(this, mHandler, mRegister);
-    	minside.setVisible(true);
+    	MyPage mypage = new MyPage(this, mHandler, mRegister);
+    	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    //Til hovedmeny - menuBar
+    /**
+     * Go to ManMenu, from the Menu Bar
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
-    	hovedmeny.setVisible(true);
+    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -369,20 +381,20 @@ public class Rediger extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Rediger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Rediger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Rediger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Rediger.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Rediger().setVisible(true);
+                new EditSheep().setVisible(true);
             }
         });
     }

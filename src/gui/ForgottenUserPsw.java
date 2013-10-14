@@ -13,22 +13,22 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class Glemt_bru_pwd extends javax.swing.JFrame {
+public class ForgottenUserPsw extends javax.swing.JFrame {
 
     /**
-     * Creates new form Glemt_bru_pwd
+     * Creates new form ForgottenUserPsw
      */
 	
 	
 	private DatabaseHandler mHandler;
 	
-	public Glemt_bru_pwd(JFrame previous, DatabaseHandler mHandler){
+	public ForgottenUserPsw(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
     }
     
-    public Glemt_bru_pwd() {
+    public ForgottenUserPsw() {
         initComponents();
     }
 
@@ -175,12 +175,18 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Exit the program from the Menu Bar
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         System.exit(0);        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     
-    //OK-knapp
+    /**
+     * Get info from the user, send the user info back to the user by email
+     * (OK-button)
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String fornavn = jTextField3.getText();
@@ -194,11 +200,13 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
-    //Tilbake-knapp
+    /**
+     * Go back to Welcome
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+        Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -218,20 +226,20 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Glemt_bru_pwd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgottenUserPsw.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Glemt_bru_pwd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgottenUserPsw.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Glemt_bru_pwd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgottenUserPsw.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Glemt_bru_pwd.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ForgottenUserPsw.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Glemt_bru_pwd().setVisible(true);
+                new ForgottenUserPsw().setVisible(true);
             }
         });
     }

@@ -13,25 +13,25 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class Velkommen extends javax.swing.JFrame {
+public class Welcome extends javax.swing.JFrame {
 
     /**
-     * Creates new form Velkommen
+     * Creates new form Welcome
      */
 	
 	
 	private DatabaseHandler mHandler;
 	
-	public Velkommen(){
+	public Welcome(){
 		initComponents();
 	}
 	
-    public Velkommen(DatabaseHandler mHandler) {
+    public Welcome(DatabaseHandler mHandler) {
         initComponents();
         this.mHandler = mHandler;        
     }
     
-    public Velkommen(JFrame previous, DatabaseHandler mHandler){
+    public Welcome(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -61,7 +61,7 @@ public class Velkommen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        label1.setText("Velkommen!");
+        label1.setText("Welcome!");
 
         label2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         label2.setText("Logg inn med brukernavn og passord");
@@ -151,23 +151,21 @@ public class Velkommen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Stenge vinduet
-    //public void pullThePlug() {
-    //    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-    //    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-    //}
     
-    
-    // Ny Bruker-knapp
+    /**
+     * Start a new window where you can add a new user
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Ny bruker skal åpnes her
         
-        NyBruker nybruker = new NyBruker(this, mHandler);
-        nybruker.setVisible(true);
+        AddUser addUser = new AddUser(this, mHandler);
+        addUser.setVisible(true);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    // Logg inn-knapp
+    /**
+     * Logs in to the program if username and password is correct
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String account = textField1.getText();
@@ -176,22 +174,24 @@ public class Velkommen extends javax.swing.JFrame {
         int farmerID;
         
         if ((farmerID = mHandler.authenticate(account, password)) == -1){
-        	FeilPsw feilpsw = new FeilPsw (this, mHandler);
-        	feilpsw.setVisible(true);
+        	WrongPsw wrongPsw = new WrongPsw (this, mHandler);
+        	wrongPsw.setVisible(true);
         }
         
         else {
-        	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler);
-        	hovedmeny.setVisible(true);        	
+        	MainMenu main = new MainMenu(this, mHandler);
+        	main.setVisible(true);        	
         }
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    //Glemt brukernavn og passor-knapp
+    /**
+     * Opens a new window where the user can write userinfo to get back the username and password
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    	Glemt_bru_pwd glemt = new Glemt_bru_pwd(this, mHandler);
-    	glemt.setVisible(true);
+    	ForgottenUserPsw forgotten = new ForgottenUserPsw(this, mHandler);
+    	forgotten.setVisible(true);
     	
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -212,20 +212,20 @@ public class Velkommen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Velkommen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Velkommen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Velkommen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Velkommen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Velkommen(new DatabaseHandler()).setVisible(true);
+                new Welcome(new DatabaseHandler()).setVisible(true);
             }
         });   
     }

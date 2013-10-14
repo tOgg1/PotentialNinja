@@ -13,20 +13,20 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class MinSide extends javax.swing.JFrame {
+public class MyPage extends javax.swing.JFrame {
 
     /**
-     * Creates new form MinSide
+     * Creates new form MyPage
      */
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
 	
-    public MinSide() {
+    public MyPage() {
         initComponents();
     }
     
-    public MinSide(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    public MyPage(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -77,7 +77,7 @@ public class MinSide extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        label1.setText("MinSide");
+        label1.setText("MyPage");
 
         label2.setText("Fornavn");
 
@@ -267,11 +267,16 @@ public class MinSide extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Exits the program, from the Menu Bar
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    //Lagre endringer-knapp
+    /**
+     * Accept the new information about the user and his/her contact person and save it
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         //Bondens informasjon
@@ -292,20 +297,23 @@ public class MinSide extends javax.swing.JFrame {
         
         mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
         
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    // Logg ut-menyBar
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    	Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+    	Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    //Til Hovedmeny - menyBar
+    /**
+     * Go to MainMenu, from the Menu Bar
+     */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
-    	hovedmeny.setVisible(true);
+    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
@@ -325,20 +333,20 @@ public class MinSide extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MinSide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MinSide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MinSide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MinSide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MinSide().setVisible(true);
+                new MyPage().setVisible(true);
             }
         });
     }

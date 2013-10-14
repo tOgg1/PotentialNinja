@@ -14,23 +14,23 @@ import util.FlagData;
  *
  * @author Kumii
  */
-public class LeggTilSau extends javax.swing.JFrame {
+public class AddSheep extends javax.swing.JFrame {
 
     /**
-     * Creates new form LeggTilSau
+     * Creates new form AddSheep
      */
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
 	
-	public LeggTilSau(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+	public AddSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
     	this.mRegister = mRegister;
     }
 	
-    public LeggTilSau() {
+    public AddSheep() {
         initComponents();
     }
     
@@ -289,43 +289,53 @@ public class LeggTilSau extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Til hovedmeny-menuBar
+    
+    /**
+     * Go back to MainMenu from the Menu Bar
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
-    	hovedmeny.setVisible(true);
+    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    //MinSide-menyBar
+    /**
+     * Go back to MyPage from the Menu Bar
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-    	MinSide minside = new MinSide(this, mHandler, mRegister);
-    	minside.setVisible(true);
+    	MyPage mypage = new MyPage(this, mHandler, mRegister);
+    	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    //Logg ut-menyBar
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-    	Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+    	Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    //Exit-menyBar
+    /**
+     * Exits from the Menu Bar
+     */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    //Tilbake-knapp
+    /**
+     * Go back to MainMenu
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
-    	hovedmeny.setVisible(true);
+    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	main.setVisible(true);
     	    	
-    	
-    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    //Lagre-knapp
+    /**
+     * Saves the information given in the textFields and the checkboxes about the sheep
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String id = textField1.getText();
@@ -385,20 +395,20 @@ public class LeggTilSau extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LeggTilSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LeggTilSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LeggTilSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LeggTilSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LeggTilSau().setVisible(true);
+                new AddSheep().setVisible(true);
             }
         });
     }

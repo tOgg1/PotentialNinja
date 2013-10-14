@@ -13,10 +13,10 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class ValgtSau extends javax.swing.JFrame {
+public class TheChosenSheep extends javax.swing.JFrame {
 
     /**
-     * Creates new form ValgtSau
+     * Creates new form TheChosenSheep
      */
 	
 	private DatabaseHandler mHandler;
@@ -25,14 +25,14 @@ public class ValgtSau extends javax.swing.JFrame {
 	
 	
 	
-    public ValgtSau() {
+    public TheChosenSheep() {
         initComponents();
      // TODO finne bonden
      //   String bonde = dennebonden;
      //   label2.setText(bonde);
     }
     
-    public ValgtSau(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    public TheChosenSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -40,7 +40,7 @@ public class ValgtSau extends javax.swing.JFrame {
     	
     }
     
-    public ValgtSau(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
+    public TheChosenSheep(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -263,18 +263,25 @@ public class ValgtSau extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Exits the program, from the Menu Bar
+     */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    //Legg til sau-knapp
+    /**
+     * Starts new window with AddSheep
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	LeggTilSau leggtilsau = new LeggTilSau(this, mHandler, mRegister);
-    	leggtilsau.setVisible(true);
+    	AddSheep addSheep = new AddSheep(this, mHandler, mRegister);
+    	addSheep.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    //OK-knapp
+    /**
+     * Starts TheChosenSheep with the ID of the other sheep
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     	int sheepid;
@@ -285,45 +292,53 @@ public class ValgtSau extends javax.swing.JFrame {
         //Sykdomshistorie hører til jList1
         //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
 
-        ValgtSau valgtsau = new ValgtSau (this, sheepid, mHandler, mRegister);
-        valgtsau.setVisible(true);
+        TheChosenSheep TheChosenSheep = new TheChosenSheep (this, sheepid, mHandler, mRegister);
+        TheChosenSheep.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    //Rediger-knapp
+    /**
+     * Starts a new window where the farmer can edit the information about the sheep
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-    	Rediger rediger = new Rediger(this, mHandler, mRegister);
-    	rediger.setVisible(true);
+    	EditSheep editSheep = new EditSheep(this, mHandler, mRegister);
+    	editSheep.setVisible(true);
     	
     	
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    //D�d-knapp
+    /**
+     * Tell the program that the sheep is dead
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    	
-    	Dod dod = new Dod(this, mHandler, mRegister);
-    	dod.setVisible(true);
+    	Dead dead = new Dead(this, mHandler, mRegister);
+    	dead.setVisible(true);
     	
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    //Logg ut - menuBar
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+    	Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    //MinSide - menuBar
+    /**
+     * Go to MyPage, from the MenuBar
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MinSide minside = new MinSide(this, mHandler, mRegister);
-    	minside.setVisible(true);
+    	MyPage mypage = new MyPage(this, mHandler, mRegister);
+    	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    // Til hovedmeny - menuBar
+    /**
+     * Go to MainMenu from the MenuBar
+     */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
-    	hovedmeny.setVisible(true);
+    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	main.setVisible(true);
     	
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -344,20 +359,20 @@ public class ValgtSau extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ValgtSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TheChosenSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ValgtSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TheChosenSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ValgtSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TheChosenSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ValgtSau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TheChosenSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ValgtSau().setVisible(true);
+                new TheChosenSheep().setVisible(true);
             }
         });
     }

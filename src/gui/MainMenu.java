@@ -13,17 +13,17 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class Hovedmeny extends javax.swing.JFrame {
+public class MainMenu extends javax.swing.JFrame {
 
     /**
-     * Creates new form Hovedmeny
+     * Creates new form MainMenu
      */
 		
 	private DatabaseHandler mHandler;
 	private Register mRegister;
 	
 	
-    public Hovedmeny() {
+    public MainMenu() {
         initComponents();
      // TODO finne bonden
      //   String bonde = dennebonden;
@@ -31,13 +31,13 @@ public class Hovedmeny extends javax.swing.JFrame {
            
     }
     
-    public Hovedmeny(JFrame previous, DatabaseHandler mHandler){
+    public MainMenu(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
     }
     
-    public Hovedmeny(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -168,25 +168,33 @@ public class Hovedmeny extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Exit the program from the Menu Bar
+     */
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    //Legg til sau-knapp
+
+    /**
+     * Open the AddSheep-window
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        LeggTilSau leggtil = new LeggTilSau(this, mHandler, mRegister);
-    	leggtil.setVisible(true);
+        AddSheep addSheep = new AddSheep(this, mHandler, mRegister);
+    	addSheep.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    //OK-knapp
+    /**
+     * Accept the sheepID and open the new window with the information about this sheep
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         int sheepid;
         sheepid = Integer.parseInt(jTextField1.getText());  //Hvilken sau som skal velges
         
-        ValgtSau valgtsau = new ValgtSau(this, sheepid, mHandler, mRegister);
-        valgtsau.setVisible(true);
+        TheChosenSheep chosen = new TheChosenSheep(this, sheepid, mHandler, mRegister);
+        chosen.setVisible(true);
         
         
         //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
@@ -195,17 +203,21 @@ public class Hovedmeny extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    // Logg ut-menyBar
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+        Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    //MinSide - MenuBar
+    /**
+     * Go to MyPage, from the Menu Bar
+     */
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-    	MinSide minside = new MinSide(this, mHandler, mRegister);
-    	minside.setVisible(true);
+    	MyPage mypage = new MyPage(this, mHandler, mRegister);
+    	mypage.setVisible(true);
     	
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -226,20 +238,20 @@ public class Hovedmeny extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Hovedmeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Hovedmeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Hovedmeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Hovedmeny.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Hovedmeny().setVisible(true);
+                new MainMenu().setVisible(true);
             }
         });
     }

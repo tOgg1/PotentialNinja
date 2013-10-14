@@ -15,21 +15,21 @@ import db.DatabaseHandler;
  *
  * @author Kumii
  */
-public class NyBruker extends javax.swing.JFrame {
+public class AddUser extends javax.swing.JFrame {
 
     /**
-     * Creates new form NyBruker
+     * Creates new form AddUser
      */
 	
 	private DatabaseHandler mHandler;
 	
-	public NyBruker(JFrame previous, DatabaseHandler mHandler){
+	public AddUser(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
     }
 		
-    public NyBruker() {
+    public AddUser() {
         initComponents();
         
     }
@@ -217,11 +217,16 @@ public class NyBruker extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Logs out of the program, from the Menu Bar
+     */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    //OK-knapp
+    /**
+     * Saves the information given in the textFields and the PasswordFields to a user
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     	String fornavn = jTextField4.getText();
@@ -247,19 +252,21 @@ public class NyBruker extends javax.swing.JFrame {
         	
         }
         else{
-        	Feil feil = new Feil();
-        	feil.setVisible(true);
+        	Error error = new Error();
+        	error.setVisible(true);
         }
         
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    //Tilbake-knapp
+    /**
+     * Go back to MainMenu
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-    	Velkommen velkommen = new Velkommen(this, mHandler);
-        velkommen.setVisible(true);
+    	Welcome welcome = new Welcome(this, mHandler);
+        welcome.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -280,20 +287,20 @@ public class NyBruker extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NyBruker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NyBruker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NyBruker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NyBruker.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NyBruker().setVisible(true);
+                new AddUser().setVisible(true);
             }
         });
     }

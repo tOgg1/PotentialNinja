@@ -4,6 +4,10 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
+import db.DatabaseHandler;
 import util.FlagData;
 
 /**
@@ -16,24 +20,18 @@ public class LeggTilSau extends javax.swing.JFrame {
      * Creates new form LeggTilSau
      */
 	
-	private Hovedmeny hovedmeny;
-	private ValgtSau valgtsau;
+	private DatabaseHandler mHandler;
+	private Register mRegister;
+	
+	public LeggTilSau(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
+    }
 	
     public LeggTilSau() {
         initComponents();
-    }
-    
-    
-    public LeggTilSau(Hovedmeny hovedmeny) {
-    	this.hovedmeny = hovedmeny;
-		initComponents();
-		hovedmeny.dispose();
-    }
-    
-    public LeggTilSau (ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
-    	initComponents();
-    	valgtsau.dispose();
     }
     
 
@@ -294,21 +292,21 @@ public class LeggTilSau extends javax.swing.JFrame {
     //Til hovedmeny-menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
     	hovedmeny.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //MinSide-menyBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-    	MinSide minside = new MinSide(this);
+    	MinSide minside = new MinSide(this, mHandler, mRegister);
     	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //Logg ut-menyBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-    	Velkommen velkommen = new Velkommen(this);
+    	Velkommen velkommen = new Velkommen(this, mHandler);
         velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -320,7 +318,7 @@ public class LeggTilSau extends javax.swing.JFrame {
     //Tilbake-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
     	hovedmeny.setVisible(true);
     	    	
     	

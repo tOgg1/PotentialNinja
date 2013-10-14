@@ -4,6 +4,11 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -15,13 +20,12 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
      */
 	
 	
-	private Velkommen velkommen;
+	private DatabaseHandler mHandler;
 	
-	public Glemt_bru_pwd (Velkommen velkommen) {
-    	this.velkommen = velkommen;
-    	velkommen.dispose();
+	public Glemt_bru_pwd(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
-    	
+    	previous.dispose();
+    	this.mHandler = mHandler;
     }
     
     public Glemt_bru_pwd() {
@@ -186,13 +190,14 @@ public class Glemt_bru_pwd extends javax.swing.JFrame {
         
        
         
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
     //Tilbake-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Velkommen velkommen = new Velkommen(this);
+        Velkommen velkommen = new Velkommen(this, mHandler);
         velkommen.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 

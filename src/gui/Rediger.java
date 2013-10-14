@@ -4,6 +4,11 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -14,17 +19,20 @@ public class Rediger extends javax.swing.JFrame {
      * Creates new form Rediger
      */
 	
-	private ValgtSau valgtsau;
+	private DatabaseHandler mHandler;
+	private Register mRegister;
 	
     public Rediger() {
         initComponents();
     }
     
-    public Rediger (ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
-    	valgtsau.dispose();
+    public Rediger(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -308,6 +316,8 @@ public class Rediger extends javax.swing.JFrame {
         // Annet = checkbox4
         // Vaksinert mot = checkbox6
         
+        mHandler.addSheepHealthFlag(sheepID, flag);
+        
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -316,7 +326,7 @@ public class Rediger extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     	
-    	ValgtSau valgtsau = new ValgtSau(this);
+    	ValgtSau valgtsau = new ValgtSau(this, mHandler, mRegister);
     	valgtsau.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -324,21 +334,21 @@ public class Rediger extends javax.swing.JFrame {
     //Logg ut - menuBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-    	Velkommen velkommen = new Velkommen(this);
+    	Velkommen velkommen = new Velkommen(this, mHandler);
         velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     //MinSide - menuBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-    	MinSide minside = new MinSide(this);
+    	MinSide minside = new MinSide(this, mHandler, mRegister);
     	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //Til hovedmeny - menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
     	hovedmeny.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

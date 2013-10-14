@@ -4,6 +4,9 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
 import db.DatabaseHandler;
 
 /**
@@ -16,12 +19,11 @@ public class ValgtSau extends javax.swing.JFrame {
      * Creates new form ValgtSau
      */
 	
-	private Hovedmeny hovedmeny;
-	private Rediger rediger;
-	private ValgtSau valgtsau;
-	
 	private DatabaseHandler mHandler;
+	private Register mRegister;
 	private int sheepid;
+	
+	
 	
     public ValgtSau() {
         initComponents();
@@ -30,28 +32,22 @@ public class ValgtSau extends javax.swing.JFrame {
      //   label2.setText(bonde);
     }
     
-    public ValgtSau(Hovedmeny hovedmeny, int sheepid, DatabaseHandler mHandler){
-    	this.hovedmeny = hovedmeny;
-    	this.sheepid = sheepid;
+    public ValgtSau(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    	initComponents();
+    	previous.dispose();
     	this.mHandler = mHandler;
-    	hovedmeny.dispose();
-    	initComponents();
+    	this.mRegister = mRegister;
     	
-    	Object[] sheepInfo = mHandler.getSheepInformation(sheepid);
     }
     
-    public ValgtSau(Rediger rediger){
-    	this.rediger = rediger;
-    	rediger.dispose();
+    public ValgtSau(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
+    	
     }
-    
-    public ValgtSau (ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
-    	valgtsau.dispose();
-    	initComponents();
-    }
-    
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -273,7 +269,7 @@ public class ValgtSau extends javax.swing.JFrame {
 
     //Legg til sau-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	LeggTilSau leggtilsau = new LeggTilSau(this);
+    	LeggTilSau leggtilsau = new LeggTilSau(this, mHandler, mRegister);
     	leggtilsau.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -281,14 +277,15 @@ public class ValgtSau extends javax.swing.JFrame {
     //OK-knapp
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String id = jTextField1.getText();
+    	int sheepid;
+        sheepid = Integer.parseInt(jTextField1.getText());  //Hvilken sau som skal velges
         String kjonn = textField2.getText();
         String fodsel = textField3.getText();
         
         //Sykdomshistorie hører til jList1
         //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
 
-        ValgtSau valgtsau = new ValgtSau (this);
+        ValgtSau valgtsau = new ValgtSau (this, sheepid, mHandler, mRegister);
         valgtsau.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -296,7 +293,7 @@ public class ValgtSau extends javax.swing.JFrame {
     //Rediger-knapp
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-    	Rediger rediger = new Rediger(this);
+    	Rediger rediger = new Rediger(this, mHandler, mRegister);
     	rediger.setVisible(true);
     	
     	
@@ -306,26 +303,26 @@ public class ValgtSau extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     	
-    	Dod dod = new Dod(this);
+    	Dod dod = new Dod(this, mHandler, mRegister);
     	dod.setVisible(true);
     	
     }//GEN-LAST:event_jButton4ActionPerformed
 
     //Logg ut - menuBar
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	Velkommen velkommen = new Velkommen(this);
+    	Velkommen velkommen = new Velkommen(this, mHandler);
         velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     //MinSide - menuBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MinSide minside = new MinSide(this);
+    	MinSide minside = new MinSide(this, mHandler, mRegister);
     	minside.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Til hovedmeny - menuBar
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
     	hovedmeny.setVisible(true);
     	
     }//GEN-LAST:event_jMenuItem4ActionPerformed

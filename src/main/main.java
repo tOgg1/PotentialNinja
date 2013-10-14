@@ -28,7 +28,11 @@ public class Main{
             }
 
             DatabaseHandler handler = new DatabaseHandler();
-
+            
+            this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny");
+            
+            if(this.farmerID == -1)
+            
             //Log in
             if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){
                 System.exit(1);

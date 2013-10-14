@@ -4,6 +4,9 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
 import db.DatabaseHandler;
 
 /**
@@ -16,14 +19,6 @@ public class Velkommen extends javax.swing.JFrame {
      * Creates new form Velkommen
      */
 	
-	private NyBruker nybruker;
-	private Glemt_bru_pwd glemt;
-	private Hovedmeny hovedmeny;
-	private LeggTilSau leggtil;
-	private ValgtSau valgtsau;
-	private Rediger rediger;
-	private MinSide minside;
-	private FeilPsw feilpsw;
 	
 	private DatabaseHandler mHandler;
 	
@@ -36,53 +31,12 @@ public class Velkommen extends javax.swing.JFrame {
         this.mHandler = mHandler;        
     }
     
-    public Velkommen(NyBruker nybruker) {
-    	this.nybruker = nybruker;
-    	nybruker.dispose();
+    public Velkommen(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
-    }	
-    
-    public Velkommen(Glemt_bru_pwd glemt) {
-    	this.glemt = glemt;
-    	glemt.dispose();
-    	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
     }
     
-    public Velkommen(Hovedmeny hovedmeny){
-    	this.hovedmeny = hovedmeny;
-    	hovedmeny.dispose();
-    	initComponents();
-    }
-    
-    public Velkommen (LeggTilSau leggtil){
-    	this.leggtil = leggtil;
-    	leggtil.dispose();
-    	initComponents();
-    }
-    
-    public Velkommen (ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
-    	valgtsau.dispose();
-    	initComponents();
-    }
-    
-    public Velkommen(Rediger rediger){
-    	this.rediger = rediger;
-    	rediger.dispose();
-    	initComponents();
-    }
-    
-    public Velkommen (MinSide minside){
-    	this.minside = minside;
-    	minside.dispose();
-    	initComponents();
-    }
-    
-    public Velkommen (FeilPsw feilpsw){
-    	this.feilpsw = feilpsw;
-    	feilpsw.dispose();
-    	initComponents();
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,7 +176,7 @@ public class Velkommen extends javax.swing.JFrame {
         int farmerID;
         
         if ((farmerID = mHandler.authenticate(account, password)) == -1){
-        	FeilPsw feilpsw = new FeilPsw (this);
+        	FeilPsw feilpsw = new FeilPsw (this, mHandler);
         	feilpsw.setVisible(true);
         }
         
@@ -236,7 +190,7 @@ public class Velkommen extends javax.swing.JFrame {
 
     //Glemt brukernavn og passor-knapp
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    	Glemt_bru_pwd glemt = new Glemt_bru_pwd(this);
+    	Glemt_bru_pwd glemt = new Glemt_bru_pwd(this, mHandler);
     	glemt.setVisible(true);
     	
     }//GEN-LAST:event_jButton3ActionPerformed

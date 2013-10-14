@@ -4,6 +4,9 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
 import db.DatabaseHandler;
 
 /**
@@ -15,61 +18,30 @@ public class Hovedmeny extends javax.swing.JFrame {
     /**
      * Creates new form Hovedmeny
      */
-	
-	private Velkommen velkommen;
-	private LeggTilSau leggtil;
-	private ValgtSau valgtsau;
-	private Rediger rediger;
-	private MinSide minside;
-	private Dod dod;
-	
+		
 	private DatabaseHandler mHandler;
+	private Register mRegister;
+	
 	
     public Hovedmeny() {
         initComponents();
      // TODO finne bonden
      //   String bonde = dennebonden;
      //   label2.setText(bonde);
-        
-        
+           
     }
     
-    
-    public Hovedmeny(Velkommen velkommen, DatabaseHandler mHandler){
-		this.velkommen = velkommen;
-		initComponents();
-		velkommen.dispose();
-		this.mHandler = mHandler;
-	}
-    
-    public Hovedmeny (LeggTilSau leggtil){
-    	this.leggtil = leggtil;
+    public Hovedmeny(JFrame previous, DatabaseHandler mHandler){
     	initComponents();
-    	leggtil.dispose();
+    	previous.dispose();
+    	this.mHandler = mHandler;
     }
     
-    public Hovedmeny(ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
+    public Hovedmeny(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
-    	valgtsau.dispose();
-    }
-    
-    public Hovedmeny (Rediger rediger){
-    	this.rediger = rediger;
-    	rediger.dispose();
-    	initComponents();
-    }
-    
-    public Hovedmeny(MinSide minside){
-    	this.minside = minside;
-    	minside.dispose();
-    	initComponents();
-    }
-    
-    public Hovedmeny(Dod dod){
-    	this.dod = dod;
-    	dod.dispose();
-    	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
     }
     
 
@@ -202,7 +174,7 @@ public class Hovedmeny extends javax.swing.JFrame {
 
     //Legg til sau-knapp
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        LeggTilSau leggtil = new LeggTilSau(this);
+        LeggTilSau leggtil = new LeggTilSau(this, mHandler, mRegister);
     	leggtil.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -213,7 +185,7 @@ public class Hovedmeny extends javax.swing.JFrame {
         int sheepid;
         sheepid = Integer.parseInt(jTextField1.getText());  //Hvilken sau som skal velges
         
-        ValgtSau valgtsau = new ValgtSau(this, sheepid, mHandler);
+        ValgtSau valgtsau = new ValgtSau(this, sheepid, mHandler, mRegister);
         valgtsau.setVisible(true);
         
         
@@ -225,14 +197,14 @@ public class Hovedmeny extends javax.swing.JFrame {
 
     // Logg ut-menyBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Velkommen velkommen = new Velkommen(this);
+        Velkommen velkommen = new Velkommen(this, mHandler);
         velkommen.setVisible(true);
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //MinSide - MenuBar
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-    	MinSide minside = new MinSide(this);
+    	MinSide minside = new MinSide(this, mHandler, mRegister);
     	minside.setVisible(true);
     	
     }//GEN-LAST:event_jMenuItem6ActionPerformed

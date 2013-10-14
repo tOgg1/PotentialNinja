@@ -4,6 +4,11 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -14,39 +19,20 @@ public class MinSide extends javax.swing.JFrame {
      * Creates new form MinSide
      */
 	
-	private LeggTilSau leggtil;
-	private Hovedmeny hovedmeny;
-	private ValgtSau valgtsau;
-	private Rediger rediger;	
+	private DatabaseHandler mHandler;
+	private Register mRegister;
 	
     public MinSide() {
         initComponents();
     }
     
-    public MinSide (LeggTilSau leggtil){
-    	this.leggtil = leggtil;
-    	leggtil.dispose();
+    public MinSide(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
     }
-    
-    public MinSide (Hovedmeny hovedmeny){
-    	this.hovedmeny = hovedmeny;
-    	hovedmeny.dispose();
-    	initComponents();
-    }
-    
-    public MinSide (ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
-    	valgtsau.dispose();
-    	initComponents();
-    }
-    
-    public MinSide (Rediger rediger){
-    	this.rediger = rediger;
-    	rediger.dispose();
-    	initComponents();
-    }
-
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -291,11 +277,12 @@ public class MinSide extends javax.swing.JFrame {
         //Bondens informasjon
         String mfornavn = textField1.getText();
         String metternavn = textField2.getText();
-        String mmobilnr = textField3.getText();
-        String mepost = textField4.getText();
+        String mobilnr = textField3.getText();
+        String email = textField4.getText();
         String gpsw = jPasswordField1.getText();
         String npsw = jPasswordField2.getText();
         String npswg = jPasswordField3.getText();
+        String farmerName = mfornavn + metternavn;
         
         // Kontaktpersons-informasjon
         String kfornavn = textField5.getText();
@@ -303,21 +290,21 @@ public class MinSide extends javax.swing.JFrame {
         String kmobilnr = textField7.getText();
         String kepost = textField8.getText();
         
-        
+        mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Logg ut-menyBar
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-    	Velkommen velkommen = new Velkommen(this);
+    	Velkommen velkommen = new Velkommen(this, mHandler);
         velkommen.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     //Til Hovedmeny - menyBar
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
     	hovedmeny.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

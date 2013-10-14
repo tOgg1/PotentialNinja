@@ -4,6 +4,11 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
+import main.Register;
+import db.DatabaseHandler;
+
 /**
  *
  * @author Kumii
@@ -14,17 +19,18 @@ public class Dod extends javax.swing.JFrame {
      * Creates new form Dod
      */
 	
-	private ValgtSau valgtsau;
+	private DatabaseHandler mHandler;
+	private Register mRegister;
 	
     public Dod() {
         initComponents();
     }
     
-    public Dod(ValgtSau valgtsau){
-    	this.valgtsau = valgtsau;
-    	valgtsau.dispose();
+    public Dod(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
-    	
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
     }
 
     /**
@@ -92,7 +98,7 @@ public class Dod extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     	
-    	Hovedmeny hovedmeny = new Hovedmeny(this);
+    	Hovedmeny hovedmeny = new Hovedmeny(this, mHandler, mRegister);
     	hovedmeny.setVisible(true);
     	
     	

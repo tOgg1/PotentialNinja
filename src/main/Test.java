@@ -16,8 +16,6 @@ import java.awt.*;
  */
 public class Test extends JFrame{
 
-    JLabel sheepNames;
-
     public static void main(String[] args ) throws Exception{
         new Test();
 

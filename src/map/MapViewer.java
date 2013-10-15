@@ -34,7 +34,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     //LinkedList to keep track of listeners
     private LinkedList<MapViewerListener> listeners = null;
 
-    private final DecimalFormat df = new DecimalFormat("#.0");
+    private DecimalFormat df = null;
 
     //variables to keep track of where the mouse is
     private double mouseX;
@@ -103,6 +103,26 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
         for (MapMarkerDot d : mapDots){
 
+            //Sets decimalformat based on zoom.
+            //min zoom = 0, max zoom = 18.
+            int zoom = map.getZoom();
+
+            if(zoom >= 0 && zoom < 5){
+                df = new DecimalFormat("#");
+            }
+            else if (zoom >= 5 && zoom < 10){
+                df = new DecimalFormat("#.00");
+            }
+            else if (zoom >= 10 && zoom < 15){
+                df = new DecimalFormat("#.00");
+            }
+            else if (zoom == 15){
+                df = new DecimalFormat("#.000");
+            }
+            else if (zoom >= 16 && zoom <= 18){
+                df = new DecimalFormat("#.0000");
+            }
+
             String dotLat = df.format(d.getLat());
             String dotLon = df.format(d.getLon());
             String mouseLat = df.format(mouseX);
@@ -111,6 +131,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
             if (dotLat.equals(mouseLat) && dotLon.equals(mouseLon)){
 
                 mouseDotName.add(d.getName());
+                System.out.println("Name: " + d.getName() + ". Zoom Level: " + map.getZoom());
 
                 NodeInfo nodeInfo = new NodeInfo(d.getName(), dotLat, dotLon);
 

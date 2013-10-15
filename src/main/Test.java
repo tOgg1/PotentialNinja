@@ -16,6 +16,8 @@ import java.awt.*;
  */
 public class Test extends JFrame{
 
+    JLabel sheepNames;
+
     public static void main(String[] args ) throws Exception{
         new Test();
 
@@ -30,8 +32,23 @@ public class Test extends JFrame{
 
         MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);
 
+        setSize(700, 700);
         add(map.getMap(), BorderLayout.CENTER);
-        setSize(700,700);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panelBottom = new JPanel();
+        final JLabel sheepNames = new JLabel();
+        panelBottom.add(sheepNames);
+        add(panelBottom, BorderLayout.SOUTH);
+
+        //Listener to keep track of nodes.
+        map.addListener(new MapViewer.MapViewerListener() {
+            @Override
+            public void nodeClicked(MapViewer.NodeInfo n) {
+                sheepNames.setText(n.getNodeName());
+            }
+        });
+
         setVisible(true);
 
     }

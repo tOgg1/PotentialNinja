@@ -19,6 +19,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class MapViewer extends MouseAdapter implements JMapViewerEventListener, MouseListener {
@@ -29,6 +30,9 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     //ArrayList of all current dots.
     private ArrayList<MapMarkerDot> mapDots = null;
     private ArrayList<String> mouseDotName = null;
+
+    //LinkedList to keep track of listeners
+    private LinkedList<MapViewerListener> listeners = null;
 
     private final DecimalFormat df = new DecimalFormat("#.0");
 
@@ -47,19 +51,25 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
         mapDots = new ArrayList<MapMarkerDot>();
         mouseDotName = new ArrayList<String>();
+        listeners = new LinkedList<MapViewerListener>();
 
         //Sets the map type.
         map.setTileSource(new OsmTileSource.CycleMap());
+
+        // Listen to the map viewer for user operations so components will
+        // receive events and update
+        map.addJMVListener(this);
 
         //Sets the movement mouse button to mouse1
         DefaultMapController mapController = new DefaultMapController(map);
         mapController.setMovementMouseButton(MouseEvent.BUTTON1);
 
+
         //Adds a mouse listener to capture mouse activity.
         map.addMouseListener(
                 new MouseAdapter() {
-                    @Override
 
+                    @Override
                     /**
                      * When user clicks left mouse button, this method will get the mouse position
                      */
@@ -101,12 +111,84 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
             if (dotLat.equals(mouseLat) && dotLon.equals(mouseLon)){
 
                 mouseDotName.add(d.getName());
-                System.out.println(d.getName());
+
+                NodeInfo nodeInfo = new NodeInfo(d.getName(), dotLat, dotLon);
+
+                for (MapViewerListener mvl : listeners){
+                    mvl.nodeClicked(nodeInfo);
+                }
 
             }
         }
     }
 
+    /**
+     * NodeInfo class. Used to keep track of the node info.
+     */
+    public static class NodeInfo{
+        String nodeName;
+        String dotLat;
+        String dotLon;
+
+        /**
+         * Constructor
+         * @param nodeName
+         * @param dotLat
+         * @param dotLon
+         */
+        public NodeInfo(String nodeName, String dotLat, String dotLon){
+            this.nodeName = nodeName;
+            this.dotLat = dotLat;
+            this.dotLon = dotLon;
+        }
+
+        /**
+         * Helper function to get node name from NodeInfo
+         * @return
+         */
+        public String getNodeName(){
+            return this.nodeName;
+        }
+
+        /**
+         * Helper function to get Latitude from NodeInfo
+         * @return
+         */
+        public String getDotLat(){
+            return this.dotLat;
+        }
+
+        /**
+         * Helper function to get Longitude from NodeInfo
+         * @return
+         */
+        public String getDotLon(){
+            return this.dotLon;
+        }
+
+
+    }
+
+    /**
+     *  Listener interface
+     */
+    public static interface MapViewerListener{
+        public void nodeClicked(NodeInfo n);
+    }
+
+    /**
+     * Add listener to "listeners"  LinkedList.
+     * @param mvl
+     */
+    public void addListener(MapViewerListener mvl){
+        listeners.add(mvl);
+    }
+
+
+    /**
+     * Probably redundant. Will review at a later time
+     * @return
+     */
     public ArrayList<String> getMouseDotName(){
         if(!mouseDotName.isEmpty()){
             return mouseDotName;
@@ -114,6 +196,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
         return null;
     }
+
 
     /**
      * Process commands from the JMapViewerTree
@@ -132,10 +215,20 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         return treeMap.getViewer();
     }
 
+    /**
+     * Get (lat,lon) coordinates based on the (x,y) coordinates in frame.
+     * @param mapPointX
+     * @param mapPointY
+     * @return
+     */
     public Coordinate getPosition(int mapPointX, int mapPointY){
         return map.getPosition(mapPointX, mapPointY);
     }
 
+    /**
+     * Returns list of active Map Markers.
+     * @return
+     */
     public ArrayList<MapMarkerDot> getCurrentMapMarkers(){
         return mapDots;
     }

@@ -165,5 +165,21 @@ public class Register {
         return null;
     }
 
+    /**
+     * Returns an ArrayList containing (x,y) coordinates of the farm
+     * @return
+     */
+    public ArrayList<Float> getFarmerPosition(){
+        try{
+            ArrayList<Float> position = mHandler.getFarmerLocation(this.farmerID);
+
+            return position;
+
+        }   catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

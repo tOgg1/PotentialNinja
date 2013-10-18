@@ -25,6 +25,8 @@ public class MapSheeps
 		currentSheeps = new ArrayList<Sheep> ();
 		this.farmerId = farmerId;
         this.map = map;
+        //Sets the center of the map
+        this.map.setMapCenter(getFarmerCenter());
 
 		setSheeps();
         setCurrentSheepPositions();
@@ -32,11 +34,19 @@ public class MapSheeps
 	}
 
     /**
+     * Gets farmer center from register.
+     * @return
+     */
+    public ArrayList<Float> getFarmerCenter(){
+        return register.getFarmerPosition();
+    }
+
+    /**
      * adds all of the farmers sheep to currentSheeps.
      */
 	public void setSheeps ()
 	{
-		currentSheeps = register.getAllFarmerSheeps(farmerId);
+		currentSheeps = register.getAllFarmerSheeps(this.farmerId);
 	}
 
     /**
@@ -46,7 +56,7 @@ public class MapSheeps
     public void setCurrentSheepPositions(){
         float lat, lon;
         int counter = 0;
-        ArrayList<Vec2> positions = register.getSheepPositions(farmerId);
+        ArrayList<Vec2> positions = register.getSheepPositions(this.farmerId);
 
         for (Vec2 v : positions){
             lat = v.x;

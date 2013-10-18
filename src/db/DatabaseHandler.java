@@ -170,6 +170,7 @@ public class DatabaseHandler {
         return new Object[]{rs.getString("name"), rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y")};
     }
 
+
     /**
      * Fetches all information about given farmers contact
      * @param id
@@ -208,6 +209,26 @@ public class DatabaseHandler {
         updateState();
     }
 
+    /**
+     *
+     * @param id
+     * @return Returns an ArrayList containing the farm location.
+     * @throws SQLException
+     */
+    public ArrayList<Float> getFarmerLocation(int id) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT default_pos_x, default_pos_y FROM farmer WHERE id = ?");
+        query.setInt(1, id);
+        ResultSet rs = query.executeQuery();
+
+        if (!rs.next()){
+            return null;
+        }
+
+        ArrayList<Float> list = new ArrayList<Float>();
+        list.add(rs.getFloat("default_pos_x"));
+        list.add(rs.getFloat("default_pos_y"));
+        return list;
+    }
     /**
      *
      * @param sheepid

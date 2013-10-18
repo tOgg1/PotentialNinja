@@ -27,6 +27,9 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     private JMapViewerTree treeMap = null;
     private JMapViewer map = null;
 
+    private int defaultZoom = 10;
+    private float mapCenterX, mapCenterY;
+
     //ArrayList of all current dots.
     private ArrayList<MapMarkerDot> mapDots = null;
     private ArrayList<String> mouseDotName = null;
@@ -37,8 +40,9 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     private DecimalFormat df = null;
 
     //variables to keep track of where the mouse is
-    private double mouseX;
-    private double mouseY;
+    private double mouseX = 0;
+    private double mouseY = 0;
+
 
 
     /**
@@ -76,7 +80,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                     public void mouseClicked(MouseEvent e) {
                         if(e.getButton() == MouseEvent.BUTTON1){
 
-                            Coordinate pos = getMap().getPosition(e.getX(),e.getY());
+                            Coordinate pos = map.getPosition(e.getX(),e.getY());
                             mouseX = pos.getLat();
                             mouseY = pos.getLon();
                             setMouseDotName();
@@ -88,7 +92,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
         //MapDaemon daemon = new MapDaemon(25);
         //daemon.start();
-        setCenter(63.44, 10.37, 10);
 
     }
 
@@ -186,8 +189,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         public String getDotLon(){
             return this.dotLon;
         }
-
-
     }
 
     /**
@@ -204,20 +205,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     public void addListener(MapViewerListener mvl){
         listeners.add(mvl);
     }
-
-
-    /**
-     * Probably redundant. Will review at a later time
-     * @return
-     */
-    public ArrayList<String> getMouseDotName(){
-        if(!mouseDotName.isEmpty()){
-            return mouseDotName;
-        }
-
-        return null;
-    }
-
 
     /**
      * Process commands from the JMapViewerTree
@@ -237,21 +224,21 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     }
 
     /**
-     * Get (lat,lon) coordinates based on the (x,y) coordinates in frame.
-     * @param mapPointX
-     * @param mapPointY
-     * @return
-     */
-    public Coordinate getPosition(int mapPointX, int mapPointY){
-        return map.getPosition(mapPointX, mapPointY);
-    }
-
-    /**
      * Returns list of active Map Markers.
      * @return
      */
     public ArrayList<MapMarkerDot> getCurrentMapMarkers(){
         return mapDots;
+    }
+
+    /**
+     * Helper function to set the center of the map
+     * @param position
+     */
+    public void setMapCenter(ArrayList<Float> position){
+       mapCenterX = position.get(0);
+       mapCenterY = position.get(1);
+       map.setDisplayPositionByLatLon(mapCenterX,mapCenterY,defaultZoom);
     }
 
     /**
@@ -319,17 +306,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
             double randomValue2 = 70*r.nextDouble();
             addMarker(name, randomValue1, randomValue2);
         }
-    }
-
-    /**
-     * Helper function to set the center of the map
-     *
-     * @param lat
-     * @param lon
-     * @param zoom
-     */
-    public void setCenter(double lat, double lon, int zoom){
-        getMap().setDisplayPositionByLatLon(lat,lon,zoom);
     }
 
     class MapDaemon extends Thread{

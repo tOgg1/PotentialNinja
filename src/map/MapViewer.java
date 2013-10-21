@@ -236,7 +236,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     public void setMapCenter(ArrayList<Float> position){
        mapCenterX = position.get(0);
        mapCenterY = position.get(1);
-       map.setDisplayPositionByLatLon(mapCenterX,mapCenterY,defaultZoom);
+       map.setDisplayPositionByLatLon(mapCenterX ,mapCenterY ,defaultZoom);
     }
 
     /**

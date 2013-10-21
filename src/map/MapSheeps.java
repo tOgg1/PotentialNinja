@@ -1,15 +1,15 @@
 package map;
 
+import db.DatabaseHandler;
+import main.Register;
+import model.Sheep;
+import model.SheepHistory;
+import util.Vec2;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
-
-import db.DatabaseHandler;
-import model.Sheep;
-import main.Register;
-import model.SheepHistory;
-import util.Vec2;
 
 public class MapSheeps
 {
@@ -26,7 +26,7 @@ public class MapSheeps
 		this.farmerId = farmerId;
         this.map = map;
         //Sets the center of the map
-        this.map.setMapCenter(getFarmerCenter());
+        this.map.setMapCenter(getFarmerCenter().toList());
 
 		setSheeps();
         setCurrentSheepPositions();
@@ -37,7 +37,7 @@ public class MapSheeps
      * Gets farmer center from register.
      * @return
      */
-    public ArrayList<Float> getFarmerCenter(){
+    public Vec2 getFarmerCenter(){
         return register.getFarmerPosition();
     }
 

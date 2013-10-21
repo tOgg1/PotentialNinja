@@ -43,8 +43,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     private double mouseX = 0;
     private double mouseY = 0;
 
-
-
     /**
      * Constructor
      */

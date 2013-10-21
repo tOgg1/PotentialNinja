@@ -8,7 +8,7 @@ import util.PotentialNinjaException;
 /**
 * Main class, entry point and highest layer of control
 */
-public class main{
+public class Main {
 
     //Login variables
     int farmerID;
@@ -16,7 +16,7 @@ public class main{
     float defaultPosX, defaultPosY;
 
     public static void main(String[] args){
-        main main = new main();
+        Main main = new Main();
         main.initialize();
     }
 
@@ -29,7 +29,6 @@ public class main{
             }
 
             DatabaseHandler handler = new DatabaseHandler();
-
 
             //Log in
             if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){

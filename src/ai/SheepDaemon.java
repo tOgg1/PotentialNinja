@@ -29,8 +29,9 @@ public class SheepDaemon extends Thread {
     private float multiplier = 1e-3f;
 
     //Required because we have two threads accessing functions simultaneously (possibly)
-    private boolean lockEverything;
     private boolean keepScheduling;
+
+    private Object lock = new Object();
 
     public SheepDaemon(DatabaseHandler mHandler) {
         this.mHandler = mHandler;
@@ -38,7 +39,6 @@ public class SheepDaemon extends Thread {
         this.timer = new Timer("SheepDaemon", true);
         this.velocities = new HashMap<Integer,Vec2>();
         this.accelerations = new HashMap<Integer,Vec2>();
-        this.lockEverything = false;
         this.keepScheduling = true;
     }
 
@@ -85,83 +85,72 @@ public class SheepDaemon extends Thread {
      * Randomize accelerations
      */
     private void randomizeAccelerations(){
-        if(lockEverything)
-            return;
-
-        lockEverything = true;
-        Random ran = new Random();
-        for(int i = 0; i < this.accelerations.size(); i++){
-            Collection<Vec2> accs = this.accelerations.values();
-            for(Vec2 vec : accs){
-                vec.x = ran.nextFloat() - 0.5f;
-                vec.y = ran.nextFloat() - 0.5f;
+        synchronized(this.lock){
+            Random ran = new Random();
+            for(int i = 0; i < this.accelerations.size(); i++){
+                Collection<Vec2> accs = this.accelerations.values();
+                for(Vec2 vec : accs){
+                    vec.x = ran.nextFloat() - 0.5f;
+                    vec.y = ran.nextFloat() - 0.5f;
+                }
             }
         }
-        lockEverything = false;
     }
 
     private void randomizeAcceleration(int sheepID){
-        if(lockEverything)
-            return;
-        lockEverything = true;
-        Random ran = new Random();
-        Vec2 acc = accelerations.get(sheepID);
-        acc.x = ran.nextFloat() - 0.5f;
-        acc.y = ran.nextFloat() - 0.5f;
-        lockEverything = false;
+        synchronized(this.lock){
+            Random ran = new Random();
+            Vec2 acc = accelerations.get(sheepID);
+            acc.x = ran.nextFloat() - 0.5f;
+            acc.y = ran.nextFloat() - 0.5f;
+        }
     }
 
     public void moveSheep(int sheepID){
         if(!mSheeps.contains(sheepID))
             return;
 
-        if(lockEverything)
-            return;
-
-        lockEverything = true;
-
-        try {
-            Vec2 pos = mHandler.getSheepPosition(sheepID);
-            pos.add(velocities.get(sheepID));
-            velocities.get(sheepID).add(accelerations.get(sheepID));
-        } catch (SQLException e){
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        synchronized(this.lock){
+            try {
+                Vec2 pos = mHandler.getSheepPosition(sheepID);
+                pos.add(velocities.get(sheepID));
+                velocities.get(sheepID).add(accelerations.get(sheepID));
+            } catch (SQLException e){
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            randomizeAcceleration(sheepID);
         }
-        lockEverything = false;
-        randomizeAcceleration(sheepID);
     }
 
     /**
      * Moves all sheeps and increments velocities by accelerations. Finishes off by randomizing accelerations
      */
     public void moveSheeps(){
-        if(lockEverything)
-            return;
-        lockEverything = true;
-        ArrayList<Vec2> sheepPositions = new ArrayList<Vec2>();
+        synchronized(this.lock){
+            ArrayList<Vec2> sheepPositions = new ArrayList<Vec2>();
 
-        for(int i = 0; i < this.mSheeps.size(); ++i){
-            try {
-                sheepPositions.add(this.mHandler.getSheepPosition(mSheeps.get(i)));
-            } catch (SQLException e) {
-                continue;
+            for(int i = 0; i < this.mSheeps.size(); ++i){
+                try {
+                    sheepPositions.add(this.mHandler.getSheepPosition(mSheeps.get(i)));
+                } catch (SQLException e) {
+                    continue;
+                }
             }
-        }
 
-        for(int i = 0; i < this.mSheeps.size(); ++i){
-            int id = this.mSheeps.get(i);
-            Vec2 pos = sheepPositions.get(i);
-            pos.x += velocities.get(id).x*multiplier;
-            pos.y += velocities.get(id).y*multiplier;
-            this.velocities.get(id).add(this.accelerations.get(id));
-            try {
-                this.mHandler.setSheepPosition(id, pos.x, pos.y);
-            } catch (SQLException e) {
-                continue;
+            for(int i = 0; i < this.mSheeps.size(); ++i){
+                int id = this.mSheeps.get(i);
+                Vec2 pos = sheepPositions.get(i);
+                pos.x += velocities.get(id).x*multiplier;
+                pos.y += velocities.get(id).y*multiplier;
+                this.velocities.get(id).add(this.accelerations.get(id));
+                try {
+                    this.mHandler.setSheepPosition(id, pos.x, pos.y);
+                } catch (SQLException e) {
+                    continue;
+                }
             }
+            randomizeAccelerations();
         }
-        lockEverything = false;
-        randomizeAccelerations();
     }
 
     /**
@@ -169,32 +158,28 @@ public class SheepDaemon extends Thread {
      * @param sheeps
      */
     public void updateSheeps(ArrayList<Sheep> sheeps){
-        if(lockEverything)
-            return;
+        synchronized(this.lock){
+            Random ran = new Random();
+            ArrayList<Integer> newSheeps = new ArrayList<Integer>();
 
-        lockEverything = true;
-        Random ran = new Random();
-        ArrayList<Integer> newSheeps = new ArrayList<Integer>();
+            for(Sheep sheep : sheeps){
+                newSheeps.add(sheep.getId());
+                if(this.mSheeps.contains(sheep.getId()))
+                    continue;
+                this.mSheeps.add(sheep.getId());
+                this.velocities.put(sheep.getId(), new Vec2(ran.nextFloat(), ran.nextFloat()));
+                this.accelerations.put(sheep.getId(), new Vec2(ran.nextFloat(), ran.nextFloat()));
 
-        for(Sheep sheep : sheeps){
-            newSheeps.add(sheep.getId());
-            if(this.mSheeps.contains(sheep.getId()))
-                continue;
-            this.mSheeps.add(sheep.getId());
-            this.velocities.put(sheep.getId(), new Vec2(ran.nextFloat(), ran.nextFloat()));
-            this.accelerations.put(sheep.getId(), new Vec2(ran.nextFloat(), ran.nextFloat()));
+            }
 
-        }
-
-        //Remove sheeps no longer in the system
-        for(Integer in : this.mSheeps){
-            if(!newSheeps.contains(in)){
-                mSheeps.remove(in);
-                velocities.remove(in);
-                accelerations.remove(in);
+            //Remove sheeps no longer in the system
+            for(Integer in : this.mSheeps){
+                if(!newSheeps.contains(in)){
+                    mSheeps.remove(in);
+                    velocities.remove(in);
+                    accelerations.remove(in);
+                }
             }
         }
-        lockEverything = false;
-
     }
 }

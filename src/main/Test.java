@@ -18,11 +18,9 @@ public class Test extends JFrame{
 
     public static void main(String[] args ) throws Exception{
         new Test();
-
     }
 
     public Test() throws Exception{
-
         DatabaseHandler handler = new DatabaseHandler();
         int farmerid = handler.authenticate("farm", "farm");
 
@@ -46,9 +44,6 @@ public class Test extends JFrame{
                 sheepNames.setText(n.getNodeName());
             }
         });
-
         setVisible(true);
-
     }
-
 }

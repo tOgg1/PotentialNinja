@@ -166,15 +166,12 @@ public class Register {
     }
 
     /**
-     * Returns an ArrayList containing (x,y) coordinates of the farm
+     * Returns the Vec2 position of the farmer
      * @return
      */
-    public ArrayList<Float> getFarmerPosition(){
+    public Vec2 getFarmerPosition(){
         try{
-            ArrayList<Float> position = mHandler.getFarmerLocation(this.farmerID);
-
-            return position;
-
+            return  mHandler.getFarmerLocation(this.farmerID);
         }   catch (SQLException e){
             e.printStackTrace();
         }

@@ -1,7 +1,10 @@
 package db;
 
 
-import model.*;
+import model.Alarm;
+import model.Sheep;
+import model.SheepHistory;
+import model.SheepMedicalHistory;
 import util.Log;
 import util.Vec2;
 
@@ -65,6 +68,25 @@ public class DatabaseHandler {
         } catch (SQLException | NoSuchAlgorithmException e) {
             return -1;
         }
+    }
+
+    /**
+     * Simple reset of password. Takes a farmerid and updates the corresponding user
+     * @param farmerid
+     * @param newPassword
+     * @throws SQLException
+     */
+    public void resetPassword(int farmerid, String newPassword) throws SQLException {
+        String hashedPassword;
+        try {
+            hashedPassword = this.encryptPassword(newPassword);
+        } catch (NoSuchAlgorithmException e) {
+            throw new SQLException("Hashing algorithm failed (SHA-1 not available). Contact system administrator.");
+        }
+        PreparedStatement query = this.db.prepareStatement("UPDATE user SET password = ? WHERE farmerid = ?");
+        query.setString(1, hashedPassword);
+        query.setInt(2, farmerid);
+        query.executeUpdate();
     }
 
     /**
@@ -212,10 +234,10 @@ public class DatabaseHandler {
     /**
      *
      * @param id
-     * @return Returns an ArrayList containing the farm location.
+     * @return Returns the Vec2 position of the farmer
      * @throws SQLException
      */
-    public ArrayList<Float> getFarmerLocation(int id) throws SQLException{
+    public Vec2 getFarmerLocation(int id) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT default_pos_x, default_pos_y FROM farmer WHERE id = ?");
         query.setInt(1, id);
         ResultSet rs = query.executeQuery();
@@ -224,10 +246,7 @@ public class DatabaseHandler {
             return null;
         }
 
-        ArrayList<Float> list = new ArrayList<Float>();
-        list.add(rs.getFloat("default_pos_x"));
-        list.add(rs.getFloat("default_pos_y"));
-        return list;
+        return new Vec2(rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y"));
     }
     /**
      *

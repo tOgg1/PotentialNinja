@@ -1,7 +1,6 @@
 package main;
 
 import db.DatabaseHandler;
-import gui.Velkommen;
 import util.Log;
 import util.PotentialNinjaException;
 
@@ -40,8 +39,6 @@ public class Main {
             }
             Register register = new Register(handler, this.farmerID);
 
-            Velkommen login = new Velkommen();
-            login.setVisible(true);
             Object[] farmerDetails = handler.getFarmerInformation(this.farmerID);
             if(farmerDetails == null)
                 throw new Exception("Unable to find farmer information");

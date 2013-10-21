@@ -1,13 +1,14 @@
 package main;
 
 import db.DatabaseHandler;
+import gui.Velkommen;
 import util.Log;
 import util.PotentialNinjaException;
 
 /**
 * Main class, entry point and highest layer of control
 */
-public class Main{
+public class Main {
 
     //Login variables
     int farmerID;
@@ -37,12 +38,18 @@ public class Main{
             if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){
                 System.exit(1);
             }
+            Register register = new Register(handler, this.farmerID);
+
+            Velkommen login = new Velkommen();
+            login.setVisible(true);
             Object[] farmerDetails = handler.getFarmerInformation(this.farmerID);
             if(farmerDetails == null)
                 throw new Exception("Unable to find farmer information");
             this.farmerName = (String)farmerDetails[0];
             this.defaultPosX = (Float)farmerDetails[1];
             this.defaultPosY = (Float)farmerDetails[2];
+
+            register.setFarmerID(this.farmerID);
 
             System.out.println("Welcome to SheepTracker 2013 "+ farmerName+"!");
 

@@ -2,6 +2,8 @@ package main;
 
 import db.DatabaseHandler;
 import model.Sheep;
+import model.SheepHistory;
+import util.Vec2;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,8 +20,17 @@ public class Register {
     private DatabaseHandler mHandler;
     private ArrayList<Sheep> activeSheeps;
 
-    public Register(DatabaseHandler handler){
+    private int farmerID;
+
+    public Register(DatabaseHandler handler, int farmerID){
         this.mHandler = handler;
+        this.farmerID = farmerID;
+
+        try {
+            this.activeSheeps = handler.getSheeps(this.farmerID);
+        } catch (SQLException e) {
+            activeSheeps = new ArrayList<Sheep>();
+        }
     }
 
     /**
@@ -107,6 +118,64 @@ public class Register {
         if(farmerSheeps.isEmpty())
             return null;
         return farmerSheeps;
+    }
+
+    public int getFarmerID() {
+        return farmerID;
+    }
+
+    public void setFarmerID(int farmerID) {
+        this.farmerID = farmerID;
+    }
+
+
+    /**
+     * Fetches sheep positions from database.
+     * @param farmerID
+     * @return
+     */
+    public ArrayList<Vec2> getSheepPositions(int farmerID){
+        try{
+            ArrayList<Vec2> positions = new ArrayList<Vec2>();
+            ArrayList<Sheep> farmerSheep = this.getAllFarmerSheeps(farmerID);
+
+            for(Sheep s : farmerSheep){
+                int sheepID = s.getId();
+                positions.add(mHandler.getSheepPosition(sheepID));
+            }
+            return positions;
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Helper method to grab sheep history
+     * @param sheepID
+     * @return
+     */
+    public SheepHistory getSheepHistory(int sheepID){
+        try {
+            return mHandler.getSheepHistory(sheepID);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return null;
+    }
+
+    /**
+     * Returns the Vec2 position of the farmer
+     * @return
+     */
+    public Vec2 getFarmerPosition(){
+        try{
+            return  mHandler.getFarmerLocation(this.farmerID);
+        }   catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

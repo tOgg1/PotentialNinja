@@ -24,7 +24,6 @@ public class Velkommen extends javax.swing.JFrame {
 	
     public Velkommen() {
         initComponents();
-        
     }
     
     public Velkommen(NyBruker nybruker) {

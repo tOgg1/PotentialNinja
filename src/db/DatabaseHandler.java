@@ -110,7 +110,6 @@ public class DatabaseHandler {
     /**
      * Adds a sheep to the database
      * @param name
-     * @param age
      * @param healthflags
      * @param pos_x
      * @param pos_y

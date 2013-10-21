@@ -129,6 +129,25 @@ public class DatabaseHandler {
     }
 
     /**
+     * Adds sheep to database, neglecting sheep position
+     * @param name
+     * @param birthdate
+     * @param healthflags
+     * @param ownerid
+     * @throws SQLException
+     */
+    public void addSheep(String name, int birthdate, int healthflags, int ownerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, farmerid, alive) VALUES(?,?,?,?,?)");
+        query.setString(1,name);
+        query.setInt(2, birthdate);
+        query.setInt(3, healthflags);
+        query.setFloat(4, ownerid);
+        query.setBoolean(5, true);
+        query.executeUpdate();
+        updateState();
+    }
+
+    /**
      * Adds an alarm to the database
      * @param sheepid
      * @param alarmflag

@@ -1,5 +1,3 @@
-package ai;
-
 import db.DatabaseHandler;
 import model.Sheep;
 import util.Vec2;

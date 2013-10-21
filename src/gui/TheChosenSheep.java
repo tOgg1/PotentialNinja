@@ -4,6 +4,8 @@
  */
 package gui;
 
+import java.sql.SQLException;
+
 import javax.swing.JFrame;
 
 import main.Register;
@@ -30,9 +32,20 @@ public class TheChosenSheep extends javax.swing.JFrame {
      // TODO finne bonden
      //   String bonde = dennebonden;
      //   label2.setText(bonde);
+        
+     // Henter sykdomshistorien   
+     try {
+		mHandler.getSheepMedicalHistory(sheepid);
+	} catch (SQLException e) {
+		Error error = new Error ();
+		error.setVisible(true);
+	}
+     // Sykdomshistore skal inn i jList1
+     
     }
     
-    public TheChosenSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    
+    public TheChosenSheep(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -40,7 +53,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
     	
     }
     
-    public TheChosenSheep(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
+    public TheChosenSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
@@ -289,8 +302,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
         String kjonn = textField2.getText();
         String fodsel = textField3.getText();
         
-        //Sykdomshistorie hÃ¸rer til jList1
-        //Hvilken bonde som er pÃ¥logget hÃ¸rer til label 2 - dette mÃ¥ vi se om kan brukes
+        //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
 
         TheChosenSheep TheChosenSheep = new TheChosenSheep (this, sheepid, mHandler, mRegister);
         TheChosenSheep.setVisible(true);
@@ -301,9 +313,9 @@ public class TheChosenSheep extends javax.swing.JFrame {
      * Starts a new window where the farmer can edit the information about the sheep
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    	EditSheep editSheep = new EditSheep(this, mHandler, mRegister);
+    	EditSheep editSheep = new EditSheep(this, sheepid, mHandler, mRegister);
     	editSheep.setVisible(true);
+    	
     	
     	
     }//GEN-LAST:event_jButton3ActionPerformed

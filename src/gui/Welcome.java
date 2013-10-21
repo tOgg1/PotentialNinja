@@ -61,7 +61,7 @@ public class Welcome extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        label1.setText("Welcome!");
+        label1.setText("Velkommen!");
 
         label2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         label2.setText("Logg inn med brukernavn og passord");
@@ -156,8 +156,6 @@ public class Welcome extends javax.swing.JFrame {
      * Start a new window where you can add a new user
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // Ny bruker skal åpnes her
-        
         AddUser addUser = new AddUser(this, mHandler);
         addUser.setVisible(true);
         

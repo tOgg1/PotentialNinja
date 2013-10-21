@@ -77,7 +77,7 @@ public class MyPage extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        label1.setText("MyPage");
+        label1.setText("MinSide");
 
         label2.setText("Fornavn");
 
@@ -293,9 +293,9 @@ public class MyPage extends javax.swing.JFrame {
         String kfornavn = textField5.getText();
         String ketternavn = textField6.getText();
         String kmobilnr = textField7.getText();
-        String kepost = textField8.getText();
+        String kemail = textField8.getText();
         
-        mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
+        mHandler.setFarmerContact(farmerID, farmerName, kmobilnr, kemail); // Kontaktpersonens info
         
         
     }//GEN-LAST:event_jButton1ActionPerformed

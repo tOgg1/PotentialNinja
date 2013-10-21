@@ -97,7 +97,6 @@ public class WrongPsw extends javax.swing.JFrame {
      * Accepts that the user has written wrong username or password, then go back to Welcome
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
     	Welcome welcome = new Welcome (this, mHandler);
     	welcome.setVisible(true);
     	

@@ -100,11 +100,8 @@ public class Dead extends javax.swing.JFrame {
      * Accept that the sheep is dead and goes back to the main-menu
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    	
     	MainMenu main = new MainMenu(this, mHandler, mRegister);
     	main.setVisible(true);
-    	
     	
     }//GEN-LAST:event_jButton1ActionPerformed
 

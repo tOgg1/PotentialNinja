@@ -247,7 +247,8 @@ public class AddUser extends javax.swing.JFrame {
 				farmerID = mHandler.createAccount(accountname, psw, farmerName, pos_x, pos_y);
 				mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
 			} catch (SQLException e) {
-				
+				Error error = new Error();
+				error.setVisible(true);
 			}
         	
         }
@@ -261,7 +262,7 @@ public class AddUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
-     * Go back to MainMenu
+     * Go back to Welcome
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         

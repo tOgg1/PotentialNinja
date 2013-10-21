@@ -4,8 +4,11 @@
  */
 package gui;
 
+import java.sql.SQLException;
+
 import javax.swing.JFrame;
 
+import util.FlagData;
 import main.Register;
 import db.DatabaseHandler;
 
@@ -21,10 +24,21 @@ public class EditSheep extends javax.swing.JFrame {
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
-	private String sheepid;
+	private int sheepid;
+	private String sheepidstr;
 	
     public EditSheep() {
         initComponents();
+    }
+    
+    public EditSheep(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
+    	initComponents();
+    	previous.dispose();
+    	this.mHandler = mHandler;
+    	this.mRegister = mRegister;
+    	this.sheepid = sheepid;
+    	sheepidstr = String.parseString (sheepid);
+    	//TODO fikse sheepidstr
     }
     
     public EditSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
@@ -79,7 +93,7 @@ public class EditSheep extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        label4.setText("EditSheep sau");
+        label4.setText("Rediger sau");
 
         label1.setText("ID på sauen");
 
@@ -131,7 +145,7 @@ public class EditSheep extends javax.swing.JFrame {
 
         label2.setText("Kjønn");
 
-        textField1.setText("(id.nr.)");
+        textField1.setText(sheepidstr);
 
         checkbox13.setLabel("Øyesykdom");
 
@@ -301,29 +315,35 @@ public class EditSheep extends javax.swing.JFrame {
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String id = textField1.getText();
-        this.sheepid = id;
+        this.sheepid = Integer.parseInt(textField1.getText());
         String kjonn = textField2.getText();
-        String fodsel = textField3.getText();
+        String birthdate = textField3.getText();
         
+        int healthflag = 0;
         
-        // BlÃ¥tunge = checkbox7
-        // Drektighetsforgiftning = checkbox15
-        // HjernebarksÃ¥r = checkbox1
-        // Klostroideinfeksjoner = checkbox5
-        // Koli-infeksjon = checkbox3
-        // Leverbetennelse = checkbox2
-        // Lungebetennelse = checkbox8
-        // Mastitt = checkbox9
-        // Munnskurv = checkbox10
-        // Sjodogg = checkbox11
-        // Skrapesyke = checkbox12
-        // Trommesyke = checkbox14
-        // Ã˜yesykdom = checkbox13
-        // Annet = checkbox4
-        // Vaksinert mot = checkbox6
+        healthflag |= checkbox7.getState() == true ? FlagData.BLATUNGE : 0;
+        healthflag |= checkbox15.getState() == true ? FlagData.DREKTIGHETSFORGIFTNING : 0;
+        healthflag |= checkbox1.getState() == true ? FlagData.HJERNEBARKSAR : 0;
+        healthflag |= checkbox5.getState() == true ? FlagData.KLOSTIDIEINFEKSJONER : 0;
+        healthflag |= checkbox3.getState() == true ? FlagData.KOLIINFEKSJON : 0;
+        healthflag |= checkbox2.getState() == true ? FlagData.LEVERBETENNELSE : 0;
+        healthflag |= checkbox8.getState() == true ? FlagData.LUNGEBETENNELSE : 0;
+        healthflag |= checkbox9.getState() == true ? FlagData.MASTITT : 0;
+        healthflag |= checkbox10.getState() == true ? FlagData.MUNNSKURV : 0;
+        healthflag |= checkbox11.getState() == true ? FlagData.SJODOGG : 0;
+        healthflag |= checkbox12.getState() == true ? FlagData.SKRAPESYKE : 0;
+        healthflag |= checkbox14.getState() == true ? FlagData.TROMMESYKE : 0;
+        healthflag |= checkbox13.getState() == true ? FlagData.OYESYKDOM : 0;
+        healthflag |= checkbox4.getState() == true ? FlagData.ANNET : 0;
+        healthflag |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
+
         
-        mHandler.addSheepHealthFlag(id, flag);
+        try {
+			mHandler.addSheepHealthFlag(sheepid, healthflag);
+		} catch (SQLException e) {
+			Error error = new Error ();
+			error.setVisible(true);
+		}
         
         
         
@@ -333,8 +353,6 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to TheChosenSheep
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- 
-    	//TODO
     	TheChosenSheep chosen = new TheChosenSheep(this, sheepid, mHandler, mRegister);
     	chosen.setVisible(true);
     	

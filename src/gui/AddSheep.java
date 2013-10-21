@@ -294,7 +294,6 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
     	MainMenu main = new MainMenu(this, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -303,8 +302,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MyPage from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    	MyPage mypage = new MyPage(this, mHandler, mRegister);
+      	MyPage mypage = new MyPage(this, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -312,8 +310,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    	Welcome welcome = new Welcome(this, mHandler);
+      	Welcome welcome = new Welcome(this, mHandler);
         welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -360,21 +357,8 @@ public class AddSheep extends javax.swing.JFrame {
         healthflag |= checkbox4.getState() == true ? FlagData.ANNET : 0;
         healthflag |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
-        // Blåtunge = checkbox7
-        // Drektighetsforgiftning = checkbox15
-        // Hjernebarksår = checkbox1
-        // Klostroideinfeksjoner = checkbox5
-        // Koli-infeksjon = checkbox3
-        // Leverbetennelse = checkbox2
-        // Lungebetennelse = checkbox8
-        // Mastitt = checkbox9
-        // Munnskurv = checkbox10
-        // Sjodogg = checkbox11
-        // Skrapesyke = checkbox12
-        // Trommesyke = checkbox14
-        // Øyesykdom = checkbox13
-        // Annet = checkbox4
-        // Vaksinert mot = checkbox6
+        mHandler.addSheep(id, age, healthflag, pos_x, pos_y, ownerid);
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

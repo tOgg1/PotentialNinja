@@ -2,9 +2,12 @@
   <artifact type="jar" name="PotentialDaemon">
     <output-path>$PROJECT_DIR$/out/artifacts/PotentialDaemon</output-path>
     <root id="archive" name="PotentialDaemon.jar">
+      <element id="module-output" name="PotentialAI" />
+      <element id="module-output" name="PotentialNinja" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/mysql-connector.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

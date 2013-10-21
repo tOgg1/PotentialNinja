@@ -4,7 +4,7 @@ public class Sheep
 {
     int id;
     int ownerid;
-    int age;
+    //int age;
     int mileage;
     int healthflags;
     int birthdate;
@@ -37,8 +37,8 @@ public class Sheep
         this.posHistory = posHistory;
     }
 
-    public Sheep(int id, int age, int healthflags, int mileage, int birthdate, int ownerid, String name) {
-        this.age = age;
+    public Sheep(int id, int birthdate, int healthflags, int mileage, int ownerid, String name) {
+        //this.age = age;
         this.id = id;
         this.mileage = mileage;
         this.ownerid = ownerid;
@@ -67,13 +67,13 @@ public class Sheep
         this.healthflags = healthflags;
     }
 
-    public int getAge() {
+    /*public int getAge() {
         return age;
     }
 
     public void setAge(int age) {
         this.age = age;
-    }
+    }*/
 
     public int getId() {
         return id;

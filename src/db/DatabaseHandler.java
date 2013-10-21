@@ -116,10 +116,10 @@ public class DatabaseHandler {
      * @param pos_y
      * @param ownerid
      */
-    public void addSheep(String name, int age, int healthflags, float pos_x, float pos_y, int ownerid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, age, healthflags, pos_x, pos_y, farmerid, alive) VALUES(?,?,?,?,?,?,?)");
+    public void addSheep(String name, int birthdate, int healthflags, float pos_x, float pos_y, int ownerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, alive) VALUES(?,?,?,?,?,?,?)");
         query.setString(1,name);
-        query.setInt(2, age);
+        query.setInt(2, birthdate);
         query.setInt(3, healthflags);
         query.setFloat(4, pos_x);
         query.setFloat(5, pos_y);
@@ -251,17 +251,17 @@ public class DatabaseHandler {
     /**
      *
      * @param sheepid
-     * @return  Returns an Object[] array of length four as follows {age, mileage, healthflags, name}, returns null if sheep is not found
+     * @return  Returns an Object[] array of length four as follows {birthdate, mileage, healthflags, name}, returns null if sheep is not found
      * @throws SQLException
      */
     public Object[] getSheepInformation(int sheepid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT age, mileage, healthflags, name FROM sheep WHERE id = ?");
+        PreparedStatement query = this.db.prepareStatement("SELECT birthdate, mileage, healthflags, name FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
             return null;
-        return new Object[]{rs.getInt("age"), rs.getInt("mileage"), rs.getInt("healthflags"), rs.getString("name")};
+        return new Object[]{rs.getInt("birthdate"), rs.getInt("mileage"), rs.getInt("healthflags"), rs.getString("name")};
     }
 
     /**
@@ -359,7 +359,7 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-        return new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name"));
+        return new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"));
     }
 
     /**
@@ -374,10 +374,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"),rs.getInt("farmerid"), rs.getString("name")));
         }
         return results;
     }
@@ -395,10 +395,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("age"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("birthdate"), rs.getInt("farmerid"), rs.getString("name")));
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name")));
         }
         return results;
     }

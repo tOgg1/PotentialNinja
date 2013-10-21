@@ -37,7 +37,7 @@ public class EditSheep extends javax.swing.JFrame {
     	this.mHandler = mHandler;
     	this.mRegister = mRegister;
     	this.sheepid = sheepid;
-    	sheepidstr = String.parseString (sheepid);
+//    	sheepidstr = String.parseString (sheepid);
     	//TODO fikse sheepidstr
     }
     

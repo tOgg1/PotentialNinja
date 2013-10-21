@@ -295,7 +295,7 @@ public class MyPage extends javax.swing.JFrame {
         String kmobilnr = textField7.getText();
         String kemail = textField8.getText();
         
-        mHandler.setFarmerContact(farmerID, farmerName, kmobilnr, kemail); // Kontaktpersonens info
+//        mHandler.setFarmerContact(farmerID, farmerName, kmobilnr, kemail); // Kontaktpersonens info
         
         
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -43,8 +43,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
      // Sykdomshistore skal inn i jList1
      
     }
-    
-    
+  
     public TheChosenSheep(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();

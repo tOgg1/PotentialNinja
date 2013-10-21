@@ -357,7 +357,7 @@ public class AddSheep extends javax.swing.JFrame {
         healthflag |= checkbox4.getState() == true ? FlagData.ANNET : 0;
         healthflag |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
-        mHandler.addSheep(id, age, healthflag, pos_x, pos_y, ownerid);
+//        mHandler.addSheep(id, age, healthflag, pos_x, pos_y, ownerid);
         
 
     }//GEN-LAST:event_jButton1ActionPerformed

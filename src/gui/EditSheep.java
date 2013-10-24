@@ -95,7 +95,7 @@ public class EditSheep extends javax.swing.JFrame {
         label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label4.setText("Rediger sau");
 
-        label1.setText("ID på sauen");
+        label1.setText("ID pï¿½ sauen");
 
         jButton1.setText("Lagre");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +119,7 @@ public class EditSheep extends javax.swing.JFrame {
 
         checkbox5.setLabel("Klostridieinfeksjoner");
 
-        checkbox1.setLabel("Hjernebarksår");
+        checkbox1.setLabel("Hjernebarksï¿½r");
 
         checkbox4.setLabel("Annet");
 
@@ -133,7 +133,7 @@ public class EditSheep extends javax.swing.JFrame {
 
         checkbox3.setLabel("Koli-infeksjon");
 
-        checkbox7.setLabel("Blåtunge");
+        checkbox7.setLabel("Blï¿½tunge");
 
         checkbox6.setLabel("Vaksinert mot klostidieinfeksjoner");
 
@@ -141,13 +141,13 @@ public class EditSheep extends javax.swing.JFrame {
 
         checkbox11.setLabel("Sjodogg");
 
-        label3.setText("Fødselsdato");
+        label3.setText("Fï¿½dselsdato");
 
-        label2.setText("Kjønn");
+        label2.setText("Kjï¿½nn");
 
         textField1.setText(sheepidstr);
 
-        checkbox13.setLabel("Øyesykdom");
+        checkbox13.setLabel("ï¿½yesykdom");
 
         jMenu1.setText("File");
 
@@ -341,7 +341,7 @@ public class EditSheep extends javax.swing.JFrame {
         try {
 			mHandler.addSheepHealthFlag(sheepid, healthflag);
 		} catch (SQLException e) {
-			Error error = new Error ();
+			Error error = new Error (e.getMessage());
 			error.setVisible(true);
 		}
         

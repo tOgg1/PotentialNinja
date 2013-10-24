@@ -37,7 +37,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
      try {
 		mHandler.getSheepMedicalHistory(sheepid);
 	} catch (SQLException e) {
-		Error error = new Error ();
+		Error error = new Error (e.getMessage());
 		error.setVisible(true);
 	}
      // Sykdomshistore skal inn i jList1
@@ -130,9 +130,9 @@ public class TheChosenSheep extends javax.swing.JFrame {
         
         textField3.setEditable(false);
 
-        label3.setText("Fødselsdato");
+        label3.setText("Fï¿½dselsdato");
 
-        label4.setText("Kjønn");
+        label4.setText("Kjï¿½nn");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setText("Sykdomshistorie");
@@ -151,7 +151,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Død");
+        jButton4.setText("Dï¿½d");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -301,7 +301,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
         String kjonn = textField2.getText();
         String fodsel = textField3.getText();
         
-        //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
+        //Hvilken bonde som er pï¿½logget hï¿½rer til label 2 - dette mï¿½ vi se om kan brukes
 
         TheChosenSheep TheChosenSheep = new TheChosenSheep (this, sheepid, mHandler, mRegister);
         TheChosenSheep.setVisible(true);

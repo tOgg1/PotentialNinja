@@ -1,6 +1,7 @@
 package main;
 
 import db.DatabaseHandler;
+import gui.AddSheep;
 import map.MapSheeps;
 import map.MapViewer;
 
@@ -24,7 +25,12 @@ public class Test extends JFrame{
         DatabaseHandler handler = new DatabaseHandler();
         int farmerid = handler.authenticate("farm", "farm");
 
-        MapViewer map = new MapViewer();
+        Register mRegister = new Register(handler, farmerid);
+
+        AddSheep addsheep = new AddSheep(handler, mRegister);
+        addsheep.setVisible(true);
+
+        /* MapViewer map = new MapViewer();
 
         MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);
 
@@ -44,6 +50,6 @@ public class Test extends JFrame{
                 sheepNames.setText(n.getNodeName());
             }
         });
-        setVisible(true);
+        setVisible(true);   */
     }
 }

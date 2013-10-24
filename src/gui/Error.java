@@ -20,8 +20,8 @@ public class Error extends javax.swing.JFrame {
      */
 	
 	
-    public Error() {
-        initComponents();
+    public Error(String message) {
+        initComponents(message);
     }
 
     /**
@@ -31,7 +31,7 @@ public class Error extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -40,7 +40,7 @@ public class Error extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel1.setText("Det har oppstått en feil.");
+        jLabel1.setText("Det har oppstÃ¥tt en feil: " + message);
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,7 +50,7 @@ public class Error extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jLabel2.setText("Vennligst prøv på nytt.");
+        jLabel2.setText("Vennligst prÃ¸v pÃ¥ nytt.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,7 +120,7 @@ public class Error extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Error().setVisible(true);
+                new Error("stor feil").setVisible(true);
             }
         });
     }

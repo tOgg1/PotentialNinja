@@ -107,7 +107,7 @@ public class AddUser extends javax.swing.JFrame {
 
         textField2.setEditable(false);
 
-        label10.setText("Velg hvor gården er plassert");
+        label10.setText("Velg hvor gï¿½rden er plassert");
 
         jMenu1.setText("File");
 
@@ -247,13 +247,13 @@ public class AddUser extends javax.swing.JFrame {
 				farmerID = mHandler.createAccount(accountname, psw, farmerName, pos_x, pos_y);
 				mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
 			} catch (SQLException e) {
-				Error error = new Error();
+				Error error = new Error(e.getMessage());
 				error.setVisible(true);
 			}
         	
         }
         else{
-        	Error error = new Error();
+        	Error error = new Error("Passordene er ikke like.");
         	error.setVisible(true);
         }
         

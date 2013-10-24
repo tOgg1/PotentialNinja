@@ -112,7 +112,7 @@ public class FateDaemon extends Thread {
         private final boolean debug = true;
 
         public InputManager(){
-            System.out.println(mStartUp);
+            p(mStartUp);
             input = new BufferedReader(new InputStreamReader(System.in));
         }
 

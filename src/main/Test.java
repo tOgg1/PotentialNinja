@@ -2,11 +2,8 @@ package main;
 
 import db.DatabaseHandler;
 import gui.AddSheep;
-import map.MapSheeps;
-import map.MapViewer;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +26,10 @@ public class Test extends JFrame{
 
         AddSheep addsheep = new AddSheep(handler, mRegister);
         addsheep.setVisible(true);
+
+        String ragnar = "Ragnar Orderud";
+
+        String[] ragnarForEtt = ragnar.split(" ");
 
         /* MapViewer map = new MapViewer();
 

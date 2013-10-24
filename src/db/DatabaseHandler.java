@@ -235,7 +235,7 @@ public class DatabaseHandler {
      * @return Returns false if an error occurs
      */
     public void setFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
-        int id = getNextAutoIncrement("Contact", "id");
+        int id = getNextAutoIncrement("contact", "id");
         PreparedStatement query = this.db.prepareStatement("INSERT INTO contact(name, number, email) VALUES (?,?,?)");
         query.setString(1,name);
         query.setString(2,number);
@@ -495,6 +495,9 @@ public class DatabaseHandler {
         PreparedStatement query = this.db.prepareStatement("SELECT pos_x, pos_y FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
+
+
+
 
         if(!rs.next())
             return null;

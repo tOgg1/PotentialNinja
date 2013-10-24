@@ -111,16 +111,16 @@ public class DatabaseHandler {
      * @param healthflags
      * @param pos_x
      * @param pos_y
-     * @param ownerid
+     * @param farmerid
      */
-    public void addSheep(String name, int birthdate, int healthflags, float pos_x, float pos_y, String sex, int ownerid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?)");
+    public void addSheep(String name, int birthdate, int healthflags, float pos_x, float pos_y, String sex, int farmerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?,?)");
         query.setString(1,name);
         query.setInt(2, birthdate);
         query.setInt(3, healthflags);
         query.setFloat(4, pos_x);
         query.setFloat(5, pos_y);
-        query.setInt(6, ownerid);
+        query.setInt(6, farmerid);
         query.setString(7, sex);
         query.setBoolean(8, true);
         query.executeUpdate();
@@ -132,15 +132,15 @@ public class DatabaseHandler {
      * @param name
      * @param birthdate
      * @param healthflags
-     * @param ownerid
+     * @param farmerid
      * @throws SQLException
      */
-    public void addSheep(String name, int birthdate, int healthflags, String sex, int ownerid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, farmerid, sex, alive) VALUES(?,?,?,?,?)");
+    public void addSheep(String name, int birthdate, int healthflags, String sex, int farmerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, farmerid, sex, alive) VALUES(?,?,?,?,?,?)");
         query.setString(1,name);
         query.setInt(2, birthdate);
         query.setInt(3, healthflags);
-        query.setFloat(4, ownerid);
+        query.setFloat(4, farmerid);
         query.setString(5, sex);
         query.setBoolean(6, true);
         query.executeUpdate();

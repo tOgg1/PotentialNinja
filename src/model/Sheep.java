@@ -2,12 +2,17 @@ package model;
 
 public class Sheep
 {
+
+    public final static String SEX_MALE = "m";
+    public final static String SEX_FEMALE = "f";
+
     int id;
     int ownerid;
     //int age;
     int mileage;
     int healthflags;
     int birthdate;
+    String sex;
     String name;
 
     SheepHistory posHistory;
@@ -37,7 +42,7 @@ public class Sheep
         this.posHistory = posHistory;
     }
 
-    public Sheep(int id, int birthdate, int healthflags, int mileage, int ownerid, String name) {
+    public Sheep(int id, int birthdate, int healthflags, int mileage, int ownerid, String name, String sex) {
         //this.age = age;
         this.id = id;
         this.mileage = mileage;
@@ -45,6 +50,12 @@ public class Sheep
         this.healthflags = healthflags;
         this.birthdate = birthdate;
         this.name = name;
+
+        if(sex == SEX_MALE || sex == SEX_FEMALE){
+            this.sex = sex;
+        }else{
+            this.sex = "f";
+        }
     }
 
     public boolean hasFlag(int flag){
@@ -97,5 +108,13 @@ public class Sheep
 
     public void setOwnerid(int ownerid) {
         this.ownerid = ownerid;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

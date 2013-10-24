@@ -113,15 +113,16 @@ public class DatabaseHandler {
      * @param pos_y
      * @param ownerid
      */
-    public void addSheep(String name, int birthdate, int healthflags, float pos_x, float pos_y, char sex, int ownerid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, alive) VALUES(?,?,?,?,?,?,?)");
+    public void addSheep(String name, int birthdate, int healthflags, float pos_x, float pos_y, String sex, int ownerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?)");
         query.setString(1,name);
         query.setInt(2, birthdate);
         query.setInt(3, healthflags);
         query.setFloat(4, pos_x);
         query.setFloat(5, pos_y);
         query.setInt(6, ownerid);
-        query.setBoolean(7, true);
+        query.setString(7, sex);
+        query.setBoolean(8, true);
         query.executeUpdate();
         updateState();
     }

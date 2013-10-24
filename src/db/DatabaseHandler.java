@@ -369,6 +369,25 @@ public class DatabaseHandler {
         return results;
     }
 
+    /**
+     * Attempts to find sheep by name and farmerid.
+     * @param name
+     * @param farmerid
+     * @return
+     * @throws SQLException
+     */
+    public Sheep getSheepByName(String name, int farmerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE name = ? AND farmerid = ?");
+        query.setString(1, name);
+        query.setInt(2, farmerid);
+
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            throw new SQLException("Ingen sau med det navnet funnet");
+
+        return new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex"));
+    }
 
     public Sheep getSheep(int sheepID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE id = ?");

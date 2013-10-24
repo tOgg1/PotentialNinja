@@ -2,6 +2,7 @@ package main;
 
 import db.DatabaseHandler;
 import gui.AddSheep;
+import gui.TheChosenSheep;
 
 import javax.swing.*;
 
@@ -24,12 +25,11 @@ public class Test extends JFrame{
 
         Register mRegister = new Register(handler, farmerid);
 
-        AddSheep addsheep = new AddSheep(handler, mRegister);
-        addsheep.setVisible(true);
+        //AddSheep addsheep = new AddSheep(handler, mRegister);
+        //addsheep.setVisible(true);
 
-        String ragnar = "Ragnar Orderud";
-
-        String[] ragnarForEtt = ragnar.split(" ");
+        TheChosenSheep chosenSheep = new TheChosenSheep("42", handler, mRegister);
+        chosenSheep.setVisible(true);
 
         /* MapViewer map = new MapViewer();
 

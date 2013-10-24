@@ -94,7 +94,7 @@ public class AddSheep extends javax.swing.JFrame {
 
         label1.setText("ID på sauen");
 
-        textField1.setText("(id.nr.)");
+        textField1.setText("");
 
         label3.setText("Fødselsdato");
 
@@ -103,6 +103,7 @@ public class AddSheep extends javax.swing.JFrame {
         label6.setText("Kjønn");
 
         jTextField1.setBackground(new java.awt.Color(240, 240, 240));
+        jTextField1.setBorder(null);
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Søye");
@@ -372,8 +373,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Saves the information given in the textFields and the checkboxes about the sheep
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String id = textField1.getText();
+        String sheepName = textField1.getText();
         String sex = "m";
         if (jRadioButton1.isSelected()){
             sex = "f";
@@ -402,9 +402,46 @@ public class AddSheep extends javax.swing.JFrame {
         healthflags |= checkbox4.getState() == true ? FlagData.ANNET : 0;
         healthflags |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
+        int sheepID = 0;
         try {
-            mHandler.addSheep(id, birthdate, healthflags, sex, mRegister.getFarmerID());
+            sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
+
+        try {
+            mHandler.setSheepHealthFlag(sheepID, healthflags, true);
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+
+        try {
+            mHandler.addSheep(sheepName, birthdate, healthflags, sex, mRegister.getFarmerID());
             jTextField1.setText("Informasjonen er nå lagret.");
+            textField1.setText("");
+            textField3.setText("");
+
+
+
+            checkbox1.setState(false);
+            checkbox7.setState(false);
+            checkbox15.setState(false);
+            checkbox5.setState(false);
+            checkbox3.setState(false);
+            checkbox2.setState(false);
+            checkbox8.setState(false);
+            checkbox9.setState(false);
+            checkbox10.setState(false);
+            checkbox11.setState(false);
+            checkbox12.setState(false);
+            checkbox14.setState(false);
+            checkbox13.setState(false);
+            checkbox4.setState(false);
+            checkbox6.setState(false);
+
+
 
         } catch (SQLException e) {
             Error error = new Error(e.getMessage());

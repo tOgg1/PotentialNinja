@@ -56,6 +56,9 @@ public class Alarm extends javax.swing.JFrame {
             }
         });
 
+        textField1.setText("243");  // SheepName
+        textArea1.setText("dsljkfslkd");   //Message
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,12 +99,10 @@ public class Alarm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //OK-button
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
-        // textField1 er SauID
-        // textArea1 er melding
-        
-        
+        this.dispose();
     }//GEN-LAST:event_button1ActionPerformed
 
     /**

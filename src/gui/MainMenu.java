@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import main.Register;
 import db.DatabaseHandler;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author Kumii
@@ -21,28 +23,39 @@ public class MainMenu extends javax.swing.JFrame {
 		
 	private DatabaseHandler mHandler;
 	private Register mRegister;
+    private String bonde;
 	
 	
     public MainMenu() {
         initComponents();
-     // TODO finne bonden
-     //   String bonde = dennebonden;
-     //   label2.setText(bonde);
-           
     }
     
-    public MainMenu(JFrame previous, DatabaseHandler mHandler){
-    	initComponents();
-    	previous.dispose();
-    	this.mHandler = mHandler;
+    public MainMenu(JFrame previous, int farmerID, DatabaseHandler mHandler){
+        this.mHandler = mHandler;
+        try {
+            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+        initComponents();
+        previous.dispose();
     }
     
     public MainMenu(JFrame previous, DatabaseHandler mHandler, Register mRegister){
-    	initComponents();
-    	previous.dispose();
-    	this.mHandler = mHandler;
+        this.mHandler = mHandler;
+        int farmerID = mRegister.getFarmerID();
+        try {
+            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
     	this.mRegister = mRegister;
+        initComponents();
+        previous.dispose();
     }
+
     
 
     /**
@@ -84,7 +97,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        label2.setText("Ola bonde");
+        label2.setText(bonde);
 
         jButton2.setText("Legg til sau");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -186,19 +199,15 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
-     * Accept the sheepID and open the new window with the information about this sheep
+     * Accept the sheepName and open the new window with the information about this sheep
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        int sheepid;
-        sheepid = Integer.parseInt(jTextField1.getText());  //Hvilken sau som skal velges
+        String sheepName;
+        sheepName = jTextField1.getText();  //Hvilken sau som skal velges
         
-        TheChosenSheep chosen = new TheChosenSheep(this, sheepid, mHandler, mRegister);
+        TheChosenSheep chosen = new TheChosenSheep(this, sheepName, mHandler, mRegister);
         chosen.setVisible(true);
-        
-        
-        //Hvilken bonde som er pålogget hører til label 2 - dette må vi se om kan brukes
-        
+
         
         
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -5,11 +5,14 @@
 package gui;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.JFrame;
 
 import main.Register;
 import db.DatabaseHandler;
+import model.SheepMedicalHistory;
+import util.FlagData;
 
 /**
  *
@@ -23,41 +26,54 @@ public class TheChosenSheep extends javax.swing.JFrame {
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
-	private int sheepid;
+	private String sheepName;
+    private int sheepID;
+    private String bonde;
 	
-	
-	
-    public TheChosenSheep() {
-        initComponents();
-     // TODO finne bonden
-     //   String bonde = dennebonden;
-     //   label2.setText(bonde);
-        
-     // Henter sykdomshistorien   
-     try {
-		mHandler.getSheepMedicalHistory(sheepid);
-	} catch (SQLException e) {
-		Error error = new Error (e.getMessage());
-		error.setVisible(true);
-	}
-     // Sykdomshistore skal inn i jList1
-     
-    }
-  
-    public TheChosenSheep(JFrame previous, int sheepid, DatabaseHandler mHandler, Register mRegister){
-    	initComponents();
-    	previous.dispose();
+
+    public TheChosenSheep(JFrame previous, String sheepName, DatabaseHandler mHandler, Register mRegister){
     	this.mHandler = mHandler;
     	this.mRegister = mRegister;
-    	
+        this.sheepName = sheepName;
+        try {
+            sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
+        try {
+            mHandler.getSheepMedicalHistory(sheepID);
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+
+        int farmerID = mRegister.getFarmerID();
+        try {
+            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+        initComponents();
+        previous.dispose();
     }
     
-    public TheChosenSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
-    	initComponents();
-    	previous.dispose();
+    public TheChosenSheep(String sheepName, DatabaseHandler mHandler, Register mRegister){
     	this.mHandler = mHandler;
     	this.mRegister = mRegister;
-    	
+        this.sheepName = sheepName;
+
+        int farmerID = mRegister.getFarmerID();
+        try {
+            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+        this.mRegister = mRegister;
+        initComponents();
+
     }
         
 
@@ -104,6 +120,9 @@ public class TheChosenSheep extends javax.swing.JFrame {
 
         label1.setName(""); // NOI18N
         label1.setText("Velg sau (ID):");
+        jTextField1.setText(sheepName);
+
+        label2.setText(bonde);
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -111,8 +130,6 @@ public class TheChosenSheep extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        label2.setText("Ola bonde");
 
         jButton2.setText("Legg til sau");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -130,12 +147,42 @@ public class TheChosenSheep extends javax.swing.JFrame {
         
         textField3.setEditable(false);
 
-        label3.setText("F�dselsdato");
+        label3.setText("Fødselsdato");
+        try {
+            textField3.setText((new Date(mHandler.getSheep(sheepID).getBirthdate())).toString()); //Fødselsdatoen på sauen
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
 
-        label4.setText("Kj�nn");
+        label4.setText("Kjønn");
+        String sex = "Søye";
+        try {
+            sex = mHandler.getSheep(sheepID).getSex();
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+
+        if (sex.equals("m")){
+            textField2.setText("Vær");
+        }
+        else{
+            textField2.setText("Søye");
+        }
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setText("Sykdomshistorie");
+
+        try {
+            SheepMedicalHistory medhist = mHandler.getSheepMedicalHistory(sheepID);
+        } catch (SQLException e) {
+            Error error = new Error (e.getMessage());
+            error.setVisible(true);
+        }
+
+        // TODO : legge inn elementene i String []
+
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "ITem6", "i", "i", "i" };
@@ -151,7 +198,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("D�d");
+        jButton4.setText("Død");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -295,15 +342,9 @@ public class TheChosenSheep extends javax.swing.JFrame {
      * Starts TheChosenSheep with the ID of the other sheep
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    	int sheepid;
-        sheepid = Integer.parseInt(jTextField1.getText());  //Hvilken sau som skal velges
-        String kjonn = textField2.getText();
-        String fodsel = textField3.getText();
-        
-        //Hvilken bonde som er p�logget h�rer til label 2 - dette m� vi se om kan brukes
+    	sheepName = jTextField1.getText();  //Hvilken sau som skal velges
 
-        TheChosenSheep TheChosenSheep = new TheChosenSheep (this, sheepid, mHandler, mRegister);
+        TheChosenSheep TheChosenSheep = new TheChosenSheep (this, sheepName, mHandler, mRegister);
         TheChosenSheep.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -312,7 +353,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
      * Starts a new window where the farmer can edit the information about the sheep
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    	EditSheep editSheep = new EditSheep(this, sheepid, mHandler, mRegister);
+    	EditSheep editSheep = new EditSheep(this, sheepName, mHandler, mRegister);
     	editSheep.setVisible(true);
     	
     	
@@ -323,8 +364,17 @@ public class TheChosenSheep extends javax.swing.JFrame {
      * Tell the program that the sheep is dead
      */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    	Dead dead = new Dead(this, mHandler, mRegister);
-    	dead.setVisible(true);
+        int cause = FlagData.DEATHBYEXECUTION;
+        try {
+            mHandler.killSheep(sheepID, cause);
+            Dead dead = new Dead(this, sheepID, mHandler, mRegister);
+            dead.setVisible(true);
+
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
+
     	
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -383,7 +433,7 @@ public class TheChosenSheep extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TheChosenSheep().setVisible(true);
+                new TheChosenSheep(" ",new DatabaseHandler(), new Register(new DatabaseHandler(), -3)).setVisible(true);
             }
         });
     }

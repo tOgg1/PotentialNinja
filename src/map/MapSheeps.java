@@ -32,7 +32,7 @@ public class MapSheeps
 		this.farmerId = farmerId;
         this.map = map;
         //Sets the center of the map
-        this.map.setMapCenter(getFarmerCenter().toList());
+        this.map.setMapCenter(getFarmerCenter());
 
 		setSheeps();
         setCurrentSheepPositions();

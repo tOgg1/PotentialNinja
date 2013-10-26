@@ -12,6 +12,7 @@ import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 import org.openstreetmap.gui.jmapviewer.tilesources.OsmTileSource;
+import util.Vec2;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -80,8 +81,8 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                      * When user clicks left mouse button, this method will get the mouse position
                      */
                     public void mouseClicked(MouseEvent e) {
-                        if(e.getButton() == MouseEvent.BUTTON1){
-                            Coordinate pos = map.getPosition(e.getX(),e.getY());
+                        if (e.getButton() == MouseEvent.BUTTON1) {
+                            Coordinate pos = map.getPosition(e.getX(), e.getY());
                             mouseX = pos.getLat();
                             mouseY = pos.getLon();
                             setMouseDotName();
@@ -244,9 +245,9 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
      * Helper function to set the center of the map
      * @param position
      */
-    public void setMapCenter(ArrayList<Float> position){
-       mapCenterX = position.get(0);
-       mapCenterY = position.get(1);
+    public void setMapCenter(Vec2 position){
+       mapCenterX = position.x;
+       mapCenterY = position.y;
        map.setDisplayPositionByLatLon(mapCenterX ,mapCenterY ,defaultZoom);
     }
 

@@ -266,14 +266,8 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
      * @param name
      * @param lat
      * @param lon
+     * @param id
      */
-    public void addMarker(String name, double lat, double lon){
-        MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
-        mapDots.add(dot);
-
-        map.addMapMarker(dot);
-    }
-
     public void addMarker(String name, double lat, double lon, int id){
         MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
         mapDots.add(dot);
@@ -333,7 +327,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
             String name = "dot" + i;
             double randomValue1 = 70*r.nextDouble();
             double randomValue2 = 70*r.nextDouble();
-            addMarker(name, randomValue1, randomValue2);
+            addMarker(name, randomValue1, randomValue2,i);
         }
     }
 
@@ -378,7 +372,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
                 // Newton integration is really cool
                 for(int i = 0; i < positions.length; ++i){
-                    MapViewer.this.addMarker(names[i/2], positions[i], positions[++i]);
+                    MapViewer.this.addMarker(names[i/2], positions[i], positions[++i],i);
                     positions[i-1] += velocities[i-1];
                     positions[i] += velocities[i];
                     velocities[i-1] += accelerations[i-1];

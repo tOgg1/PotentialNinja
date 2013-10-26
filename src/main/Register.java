@@ -27,7 +27,8 @@ public class Register {
         this.farmerID = farmerID;
 
         try {
-            this.activeSheeps = handler.getSheeps(this.farmerID);
+            //this.activeSheeps = handler.getSheeps(this.farmerID);
+            this.activeSheeps = handler.getAliveSheeps(this.farmerID);
         } catch (SQLException e) {
             activeSheeps = new ArrayList<Sheep>();
         }

@@ -36,7 +36,7 @@ public class MapSheeps
 
 		setSheeps();
         setCurrentSheepPositions();
-        //setHistoricSheepPosition(7);
+        //setHistoricSheepPosition(9);
 
         map.addListener(new MapViewer.MapViewerListener() {
             @Override

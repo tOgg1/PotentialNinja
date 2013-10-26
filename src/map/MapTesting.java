@@ -39,21 +39,6 @@ public class MapTesting extends JFrame {
         ArrayList<Vec2> position = new ArrayList<>();
         ArrayList<Sheep> activeSheep = db.getSheeps(farmerid);
 
-        for (Sheep s : activeSheep){
-            position.add(db.getSheepPosition(s.getId()));
-        }
-
-        int counter = 0;
-
-        for (Vec2 v : position){
-          this.lon = v.y;
-          this.lat = v.x;
-          map.addMarker(activeSheep.get(counter).getName(),this.lat,this.lon);
-          counter += 1;
-        }
-
-
-
 
         add(map.getMap(), BorderLayout.CENTER);
 

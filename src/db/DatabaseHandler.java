@@ -441,6 +441,28 @@ public class DatabaseHandler {
     }
 
     /**
+     * Get all the sheep that are alive
+     * @param farmerID
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Sheep> getAliveSheeps(int farmerID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE alive = 1 AND farmerid = ?");
+        query.setInt(1,farmerID);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        ArrayList<Sheep> results = new ArrayList<Sheep>();
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+
+        while(rs.next()){
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+        }
+        return results;
+    }
+
+    /**
      * Gets all history of sheep
      * @param sheepid
      * @return

@@ -44,15 +44,29 @@ public class Register {
 
     /**
      * Checks if register contains sheep by id
-     * @param id
+     * @param sheepId
      * @return
      */
-    public boolean containsSheepById(int id){
+    public boolean containsSheepById(int sheepId){
         for(Sheep s : this.activeSheeps){
-            if(s.getId() == id)
+            if(s.getId() == sheepId)
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Checks if register contains sheep by name
+     * @param name
+     * @return
+     */
+    public int getSheepIdByName(String name){
+        for (Sheep s : this.activeSheeps){
+            if(name.equals(s.getName())){
+               return s.getId();
+            }
+        }
+        return -1;
     }
 
     /**
@@ -65,11 +79,11 @@ public class Register {
 
    /**
      * Fetches sheep from database by id.
-     * @param id
+     * @param sheepId
      */
-    public void addSheepById(int id){
+    public void addSheepById(int sheepId){
         try {
-            Sheep sheep = mHandler.getSheep(id);
+            Sheep sheep = mHandler.getSheep(sheepId);
             if(sheep != null)
                  this.activeSheeps.add(sheep);
         } catch (SQLException e) {
@@ -79,11 +93,10 @@ public class Register {
 
     /**
      * Fetches all sheeps for farmer from database.
-     * @param id
      */
-    public void addSheepsByFarmerId(int id){
+    public void addSheepsByFarmerId(){
         try {
-            ArrayList<Sheep> farmerSheeps = mHandler.getSheeps(id);
+            ArrayList<Sheep> farmerSheeps = mHandler.getSheeps(this.farmerID);
             if(!farmerSheeps.isEmpty())
                 this.activeSheeps.addAll(farmerSheeps);
         } catch (SQLException e) {
@@ -105,14 +118,13 @@ public class Register {
 
     /**
      * Get all sheeps for farmerID. Returns null if no sheeps are found
-     * @param id
      * @return
      */
-    public ArrayList<Sheep> getAllFarmerSheeps(int id){
+    public ArrayList<Sheep> getAllFarmerSheeps(){
         ArrayList<Sheep> farmerSheeps = new ArrayList<Sheep>();
 
         for(Sheep s : this.activeSheeps){
-            if(s.getOwnerid() == id)
+            if(s.getOwnerid() == farmerID)
                 farmerSheeps.add(s);
         }
         if(farmerSheeps.isEmpty())
@@ -131,13 +143,12 @@ public class Register {
 
     /**
      * Fetches sheep positions from database.
-     * @param farmerID
      * @return
      */
-    public ArrayList<Vec2> getSheepPositions(int farmerID){
+    public ArrayList<Vec2> getSheepPositions(){
         try{
             ArrayList<Vec2> positions = new ArrayList<Vec2>();
-            ArrayList<Sheep> farmerSheep = this.getAllFarmerSheeps(farmerID);
+            ArrayList<Sheep> farmerSheep = this.getAllFarmerSheeps();
 
             for(Sheep s : farmerSheep){
                 int sheepID = s.getId();

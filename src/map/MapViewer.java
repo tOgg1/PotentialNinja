@@ -20,6 +20,7 @@ import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.TreeMap;
 import java.util.Random;
 
 public class MapViewer extends MouseAdapter implements JMapViewerEventListener, MouseListener {
@@ -33,6 +34,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     //ArrayList of all current dots.
     private ArrayList<MapMarkerDot> mapDots = null;
     private ArrayList<String> mouseDotName = null;
+    private TreeMap<Integer, MapMarkerDot> dotId = null;
 
     //LinkedList to keep track of listeners
     private LinkedList<MapViewerListener> listeners = null;
@@ -53,6 +55,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
         mapDots = new ArrayList<MapMarkerDot>();
         mouseDotName = new ArrayList<String>();
+        dotId = new TreeMap<Integer, MapMarkerDot>();
         listeners = new LinkedList<MapViewerListener>();
 
         //Sets the map type.
@@ -63,8 +66,9 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         map.addJMVListener(this);
 
         //Sets the movement mouse button to mouse1
-        DefaultMapController mapController = new DefaultMapController(map);
+        final DefaultMapController mapController = new DefaultMapController(map);
         mapController.setMovementMouseButton(MouseEvent.BUTTON1);
+        mapController.setDoubleClickZoomEnabled(false);
 
 
         //Adds a mouse listener to capture mouse activity.
@@ -77,7 +81,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                      */
                     public void mouseClicked(MouseEvent e) {
                         if(e.getButton() == MouseEvent.BUTTON1){
-
                             Coordinate pos = map.getPosition(e.getX(),e.getY());
                             mouseX = pos.getLat();
                             mouseY = pos.getLon();
@@ -85,6 +88,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                         }
 
                     }
+
                 }
         );
 
@@ -134,7 +138,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                 mouseDotName.add(d.getName());
                 System.out.println("Name: " + d.getName() + ". Zoom Level: " + map.getZoom());
 
-                NodeInfo nodeInfo = new NodeInfo(d.getName(), dotLat, dotLon);
+                NodeInfo nodeInfo = new NodeInfo(d.getName(), dotLat, dotLon, d);
 
                 for (MapViewerListener mvl : listeners){
                     mvl.nodeClicked(nodeInfo);
@@ -151,6 +155,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         String nodeName;
         String dotLat;
         String dotLon;
+        MapMarkerDot dot;
 
         /**
          * Constructor
@@ -158,10 +163,11 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
          * @param dotLat
          * @param dotLon
          */
-        public NodeInfo(String nodeName, String dotLat, String dotLon){
+        public NodeInfo(String nodeName, String dotLat, String dotLon, MapMarkerDot dot){
             this.nodeName = nodeName;
             this.dotLat = dotLat;
             this.dotLon = dotLon;
+            this.dot = dot;
         }
 
         /**
@@ -187,6 +193,10 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         public String getDotLon(){
             return this.dotLon;
         }
+
+        public MapMarkerDot getDot(){
+            return this.dot;
+        }
     }
 
     /**
@@ -194,6 +204,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
      */
     public static interface MapViewerListener{
         public void nodeClicked(NodeInfo n);
+        public void nodeDoubleClicked();
     }
 
     /**
@@ -262,6 +273,21 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         map.addMapMarker(dot);
     }
 
+    public void addMarker(String name, double lat, double lon, int id){
+        MapMarkerDot dot = new MapMarkerDot(name,c(lat,lon));
+        mapDots.add(dot);
+        dotId.put(id,dot);
+
+        map.addMapMarker(dot);
+    }
+
+    public TreeMap<Integer, MapMarkerDot> getDotId(){
+        if (!dotId.isEmpty()){
+            return dotId;
+        }
+            return null;
+    }
+
     /**
      * Helper function to add MapMarker with different background color
      * @param lat
@@ -289,6 +315,10 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
      */
     public void setMarkerVisiblity(boolean visibility){
         map.setMapMarkerVisible(visibility);
+    }
+
+    public ArrayList<MapMarkerDot> getMapMarkers(){
+        return this.mapDots;
     }
 
     /**

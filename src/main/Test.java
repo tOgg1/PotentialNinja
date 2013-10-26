@@ -3,8 +3,11 @@ package main;
 import db.DatabaseHandler;
 import gui.AddSheep;
 import gui.TheChosenSheep;
+import map.MapSheeps;
+import map.MapViewer;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,12 +31,12 @@ public class Test extends JFrame{
         //AddSheep addsheep = new AddSheep(handler, mRegister);
         //addsheep.setVisible(true);
 
-        TheChosenSheep chosenSheep = new TheChosenSheep("42", handler, mRegister);
-        chosenSheep.setVisible(true);
+        //TheChosenSheep chosenSheep = new TheChosenSheep("Tormod", handler, mRegister);
+        //chosenSheep.setVisible(true);
 
-        /* MapViewer map = new MapViewer();
+        MapViewer map = new MapViewer();
 
-        MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);
+        final MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);
 
         setSize(700, 700);
         add(map.getMap(), BorderLayout.CENTER);
@@ -48,9 +51,18 @@ public class Test extends JFrame{
         map.addListener(new MapViewer.MapViewerListener() {
             @Override
             public void nodeClicked(MapViewer.NodeInfo n) {
-                sheepNames.setText(n.getNodeName());
+                int sheepId = mapSheep.getMapListenerSheepID();
+                String name = "name: " + n.getNodeName() +", " +"id: " + sheepId;
+                sheepNames.setText(name);
             }
+
+            @Override
+            public void nodeDoubleClicked() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
         });
-        setVisible(true);   */
+
+        setVisible(true);
     }
 }

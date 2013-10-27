@@ -18,8 +18,8 @@ public class NothingToSeeHere {
     //Password length
     public static int hashlength = 15;
 
-    // Set to some number, has to be the same to decrypt a password
-    public static byte factoryCode = 12;
+    // Set to some number, has to be the same to decrypt a password(or you could loop through all 62 possibilites of course)
+    public static byte factoryCode = 30;
 
     //Randomly generate this for more security
     public final static byte[] chars = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -47,7 +47,7 @@ public class NothingToSeeHere {
         bytes[bytes.length-1] = count;
         bytes[bytes.length-2] = finalByte;
         for(int i = 1; i < rawString.length; ++i){
-            bytes[i] = clamp(rawString[i] + accumulation(bytes, i));
+            bytes[i] = clamp(rawString[i] + factoryCode + accumulation(bytes, i));
         }
 
         for(int i = rawString.length; i < hashlength-2; ++i){
@@ -69,7 +69,7 @@ public class NothingToSeeHere {
         decoded[0] = clamp((byte)(bytes[0] - factoryCode - finalByte));
 
         for(int i = 1; i < count; ++i){
-            decoded[i] = clamp((byte)(bytes[i] - accumulation(bytes, i)));
+            decoded[i] = clamp((byte)(bytes[i] - factoryCode - accumulation(bytes, i)));
         }
         return deTranslate(decoded);
     }
@@ -87,7 +87,7 @@ public class NothingToSeeHere {
         decoded[0] = clamp((byte)(bytes[0] - factoryCode - finalByte));
 
         for(int i = 1; i < count; ++i){
-            decoded[i] = clamp((byte)(bytes[i] - accumulation(bytes, i)));
+            decoded[i] = clamp((byte)(bytes[i] - factoryCode - accumulation(bytes, i)));
         }
         return deTranslate(decoded);
     }
@@ -137,7 +137,8 @@ public class NothingToSeeHere {
     }
 
     public static void main(String[] args){
-        String test = "Sau";
+        String test = "lol";
+
         p(t(test));
         p(f(t(test)));
     }

@@ -7,11 +7,12 @@ public class Sheep
     public final static String SEX_FEMALE = "f";
 
     int id;
-    int ownerid;
+    int farmerid;
     //int age;
     int mileage;
     int healthflags;
     int birthdate;
+    int pulse;
     String sex;
     String name;
 
@@ -42,14 +43,32 @@ public class Sheep
         this.posHistory = posHistory;
     }
 
-    public Sheep(int id, int birthdate, int healthflags, int mileage, int ownerid, String name, String sex) {
+    public Sheep(int id, int birthdate, int healthflags, int mileage, int farmerid, String name, String sex) {
         //this.age = age;
         this.id = id;
         this.mileage = mileage;
-        this.ownerid = ownerid;
+        this.farmerid = farmerid;
         this.healthflags = healthflags;
         this.birthdate = birthdate;
         this.name = name;
+
+        if(sex == SEX_MALE || sex == SEX_FEMALE){
+            this.sex = sex;
+        }else{
+            this.sex = "f";
+        }
+        this.pulse = -1;
+    }
+
+    public Sheep(int id, int birthdate, int healthflags, int mileage, int farmerid, int pulse, String name, String sex) {
+        //this.age = age;
+        this.id = id;
+        this.mileage = mileage;
+        this.farmerid = farmerid;
+        this.healthflags = healthflags;
+        this.birthdate = birthdate;
+        this.name = name;
+        this.pulse = pulse;
 
         if(sex == SEX_MALE || sex == SEX_FEMALE){
             this.sex = sex;
@@ -102,12 +121,12 @@ public class Sheep
         this.mileage = mileage;
     }
 
-    public int getOwnerid() {
-        return ownerid;
+    public int getFarmerid() {
+        return farmerid;
     }
 
-    public void setOwnerid(int ownerid) {
-        this.ownerid = ownerid;
+    public void setFarmerid(int farmerid) {
+        this.farmerid = farmerid;
     }
 
     public String getSex() {

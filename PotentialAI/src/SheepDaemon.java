@@ -34,7 +34,7 @@ public class SheepDaemon extends Thread {
     public SheepDaemon(DatabaseHandler mHandler) {
         this.mHandler = mHandler;
         this.mSheeps = new ArrayList<Integer>();
-        this.timer = new Timer("SheepDaemon", true);
+        this.timer = new Timer("SheepDaemon", false);
         this.velocities = new HashMap<Integer,Vec2>();
         this.accelerations = new HashMap<Integer,Vec2>();
         this.keepScheduling = true;
@@ -167,7 +167,6 @@ public class SheepDaemon extends Thread {
                 this.mSheeps.add(sheep.getId());
                 this.velocities.put(sheep.getId(), new Vec2(ran.nextFloat(), ran.nextFloat()));
                 this.accelerations.put(sheep.getId(), new Vec2(ran.nextFloat(), ran.nextFloat()));
-
             }
 
             //Remove sheeps no longer in the system

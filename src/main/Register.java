@@ -125,7 +125,7 @@ public class Register {
         ArrayList<Sheep> farmerSheeps = new ArrayList<Sheep>();
 
         for(Sheep s : this.activeSheeps){
-            if(s.getOwnerid() == farmerID)
+            if(s.getFarmerid() == farmerID)
                 farmerSheeps.add(s);
         }
         if(farmerSheeps.isEmpty())

@@ -26,6 +26,7 @@
         <jarDirectory url="file://$MODULE_DIR$/res" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="javax.mail" level="project" />
   </component>
 </module>
 

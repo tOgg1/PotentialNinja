@@ -8,6 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PotentialNinja" />
+    <orderEntry type="library" name="javax.mail" level="project" />
   </component>
 </module>
 

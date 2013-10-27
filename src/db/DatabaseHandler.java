@@ -353,7 +353,7 @@ public class DatabaseHandler {
      * @param farmerID
      */
     public ArrayList<Alarm> getAlarms(int farmerID) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid)");
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid) and isactive = 1");
         query.setInt(1, farmerID);
         ResultSet rs = query.executeQuery();
 
@@ -420,12 +420,56 @@ public class DatabaseHandler {
     }
 
     /**
+     * Gets all alive sheeps in database.
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Sheep> getAllAliveSheeps() throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE alive = 1");
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        ArrayList<Sheep> results = new ArrayList<Sheep>();
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+
+        while(rs.next()){
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+        }
+        return results;
+    }
+
+
+    /**
+     * Gets all sheeps within a pulserange
+     * @param pulsemin
+     * @param pulsemax
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Sheep> getSheepsByPulse(int pulsemin, int pulsemax) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep where pulse > ? and pulse < ? and alive = 1");
+        query.setInt(1, pulsemin);
+        query.setInt(2, pulsemax);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        ArrayList<Sheep> results = new ArrayList<Sheep>();
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
+        while(rs.next()){
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
+        }
+        return results;
+    }
+
+    /**
      * Gets all sheeps of farmer
      * @param farmerID
      * @return
      */
     public ArrayList<Sheep> getSheeps(int farmerID) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ?");
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ? and alive = 1");
         query.setInt(1,farmerID);
         ResultSet rs = query.executeQuery();
 
@@ -627,6 +671,14 @@ public class DatabaseHandler {
     public void setSheepName(int sheepid, String name) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET name = ? WHERE id = ?");
         query.setString(1, name);
+        query.setInt(2, sheepid);
+        query.executeUpdate();
+        updateState();
+    }
+
+    public void setSheepSex(int sheepid, String sex) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET sex = ? WHERE id = ?");
+        query.setString(1, sex);
         query.setInt(2, sheepid);
         query.executeUpdate();
         updateState();

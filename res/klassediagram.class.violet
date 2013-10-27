@@ -6,7 +6,7 @@
     <void property="attributes">
      <void property="text">
       <string>int id
-int ownerid
+int farmerid
 int age
 int mileage
 

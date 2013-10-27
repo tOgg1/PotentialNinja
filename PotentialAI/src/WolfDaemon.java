@@ -33,7 +33,7 @@ public class WolfDaemon extends Thread {
      */
     @Override
     public void run() {
-        timer = new Timer("WolfDaemon", true);
+        timer = new Timer("WolfDaemon", false);
         scheduleAndAttack();
         while(keepScheduling){
             try {
@@ -57,7 +57,7 @@ public class WolfDaemon extends Thread {
             }
         };
         Random ran = new Random();
-        timer.schedule(task, (long)1000*3600*24*ran.nextInt(7)/(mSheeps.size() + 1));
+        timer.schedule(task, (long)1000*3600*24*(50 + (int)(ran.nextGaussian()*100))/(mSheeps.size() + 1));
         doAttack();
     }
 

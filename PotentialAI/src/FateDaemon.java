@@ -27,7 +27,6 @@ public class FateDaemon extends Thread {
 
     int databaseState;
 
-    private ArrayList<Integer> sheepIDs;
 
     public FateDaemon(){
         handler = new DatabaseHandler();
@@ -68,17 +67,10 @@ public class FateDaemon extends Thread {
 
         this.keepScheduling = true;
 
-        this.timer = new Timer("FateTimer", true);
+        this.timer = new Timer("FateTimer", false);
         scheduleAndUpdate();
         InputManager iManage = new InputManager();
         iManage.start();
-        while(keepScheduling){
-            try {
-                Thread.sleep(60*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
     }
 
     private void scheduleAndUpdate(){
@@ -107,7 +99,7 @@ public class FateDaemon extends Thread {
 
         private BufferedReader input;
 
-        private String mStartUp = "Command Parser v0.1 for fateDaemon Software\nCreated by tOgg1\n";
+        private String mStartUp = "Command Parser v1.0 for fateDaemon Software\nCreated by tOgg1\n";
         private String mReady = "Ready for commands ...";
         private final boolean debug = true;
 
@@ -150,7 +142,7 @@ public class FateDaemon extends Thread {
         public void decryptAndExecute(String[] args){
             args[0] = args[0].toLowerCase();
             args[0] = args[0].replace(" ", "");
-            if(args[0].equals("exit")){
+            if(args[0].equals("exit") || args[0].equals("close")){
                 FateDaemon.this.keepScheduling = false;
                 System.exit(0);
             }

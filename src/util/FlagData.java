@@ -34,4 +34,8 @@ public class FlagData {
     public static int DEATHBYFAIL = 7;
     public static int DEATHBYEXECUTION = 8;
 
+    public static int ALARMDEATH = 1;
+    public static int ALARMLOWPULSE= 2;
+    public static int ALARMHIGHPULSE= 3;
+
 }

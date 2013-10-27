@@ -117,7 +117,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                 df = new DecimalFormat("#");
             }
             else if (zoom >= 5 && zoom < 10){
-                df = new DecimalFormat("#.00");
+                df = new DecimalFormat("#.0");
             }
             else if (zoom >= 10 && zoom < 15){
                 df = new DecimalFormat("#.00");

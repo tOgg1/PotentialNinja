@@ -705,6 +705,7 @@ public class DatabaseHandler {
         updateState();
     }
 
+
     /**
      * Adds a health flag to the sheep
      * @param sheepid
@@ -732,6 +733,20 @@ public class DatabaseHandler {
         this.setSheepHealthFlag(sheepid, mFlags, false);
         updateState();
     }
+
+    /**
+     * Sets sheeps pulse
+     * @param sheepid
+     * @param pulse
+     * @throws SQLException
+     */
+    public void setSheepPulse(int sheepid, int pulse) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET pulse = ? WHERE id = ?");
+        query.setInt(1, pulse);
+        query.setInt(2, sheepid);
+        query.executeUpdate();
+    }
+
 
     /**
      * Set name of sheep

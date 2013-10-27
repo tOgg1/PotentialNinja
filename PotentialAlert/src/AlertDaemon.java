@@ -25,7 +25,6 @@ public class AlertDaemon extends Thread {
     private DatabaseHandler handler;
     private SMTPHandler mailHandler;
 
-    private int databaseState;
     private boolean keepScheduling = true;
 
     private static String[] template_message = {"This is a message alerting you that sheep ", " is ", ". The alarm triggered at " + "."};
@@ -41,14 +40,20 @@ public class AlertDaemon extends Thread {
         this.mailHandler = new SMTPHandler();
         this.sformat = new SimpleDateFormat("MM/DD");
         this.lformat = new SimpleDateFormat("hh:mm:ss a");
+        this.timer = new Timer();
     }
 
     @Override
-    public void run() {
-       scheduleAndPoll();
+    public void run(){
+        InputManager iManage = new InputManager();
+        iManage.start();
+        scheduleAndPoll();
+
     }
 
     private void scheduleAndPoll(){
+        if(!keepScheduling)
+            return;
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -103,7 +108,8 @@ public class AlertDaemon extends Thread {
 
 
     public static void main(String[] args){
-
+        AlertDaemon alert = new AlertDaemon();
+        alert.start();
     }
 
     class InputManager extends Thread{

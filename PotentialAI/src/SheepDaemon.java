@@ -1,5 +1,6 @@
 import db.DatabaseHandler;
 import model.Sheep;
+import util.FlagData;
 import util.Vec2;
 
 import java.sql.SQLException;
@@ -77,6 +78,7 @@ public class SheepDaemon extends Thread {
         timer.schedule(task, 1000*3600*8);
 
         moveSheeps();
+        randomizePulse();
     }
 
     /**
@@ -101,6 +103,34 @@ public class SheepDaemon extends Thread {
             Vec2 acc = accelerations.get(sheepID);
             acc.x = ran.nextFloat() - 0.5f;
             acc.y = ran.nextFloat() - 0.5f;
+        }
+    }
+
+    private void randomizePulse(){
+        synchronized(this.lock){
+            Random ran = new Random();
+            for(int i = 0; i < mSheeps.size(); ++i){
+                double g1 = ran.nextGaussian();
+                double g2 = ran.nextGaussian();
+
+                double g = g1+g2/2;
+
+                int pulse = (int)(15*g + 100);
+
+                try {
+                    mHandler.setSheepPulse(mSheeps.get(i), pulse);
+
+                    if(pulse > Sheep.pulseMax){
+                        mHandler.addAlarm(mSheeps.get(i), FlagData.ALARMHIGHPULSE);
+                    }
+                    else if(pulse < Sheep.pulseMin){
+                        mHandler.addAlarm(mSheeps.get(i), FlagData.ALARMLOWPULSE);
+                    }
+                }catch (SQLException e){
+                    e.printStackTrace();
+                    continue;
+                }
+            }
         }
     }
 

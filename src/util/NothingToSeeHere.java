@@ -19,7 +19,7 @@ public class NothingToSeeHere {
     public static int hashlength = 15;
 
     // Set to some number, has to be the same to decrypt a password
-    public static byte factoryCode = 30;
+    public static byte factoryCode = 12;
 
     //Randomly generate this for more security
     public final static byte[] chars = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',

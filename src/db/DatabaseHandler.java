@@ -5,6 +5,7 @@ import model.Alarm;
 import model.Sheep;
 import model.SheepHistory;
 import model.SheepMedicalHistory;
+import util.FlagData;
 import util.Log;
 import util.Vec2;
 
@@ -159,7 +160,6 @@ public class DatabaseHandler {
         query.setInt(2, sheepid);
         query.setInt(3, 1);
         query.executeUpdate();
-        updateState();
     }
 
     /**
@@ -210,6 +210,21 @@ public class DatabaseHandler {
         return new Object[]{rs.getString("name"), rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y")};
     }
 
+    /**
+     * Gets farmers email
+     * @param farmerid
+     * @return
+     * @throws SQLException
+     */
+    public String getFarmerEmail(int farmerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT email FROM farmer WHERE id = ?");
+        query.setInt(1, farmerid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        return rs.getString("email");
+    }
 
     /**
      * Fetches all information about given farmers contact
@@ -317,6 +332,7 @@ public class DatabaseHandler {
         query.setLong(2, (new Date()).getTime());
         query.setInt(3, cause);
         query.executeUpdate();
+        addAlarm(sheepid, FlagData.ALARMDEATH);
         updateState();
         return true;
     }
@@ -349,10 +365,52 @@ public class DatabaseHandler {
     }
 
     /**
+     * Fetches all active alarms in database
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Alarm> getAllActiveAlarms() throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE isactive = 1");
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        ArrayList<Alarm> results = new ArrayList<Alarm>();
+        results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+
+        while(rs.next()){
+            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+        }
+        return results;
+    }
+
+    /**
+     * Gets all active and inactive alarms in database
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Alarm> getAllAlarms() throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm");
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        ArrayList<Alarm> results = new ArrayList<Alarm>();
+        results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+
+        while(rs.next()){
+            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+        }
+        return results;
+    }
+
+    /**
      * Gets all alarms to sheeps that are owned by a farmer
      * @param farmerID
      */
-    public ArrayList<Alarm> getAlarms(int farmerID) throws SQLException{
+    public ArrayList<Alarm> getAlarmsToFarmer(int farmerID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid) and isactive = 1");
         query.setInt(1, farmerID);
         ResultSet rs = query.executeQuery();
@@ -562,12 +620,25 @@ public class DatabaseHandler {
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
-
-
-
         if(!rs.next())
             return null;
         return new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y"));
+    }
+
+    /**
+     * Gets a sheeps owner
+     * @param sheepid
+     * @return
+     * @throws SQLException
+     */
+    public int getSheepOwner(int sheepid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT farmerid FROM sheep WHERE id = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return -1;
+        return rs.getInt("farmerid");
     }
 
     /**

@@ -6,6 +6,9 @@ public class Sheep
     public final static String SEX_MALE = "m";
     public final static String SEX_FEMALE = "f";
 
+    public static int pulseMax = 150;
+    public static int pulseMin = 50;
+
     int id;
     int farmerid;
     //int age;

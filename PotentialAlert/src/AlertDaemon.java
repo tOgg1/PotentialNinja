@@ -1,9 +1,15 @@
 import db.DatabaseHandler;
+import model.Alarm;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,30 +28,79 @@ public class AlertDaemon extends Thread {
     private int databaseState;
     private boolean keepScheduling = true;
 
-    private static int pulseMax = 150;
-    private static int pulseMinimum = 50;
+    private static String[] template_message = {"This is a message alerting you that sheep ", " is ", ". The alarm triggered at " + "."};
+    private static String[] template_message_causes = {"dead. Please login to SheepTracker for more information", "is registered with unusually low pulse", "is registered with unusually high pulse"};
+
+    private static String email_subject = "SheepTracker Alarm Notification";
+
+    private SimpleDateFormat sformat;
+    private SimpleDateFormat lformat;
 
     public AlertDaemon(){
         this.handler = new DatabaseHandler();
         this.mailHandler = new SMTPHandler();
+        this.sformat = new SimpleDateFormat("MM/DD");
+        this.lformat = new SimpleDateFormat("hh:mm:ss a");
     }
 
     @Override
     public void run() {
-       // this.timer.schedule();
+       scheduleAndPoll();
     }
 
     private void scheduleAndPoll(){
-
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                scheduleAndPoll();
+            }
+        };
+        this.timer.schedule(task, 60000);
+        poll();
     }
 
-    private void findAlerts(){
+    private void poll(){
+        ArrayList<Alarm> alarms = findAlarms();
 
+        if(alarms != null){
+            if(!alarms.isEmpty()){
+                for(Alarm alarm : alarms){
+                    try {
+                        int sheepid = alarm.getSheepID();
+                        int flags = alarm.getAlarmFlags();
+                        int farmerid = handler.getSheepOwner(sheepid);
+                        Date now = new Date();
+                        String email_subject = AlertDaemon.email_subject + ": sheep with id " + sheepid + ", " + this.sformat.format(now);
+                        String email_message = template_message[0] + sheepid + template_message[1] + template_message_causes[1] + lformat.format(now) + template_message_causes[2];
+
+                        Object[] contactInf = handler.getFarmerContactInformation(farmerid);
+
+                        if(contactInf != null)
+                        {
+                            String email = (String)contactInf[2];
+                            mailHandler.sendMail(email, email_message, email_subject);
+
+                        }
+                        String farmerEmail = handler.getFarmerEmail(farmerid);
+                        mailHandler.sendMail(farmerEmail, email_message, email_subject);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        continue;
+                    }
+                }
+            }
+        }
     }
 
-    private void findSheepsByPulse(){
-
+    private ArrayList<Alarm> findAlarms(){
+        try {
+            return handler.getAllActiveAlarms();
+        } catch (SQLException e) {
+            return null;
+        }
     }
+
 
     public static void main(String[] args){
 
@@ -87,14 +142,6 @@ public class AlertDaemon extends Thread {
             }
         }
 
-        private String hasArgument(String[] args, String argument){
-            for(String arg : args){
-                if(arg.split(" ")[0].equals(argument))
-                    return arg;
-            }
-            return null;
-        }
-
         public void decryptAndExecute(String[] args){
             args[0] = args[0].toLowerCase();
             args[0] = args[0].replace(" ", "");
@@ -102,7 +149,12 @@ public class AlertDaemon extends Thread {
                 AlertDaemon.this.keepScheduling = false;
                 System.exit(0);
             }
-
+            else if(args[0].equals("poll")){
+                AlertDaemon.this.poll();
+            }
+            else{
+                p("Invalid command" + args[0]);
+            }
         }
 
     }

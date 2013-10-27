@@ -83,7 +83,7 @@ public class Main {
             System.out.println("Time: " + pair.getKey() + " |  Pos: " + pair.getValue().toString());
         }
 
-        ArrayList<Alarm> alarms = handler.getAlarms(3);
+        ArrayList<Alarm> alarms = handler.getAlarmsToFarmer(3);
         System.out.println("\nALARMS for farmer 3\n--------------");
         for(Alarm alarm : alarms){
             System.out.println("Sheep: " + alarm.getSheepID() + " | Flag: " + alarm.getAlarmFlags());

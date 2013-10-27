@@ -81,7 +81,7 @@ public class FateDaemon extends Thread {
                     scheduleAndUpdate();
                 }
             };
-            this.timer.schedule(task, 10000);
+            this.timer.schedule(task, 60000);
         }
         int newState = getDBState(this.handler);
 
@@ -101,7 +101,7 @@ public class FateDaemon extends Thread {
 
         private String mStartUp = "Command Parser v1.0 for fateDaemon Software\nCreated by tOgg1\n";
         private String mReady = "Ready for commands ...";
-        private final boolean debug = true;
+        private boolean debug = false;
 
         public InputManager(){
             p(mStartUp);
@@ -244,6 +244,9 @@ public class FateDaemon extends Thread {
                         p("Argument "+args[1]+" to command \"move\" not regocnized");
                     }
                 }
+            }
+            else if(args[0].equals("debug")){
+                this.debug = !this.debug;
             }
         }
 

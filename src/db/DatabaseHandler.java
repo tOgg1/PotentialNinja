@@ -676,12 +676,31 @@ public class DatabaseHandler {
         updateState();
     }
 
+    /**
+     * Sets sex of the sheep
+     * @param sheepid
+     * @param sex
+     * @throws SQLException
+     */
     public void setSheepSex(int sheepid, String sex) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET sex = ? WHERE id = ?");
         query.setString(1, sex);
         query.setInt(2, sheepid);
         query.executeUpdate();
         updateState();
+    }
+
+    /**
+     * Sets birthday of the sheep
+     * @param sheepid
+     * @param timestamp
+     * @throws SQLException
+     */
+    public void setSheepBirthdate(int sheepid, long timestamp) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET birthdate = ? WHERE id = ?");
+        query.setLong(1, timestamp);
+        query.setInt(2, sheepid);
+        query.executeUpdate();
     }
 
     /**

@@ -56,8 +56,8 @@ public class Alarm extends javax.swing.JFrame {
             }
         });
 
-        textField1.setText("243");  // SheepName
-        textArea1.setText("dsljkfslkd");   //Message
+        textField1.setText(" ");  // SheepName // TODO
+        textArea1.setText(" ");   //Message   // TODO
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,6 +102,7 @@ public class Alarm extends javax.swing.JFrame {
     //OK-button
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
+
         this.dispose();
     }//GEN-LAST:event_button1ActionPerformed
 

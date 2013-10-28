@@ -6,6 +6,8 @@ package gui;
 
 import db.DatabaseHandler;
 import main.Register;
+import map.MapSheeps;
+import map.MapViewer;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -19,8 +21,8 @@ public class MainMenu extends javax.swing.JFrame {
 	private DatabaseHandler mHandler;
 	private Register mRegister;
     private String bonde;
-    private MapSheeps mapLogic;
-    private MapViewer
+    private MapSheeps sheepMapLogic;
+    private MapViewer sheepMap;
 
     public MainMenu() {
         initComponents();

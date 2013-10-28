@@ -2,7 +2,6 @@ package model;
 
 public class Sheep
 {
-
     public final static String SEX_MALE = "m";
     public final static String SEX_FEMALE = "f";
 
@@ -14,7 +13,7 @@ public class Sheep
     //int age;
     int mileage;
     int healthflags;
-    int birthdate;
+    long birthdate;
     int pulse;
     String sex;
     String name;
@@ -22,11 +21,11 @@ public class Sheep
     SheepHistory posHistory;
     SheepMedicalHistory medicalHistory;
 
-    public int getBirthdate() {
+    public long getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(int birthdate) {
+    public void setBirthdate(long birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -46,7 +45,7 @@ public class Sheep
         this.posHistory = posHistory;
     }
 
-    public Sheep(int id, int birthdate, int healthflags, int mileage, int farmerid, String name, String sex) {
+    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, String name, String sex) {
         //this.age = age;
         this.id = id;
         this.mileage = mileage;
@@ -63,7 +62,7 @@ public class Sheep
         this.pulse = -1;
     }
 
-    public Sheep(int id, int birthdate, int healthflags, int mileage, int farmerid, int pulse, String name, String sex) {
+    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, int pulse, String name, String sex) {
         //this.age = age;
         this.id = id;
         this.mileage = mileage;

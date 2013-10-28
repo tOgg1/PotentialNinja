@@ -416,7 +416,6 @@ public class EditSheep extends javax.swing.JFrame {
      * Saves the info from the textFields to the given sheep
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         this.sheepName = textField1.getText();
         String sex = "m";
         if (jRadioButton1.isSelected()){

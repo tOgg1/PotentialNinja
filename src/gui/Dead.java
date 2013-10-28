@@ -139,8 +139,6 @@ public class Dead extends javax.swing.JFrame {
      * Regrets that the sheep is dead
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-
         try {
             mHandler.reviveSheep(sheepID);
             jTextField1.setText("Sauen din er nå registrert som levende.");

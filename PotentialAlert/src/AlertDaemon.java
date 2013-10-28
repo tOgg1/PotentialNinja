@@ -1,5 +1,7 @@
 import db.DatabaseHandler;
 import model.Alarm;
+import util.Log;
+import util.PotentialNinjaException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,6 +43,11 @@ public class AlertDaemon extends Thread {
         this.sformat = new SimpleDateFormat("MM/DD");
         this.lformat = new SimpleDateFormat("hh:mm:ss a");
         this.timer = new Timer();
+        try {
+            Log.initLogFile();
+        } catch (PotentialNinjaException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     @Override
@@ -82,12 +89,14 @@ public class AlertDaemon extends Thread {
 
                         if(contactInf != null)
                         {
-                            String email = (String)contactInf[2];
-                            mailHandler.sendMail(email, email_message, email_subject);
+                            String contactEmail = (String)contactInf[2];
+                            mailHandler.sendMail(contactEmail, email_message, email_subject);
+                            Log.d("Email", "Email successfully sent to " + contactEmail);
 
                         }
                         String farmerEmail = handler.getFarmerEmail(farmerid);
                         mailHandler.sendMail(farmerEmail, email_message, email_subject);
+                        Log.d("Email", "Email successfully sent to " + farmerEmail);
 
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -105,7 +114,6 @@ public class AlertDaemon extends Thread {
             return null;
         }
     }
-
 
     public static void main(String[] args){
         AlertDaemon alert = new AlertDaemon();

@@ -13,7 +13,7 @@ public class Log {
     private static BufferedWriter logWriter;
 
     public static void initLogFile() throws PotentialNinjaException {
-        logFile = new File("serverlog.txt");
+        logFile = new File("log.txt");
         try
         {
             if(!logFile.isFile())

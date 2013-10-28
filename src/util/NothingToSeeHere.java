@@ -130,8 +130,9 @@ public class NothingToSeeHere {
 
     private static byte translate(byte b){
         for(int i = 0; i < chars.length; i++){
-            if(chars[i] == b)
+            if(chars[i] == b){
                 return (byte)i;
+            }
         }
         throw new IllegalArgumentException("Byte(ASCII) " + b + " is not a legal password-character");
     }

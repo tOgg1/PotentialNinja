@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -33,5 +35,15 @@ public class SheepMedicalHistory {
 
     public void setSheepid(int sheepid) {
         this.sheepid = sheepid;
+    }
+
+    // FOR EXAMPLE!
+    public void getKey(long value){
+        Set<Map.Entry<Long, Integer>> entries = history.entrySet();
+
+        for(Map.Entry<Long, Integer> entry : entries){
+            entry.getKey();
+            entry.getValue();
+        }
     }
 }

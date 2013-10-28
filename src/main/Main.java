@@ -50,46 +50,11 @@ public class Main {
 
             System.out.println("Welcome to SheepTracker 2013 "+ farmerName+"!");
 
-            testFunction();
             handler.close();
         }
         catch(Exception f){
             f.printStackTrace();
             throw new RuntimeException("Error initializing program with error message: " + f.getMessage() + ". Please contact system administrator");
         }
-    }
-
-    /**
-     *  Do all database testing here
-     */
-    public static void testFunction() throws Exception{
-
-        DatabaseHandler handler = new DatabaseHandler();
-
-        handler.setSheepPosition(1,26,25);
-
-
-        /*System.out.println(""+handler.authenticate("bjornarsuperfarm", "johnny"));
-
-        System.out.println("\nFarmer 3 INFO\n--------------");
-        System.out.println(""+handler.getFarmerInformation(3)[0]);
-        System.out.println(""+handler.getFarmerInformation(3)[1]);
-        System.out.println(""+handler.getFarmerInformation(3)[2]);
-
-        SheepHistory history = handler.getSheepHistory(1);
-
-        System.out.println("\nSHEEP HISTORY for sheep"+history.getSheepID()+"\n--------------");
-        for(Map.Entry<Long, Pos> pair : history.getHistory().entrySet()){
-            System.out.println("Time: " + pair.getKey() + " |  Pos: " + pair.getValue().toString());
-        }
-
-        ArrayList<Alarm> alarms = handler.getAlarmsToFarmer(3);
-        System.out.println("\nALARMS for farmer 3\n--------------");
-        for(Alarm alarm : alarms){
-            System.out.println("Sheep: " + alarm.getSheepID() + " | Flag: " + alarm.getAlarmFlags());
-        }
-
-        handler.close();
-        */
     }
 }

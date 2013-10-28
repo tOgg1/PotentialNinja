@@ -4,10 +4,9 @@
  */
 package gui;
 
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
+
+import javax.swing.*;
 
 /**
  *
@@ -18,8 +17,7 @@ public class Welcome extends javax.swing.JFrame {
     /**
      * Creates new form Welcome
      */
-	
-	
+
 	private DatabaseHandler mHandler;
 	
 	public Welcome(){
@@ -174,11 +172,10 @@ public class Welcome extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here: - getText er deprecated fordi det er usikkert å legge dette over i poolen, kan bruke getPassword, men det vil gi en char
         String account = textField1.getText();
-        String password = jPasswordField1.getText();
+        String password = charToString(jPasswordField1.getPassword());
 
         int farmerID;
 
-        
         if ((farmerID = mHandler.authenticate(account, password)) == -1){
             jTextField1.setText("Feil brukernavn eller passord er skrevet inn. Prøv på nytt.");
         }
@@ -201,6 +198,15 @@ public class Welcome extends javax.swing.JFrame {
     	forgotten.setVisible(true);
     	
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private String charToString(char[] array){
+        StringBuilder sb = new StringBuilder();
+        for(char c : array){
+            sb.append(c);
+        }
+
+        return sb.toString();
+    }
 
     /**
      * @param args the command line arguments

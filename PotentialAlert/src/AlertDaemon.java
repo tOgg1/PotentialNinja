@@ -29,8 +29,8 @@ public class AlertDaemon extends Thread {
 
     private boolean keepScheduling = true;
 
-    private static String[] template_message = {"This is a message alerting you that sheep ", " is ", ". The alarm triggered at " + "."};
-    private static String[] template_message_causes = {"dead. Please login to SheepTracker for more information", "is registered with unusually low pulse", "is registered with unusually high pulse"};
+    private static String[] template_message = {"This is an email notifying you that sheep ", ". The alarm triggered at ", "."};
+    private static String[] template_message_causes = {" is dead. Please login to SheepTracker for more information", " is registered with unusually low pulse", " is registered with unusually high pulse"};
 
     private static String email_subject = "SheepTracker Alarm Notification";
 
@@ -55,15 +55,14 @@ public class AlertDaemon extends Thread {
         InputManager iManage = new InputManager();
         iManage.start();
         scheduleAndPoll();
-
     }
 
     private void scheduleAndPoll(){
         if(!keepScheduling)
             return;
-        TimerTask task = new TimerTask() {
+        TimerTask task = new TimerTask(){
             @Override
-            public void run() {
+            public void run(){
                 scheduleAndPoll();
             }
         };
@@ -77,27 +76,28 @@ public class AlertDaemon extends Thread {
         if(alarms != null){
             if(!alarms.isEmpty()){
                 for(Alarm alarm : alarms){
-                    try {
+                    try{
                         int sheepid = alarm.getSheepID();
+                        String sheepname = handler.getSheepName(sheepid);
+                        sheepname = (sheepname != null ? sheepname : "(internal id)" + sheepid);
                         int flags = alarm.getAlarmFlags();
                         int farmerid = handler.getSheepOwner(sheepid);
                         Date now = new Date();
-                        String email_subject = AlertDaemon.email_subject + ": sheep with id " + sheepid + ", " + this.sformat.format(now);
-                        String email_message = template_message[0] + sheepid + template_message[1] + template_message_causes[1] + lformat.format(now) + template_message_causes[2];
+                        String email_subject = AlertDaemon.email_subject + ": Sheep with id " + sheepname  + ", " + this.sformat.format(now);
+                        String email_message = template_message[0] + sheepname + template_message_causes[flags-1] + template_message[1] + lformat.format(now) + template_message[2];
 
                         Object[] contactInf = handler.getFarmerContactInformation(farmerid);
 
-                        if(contactInf != null)
-                        {
+                        if(contactInf != null){
                             String contactEmail = (String)contactInf[2];
                             mailHandler.sendMail(contactEmail, email_message, email_subject);
                             Log.d("Email", "Email successfully sent to " + contactEmail);
-
                         }
                         String farmerEmail = handler.getFarmerEmail(farmerid);
                         mailHandler.sendMail(farmerEmail, email_message, email_subject);
                         Log.d("Email", "Email successfully sent to " + farmerEmail);
 
+                        handler.inactiveAlarm(alarm.getAlarmID());
                     } catch (SQLException e) {
                         e.printStackTrace();
                         continue;
@@ -105,12 +105,14 @@ public class AlertDaemon extends Thread {
                 }
             }
         }
+        Log.d("Alert", "Polling complete");
     }
 
     private ArrayList<Alarm> findAlarms(){
         try {
             return handler.getAllActiveAlarms();
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -142,12 +144,9 @@ public class AlertDaemon extends Thread {
                 while((string = input.readLine()) != null){
                     String args[] = string.split("-");
                     if(debug){
-                        p("Argument length: " + args.length);
-                        System.out.print("\nArguments: ");
                         for(String s : args){
                             System.out.print(s + " ");
                         }
-                        System.out.print("\n");
                     }
                     decryptAndExecute(args);
                 }
@@ -167,7 +166,7 @@ public class AlertDaemon extends Thread {
                 AlertDaemon.this.poll();
             }
             else{
-                p("Invalid command" + args[0]);
+                p("Invalid command: " + args[0]);
             }
         }
 

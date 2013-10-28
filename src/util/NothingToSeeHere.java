@@ -138,7 +138,7 @@ public class NothingToSeeHere {
     }
 
     public static void main(String[] args){
-        String test = "lol";
+        String test = "ijiu";
 
         p(t(test));
         p(f(t(test)));

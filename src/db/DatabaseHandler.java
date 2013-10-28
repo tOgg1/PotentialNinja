@@ -370,19 +370,44 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public ArrayList<Alarm> getAllActiveAlarms() throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE isactive = 1");
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE isactive = ?");
+        query.setInt(1, 1);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
             return null;
 
         ArrayList<Alarm> results = new ArrayList<Alarm>();
-        results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+        results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
 
         while(rs.next()){
-            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+            results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
         }
         return results;
+    }
+
+    /**
+     * Activates an alarm
+     * @param alarmid
+     * @throws SQLException
+     */
+    public void activateAlarm(int alarmid)throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE alarm SET isactive = ? WHERE id = ?");
+        query.setInt(1, 1);
+        query.setInt(1, alarmid);
+        query.executeUpdate();
+    }
+
+    /**
+     * Inactivates an alarm
+     * @param alarmid
+     * @throws SQLException
+     */
+    public void inactiveAlarm(int alarmid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE alarm SET isactive = ? WHERE id = ?");
+        query.setInt(1, 0);
+        query.setInt(2, alarmid);
+        query.executeUpdate();
     }
 
     /**
@@ -398,10 +423,10 @@ public class DatabaseHandler {
             return null;
 
         ArrayList<Alarm> results = new ArrayList<Alarm>();
-        results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+        results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
 
         while(rs.next()){
-            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+            results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
         }
         return results;
     }
@@ -419,10 +444,10 @@ public class DatabaseHandler {
             return null;
 
         ArrayList<Alarm> results = new ArrayList<Alarm>();
-        results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+        results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
 
         while(rs.next()){
-            results.add(new Alarm(rs.getInt("alarmflags"), rs.getInt("sheepid")));
+            results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
         }
         return results;
     }
@@ -607,6 +632,17 @@ public class DatabaseHandler {
             medHistory.put(rs.getLong("timestamp"), rs.getInt("healthflag"));
         }
         return new SheepMedicalHistory(medHistory, sheepid);
+    }
+
+    public String getSheepName(int sheepid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT name FROM sheep WHERE id = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        return rs.getString("name");
     }
 
     /**

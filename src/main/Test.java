@@ -31,10 +31,10 @@ public class Test extends JFrame{
         //AddSheep addsheep = new AddSheep(handler, mRegister);
         //addsheep.setVisible(true);
 
-        //TheChosenSheep chosenSheep = new TheChosenSheep("Tormod", handler, mRegister);
-        //chosenSheep.setVisible(true);
+        TheChosenSheep chosenSheep = new TheChosenSheep("Tormod", handler, mRegister);
+        chosenSheep.setVisible(true);
 
-        MapViewer map = new MapViewer();
+        /* MapViewer map = new MapViewer();
 
         final MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);
 
@@ -63,6 +63,6 @@ public class Test extends JFrame{
 
         });
 
-        setVisible(true);
+        setVisible(true); */
     }
 }

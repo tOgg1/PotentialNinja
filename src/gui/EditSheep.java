@@ -88,6 +88,7 @@ public class EditSheep extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         label4 = new java.awt.Label();
         label1 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
@@ -139,8 +140,10 @@ public class EditSheep extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(240, 240, 240));
         jTextField1.setBorder(null);
 
+        buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Søye");
 
+        buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Vær");
 
         checkbox2.setLabel("Leverbetennelse");
@@ -561,5 +564,6 @@ public class EditSheep extends javax.swing.JFrame {
     private java.awt.TextField textField1;
     private java.awt.TextField textField2;
     private java.awt.TextField textField3;
+    private javax.swing.ButtonGroup buttonGroup1;
     // End of variables declaration//GEN-END:variables
 }

@@ -382,7 +382,7 @@ public class AddSheep extends javax.swing.JFrame {
             sex = "m";
         }
 
-        int birthdate = Integer.parseInt(textField3.getText());
+        Long birthdate = Long.parseLong(textField3.getText());
 
         int healthflags = 0;
 

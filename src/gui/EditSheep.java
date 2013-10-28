@@ -28,6 +28,7 @@ public class EditSheep extends javax.swing.JFrame {
 	private Register mRegister;
 	private String sheepName;
     private int sheepID;
+    private int healthflag1;
 	
     public EditSheep() {
         initComponents();
@@ -228,6 +229,7 @@ public class EditSheep extends javax.swing.JFrame {
             checkbox4.setState((healthflags & FlagData.ANNET) > 0);
             checkbox6.setState((healthflags & FlagData.VAKSINE) > 0);
 
+            healthflag1 = healthflags;
 
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -445,12 +447,162 @@ public class EditSheep extends javax.swing.JFrame {
         healthflag |= checkbox4.getState() == true ? FlagData.ANNET : 0;
         healthflag |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
+        int healthflagAdd = 0;
+        int healthfalgRemove = 0;
+
+        if (healthflag1 == healthflag){
+            //Ingen endring i healthflag
+        }
+
+
+        if ((healthflag1 & FlagData.BLATUNGE) != (healthflag & FlagData.BLATUNGE)){
+            if ((healthflag & FlagData.BLATUNGE) > 0){
+                healthflagAdd = FlagData.BLATUNGE;
+            }
+            else{
+                healthfalgRemove = FlagData.BLATUNGE;
+            }
+        }
+
+        if ((healthflag1 & FlagData.DREKTIGHETSFORGIFTNING) != (healthflag & FlagData.DREKTIGHETSFORGIFTNING)){
+            if ((healthflag & FlagData.DREKTIGHETSFORGIFTNING) > 0){
+                healthflagAdd = FlagData.DREKTIGHETSFORGIFTNING;
+            }
+            else{
+                healthfalgRemove = FlagData.DREKTIGHETSFORGIFTNING;
+            }
+        }
+
+        if ((healthflag1 & FlagData.HJERNEBARKSAR) != (healthflag & FlagData.HJERNEBARKSAR)){
+            if ((healthflag & FlagData.HJERNEBARKSAR) > 0){
+                healthflagAdd = FlagData.HJERNEBARKSAR;
+            }
+            else{
+                healthfalgRemove = FlagData.HJERNEBARKSAR;
+            }
+        }
+
+        if ((healthflag1 & FlagData.KLOSTIDIEINFEKSJONER) != (healthflag & FlagData.KLOSTIDIEINFEKSJONER)){
+            if ((healthflag & FlagData.KLOSTIDIEINFEKSJONER) > 0){
+                healthflagAdd = FlagData.KLOSTIDIEINFEKSJONER;
+            }
+            else{
+                healthfalgRemove = FlagData.KLOSTIDIEINFEKSJONER;
+            }
+        }
+
+        if ((healthflag1 & FlagData.KOLIINFEKSJON) != (healthflag & FlagData.KOLIINFEKSJON)){
+            if ((healthflag & FlagData.KOLIINFEKSJON) > 0){
+                healthflagAdd = FlagData.KOLIINFEKSJON;
+            }
+            else{
+                healthfalgRemove = FlagData.KOLIINFEKSJON;
+            }
+        }
+
+        if ((healthflag1 & FlagData.LEVERBETENNELSE) != (healthflag & FlagData.LEVERBETENNELSE)){
+            if ((healthflag & FlagData.LEVERBETENNELSE) > 0){
+                healthflagAdd = FlagData.LEVERBETENNELSE;
+            }
+            else{
+                healthfalgRemove = FlagData.LEVERBETENNELSE;
+            }
+        }
+
+        if ((healthflag1 & FlagData.LUNGEBETENNELSE) != (healthflag & FlagData.LUNGEBETENNELSE)){
+            if ((healthflag & FlagData.LUNGEBETENNELSE) > 0){
+                healthflagAdd = FlagData.LUNGEBETENNELSE;
+            }
+            else{
+                healthfalgRemove = FlagData.LUNGEBETENNELSE;
+            }
+        }
+
+        if ((healthflag1 & FlagData.MASTITT) != (healthflag & FlagData.MASTITT)){
+            if ((healthflag & FlagData.MASTITT) > 0){
+                healthflagAdd = FlagData.MASTITT;
+            }
+            else{
+                healthfalgRemove = FlagData.MASTITT;
+            }
+        }
+
+        if ((healthflag1 & FlagData.MUNNSKURV) != (healthflag & FlagData.MUNNSKURV)){
+            if ((healthflag & FlagData.MUNNSKURV) > 0){
+                healthflagAdd = FlagData.MUNNSKURV;
+            }
+            else{
+                healthfalgRemove = FlagData.MUNNSKURV;
+            }
+        }
+
+        if ((healthflag1 & FlagData.SJODOGG) != (healthflag & FlagData.SJODOGG)){
+            if ((healthflag & FlagData.SJODOGG) > 0){
+                healthflagAdd = FlagData.SJODOGG;
+            }
+            else{
+                healthfalgRemove = FlagData.SJODOGG;
+            }
+        }
+
+        if ((healthflag1 & FlagData.SKRAPESYKE) != (healthflag & FlagData.SKRAPESYKE)){
+            if ((healthflag & FlagData.SKRAPESYKE) > 0){
+                healthflagAdd = FlagData.SKRAPESYKE;
+            }
+            else{
+                healthfalgRemove = FlagData.SKRAPESYKE;
+            }
+        }
+
+        if ((healthflag1 & FlagData.TROMMESYKE) != (healthflag & FlagData.TROMMESYKE)){
+            if ((healthflag & FlagData.TROMMESYKE) > 0){
+                healthflagAdd = FlagData.TROMMESYKE;
+            }
+            else{
+                healthfalgRemove = FlagData.TROMMESYKE;
+            }
+        }
+
+        if ((healthflag1 & FlagData.OYESYKDOM) != (healthflag & FlagData.OYESYKDOM)){
+            if ((healthflag & FlagData.OYESYKDOM) > 0){
+                healthflagAdd = FlagData.OYESYKDOM;
+            }
+            else{
+                healthfalgRemove = FlagData.OYESYKDOM;
+            }
+        }
+
+        if ((healthflag1 & FlagData.ANNET) != (healthflag & FlagData.ANNET)){
+            if ((healthflag & FlagData.ANNET) > 0){
+                healthflagAdd = FlagData.ANNET;
+            }
+            else{
+                healthfalgRemove = FlagData.ANNET;
+            }
+        }
+
+        if ((healthflag1 & FlagData.VAKSINE) != (healthflag & FlagData.VAKSINE)){
+            if ((healthflag & FlagData.VAKSINE) > 0){
+                healthflagAdd = FlagData.VAKSINE;
+            }
+            else{
+                healthfalgRemove = FlagData.VAKSINE;
+            }
+        }
+
         try {
-			mHandler.addSheepHealthFlag(sheepID, healthflag);
+			mHandler.addSheepHealthFlag(sheepID, healthflagAdd);
 		} catch (SQLException e) {
 			Error error = new Error (e.getMessage());
 			error.setVisible(true);
 		}
+
+        try {
+            mHandler.removeSheepHealthFlag(sheepID, healthfalgRemove);
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
 
         try {
             mHandler.setSheepName(sheepID, sheepName);

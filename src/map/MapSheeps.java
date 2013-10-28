@@ -23,10 +23,10 @@ public class MapSheeps
     private TreeMap<Integer, MapMarkerDot> dotTreeMap = null;
     private int MapListenerSheepId;
 	
-	public MapSheeps (DatabaseHandler handler, int farmerId, final MapViewer map)
+	public MapSheeps(DatabaseHandler handler, Register register, int farmerId, final MapViewer map)
 	{
-		register = new Register (handler, farmerId);
-		currentSheeps = new ArrayList<Sheep> ();
+		this.register = register;
+		currentSheeps = new ArrayList<Sheep>();
 
 		this.farmerId = farmerId;
         this.map = map;

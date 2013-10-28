@@ -4,11 +4,10 @@
  */
 package gui;
 
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
+import main.Register;
 
+import javax.swing.*;
 import java.sql.SQLException;
 
 /**
@@ -17,15 +16,12 @@ import java.sql.SQLException;
  */
 public class MainMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainMenu
-     */
-		
 	private DatabaseHandler mHandler;
 	private Register mRegister;
     private String bonde;
-	
-	
+    private MapSheeps mapLogic;
+    private MapViewer
+
     public MainMenu() {
         initComponents();
     }
@@ -53,7 +49,8 @@ public class MainMenu extends javax.swing.JFrame {
         }
     	this.mRegister = mRegister;
         initComponents();
-        previous.dispose();
+        if(previous != null)
+            previous.dispose();
     }
 
     

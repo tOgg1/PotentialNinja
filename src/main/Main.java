@@ -1,6 +1,8 @@
 package main;
 
 import db.DatabaseHandler;
+import gui.MainMenu;
+import gui.Welcome;
 import util.Log;
 import util.PotentialNinjaException;
 
@@ -9,10 +11,9 @@ import util.PotentialNinjaException;
 */
 public class Main {
 
-    //Login variables
-    int farmerID;
-    String farmerName;
-    float defaultPosX, defaultPosY;
+
+    private Register mRegister;
+    private DatabaseHandler mHandler;
 
     public static void main(String[] args){
         Main main = new Main();
@@ -27,34 +28,21 @@ public class Main {
                 e.printStackTrace();
             }
 
-            DatabaseHandler handler = new DatabaseHandler();
-            
-            this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny");
-            
-            if(this.farmerID == -1)
-            
-            //Log in
-            if((this.farmerID = handler.authenticate("bjornarsuperfarm", "johnny")) == -1){
-                System.exit(1);
-            }
-            Register register = new Register(handler, this.farmerID);
+            this.mHandler = new DatabaseHandler();
+            Welcome welcome = new Welcome(this, this.mHandler);
+            welcome.setVisible(true);
 
-            Object[] farmerDetails = handler.getFarmerInformation(this.farmerID);
-            if(farmerDetails == null)
-                throw new Exception("Unable to find farmer information");
-            this.farmerName = (String)farmerDetails[0];
-            this.defaultPosX = (Float)farmerDetails[1];
-            this.defaultPosY = (Float)farmerDetails[2];
-
-            register.setFarmerID(this.farmerID);
-
-            System.out.println("Welcome to SheepTracker 2013 "+ farmerName+"!");
-
-            handler.close();
         }
         catch(Exception f){
             f.printStackTrace();
             throw new RuntimeException("Error initializing program with error message: " + f.getMessage() + ". Please contact system administrator");
         }
+    }
+
+    public void run(int farmerid){
+        Register mRegister = new Register(mHandler, farmerid);
+        MainMenu mainWindow = new MainMenu(null, mHandler, mRegister);
+        mainWindow.setVisible(true);
+
     }
 }

@@ -5,6 +5,7 @@
 package gui;
 
 import db.DatabaseHandler;
+import main.Main;
 
 import javax.swing.*;
 
@@ -19,13 +20,15 @@ public class Welcome extends javax.swing.JFrame {
      */
 
 	private DatabaseHandler mHandler;
+    private Main main;
 	
 	public Welcome(){
 		initComponents();
 	}
 	
-    public Welcome(DatabaseHandler mHandler) {
+    public Welcome(Main main, DatabaseHandler mHandler) {
         this.mHandler = mHandler;
+        this.main = main;
         initComponents();
     }
     
@@ -180,7 +183,8 @@ public class Welcome extends javax.swing.JFrame {
             jTextField1.setText("Feil brukernavn eller passord er skrevet inn. Prøv på nytt.");
         }
 
-        System.out.println(farmerID);
+        main.run(farmerID);
+        this.dispose();
 
        /* else {
         	MainMenu main = new MainMenu(this, farmerID, mHandler);
@@ -236,11 +240,11 @@ public class Welcome extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Welcome(new DatabaseHandler()).setVisible(true);
+                new Welcome(null, new DatabaseHandler()).setVisible(true);
             }
-        });   
+        });  */
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

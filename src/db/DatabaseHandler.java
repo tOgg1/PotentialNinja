@@ -114,10 +114,10 @@ public class DatabaseHandler {
      * @param pos_y
      * @param farmerid
      */
-    public void addSheep(String name, int birthdate, int healthflags, float pos_x, float pos_y, String sex, int farmerid) throws SQLException{
+    public void addSheep(String name, long birthdate, int healthflags, float pos_x, float pos_y, String sex, int farmerid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?,?)");
         query.setString(1,name);
-        query.setInt(2, birthdate);
+        query.setLong(2, birthdate);
         query.setInt(3, healthflags);
         query.setFloat(4, pos_x);
         query.setFloat(5, pos_y);
@@ -768,6 +768,27 @@ public class DatabaseHandler {
 
         this.setSheepHealthFlag(sheepid, mFlags, false);
         updateState();
+    }
+
+    /**
+     *
+     * @param sheepid
+     * @param healthflag
+     * @throws SQLException
+     */
+    public void removeSheepHealthFlag(int sheepid, int healthflag) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT healthflags FROM sheep where id = ?");
+        query.setInt(1, sheepid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            throw new SQLException("Couldnt find sheep");
+
+        int mFlags = rs.getInt("healthflags");
+
+        mFlags ^= healthflag;
+
+        this.setSheepHealthFlag(sheepid, mFlags, true);
     }
 
     /**

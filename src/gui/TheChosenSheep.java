@@ -4,15 +4,14 @@
  */
 package gui;
 
-import java.sql.SQLException;
-import java.util.Date;
-
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
+import main.Register;
 import model.SheepMedicalHistory;
 import util.FlagData;
+
+import javax.swing.*;
+import java.sql.SQLException;
+import java.util.Date;
 
 /**
  *
@@ -29,7 +28,6 @@ public class TheChosenSheep extends javax.swing.JFrame {
 	private String sheepName;
     private int sheepID;
     private String bonde;
-	
 
     public TheChosenSheep(JFrame previous, String sheepName, DatabaseHandler mHandler, Register mRegister){
     	this.mHandler = mHandler;

@@ -176,7 +176,7 @@ public class Welcome extends javax.swing.JFrame {
 
         int farmerID;
 
-        if ((farmerID = mHandler.authenticate(account, password)) == -1){
+        if((farmerID = mHandler.authenticate(account, password)) == -1){
             jTextField1.setText("Feil brukernavn eller passord er skrevet inn. Prøv på nytt.");
         }
 

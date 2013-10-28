@@ -22,7 +22,6 @@ public class MapSheeps
     private ArrayList<MapMarkerDot> mapMarkers = null;
     private TreeMap<Integer, MapMarkerDot> dotTreeMap = null;
     private int MapListenerSheepId;
-
 	
 	public MapSheeps (DatabaseHandler handler, int farmerId, final MapViewer map)
 	{

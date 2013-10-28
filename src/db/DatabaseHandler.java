@@ -188,7 +188,7 @@ public class DatabaseHandler {
             query.executeUpdate();
             updateState();
             return id;
-        } catch (NoSuchAlgorithmException e) {
+        }catch (NoSuchAlgorithmException e){
             e.printStackTrace();
             return -1;
         }

@@ -423,7 +423,9 @@ public class EditSheep extends javax.swing.JFrame {
         if (jRadioButton2.isSelected()){
             sex = "m";
         }
-        String birthdate = textField3.getText();
+
+        Long birthdate = Long.parseLong(textField3.getText());
+
         
         int healthflag = 0;
         
@@ -457,7 +459,19 @@ public class EditSheep extends javax.swing.JFrame {
             error.setVisible(true);
         }
 
+        try {
+            mHandler.setSheepBirthdate(sheepID, birthdate);
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
 
+        try {
+            mHandler.setSheepSex(sheepID, sex);
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
 
 
     }//GEN-LAST:event_jButton1ActionPerformed

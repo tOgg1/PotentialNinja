@@ -121,6 +121,7 @@ public class EditSheep extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -344,7 +345,10 @@ public class EditSheep extends javax.swing.JFrame {
                                                                                                 .addGap(145, 145, 145)))
                                                                                 .addGap(25, 25, 25)
                                                                                 .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(186, 186, 186)
+                                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -407,8 +411,10 @@ public class EditSheep extends javax.swing.JFrame {
                                         .addComponent(jButton1)
                                         .addComponent(jButton2))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
         );
 
         pack();
@@ -640,6 +646,8 @@ public class EditSheep extends javax.swing.JFrame {
             error.setVisible(true);
         }
 
+        jLabel2.setText("Informasjonen er nå lagret.");
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -647,7 +655,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	MainMenu chosen = new MainMenu(farmerID, mHandler, mRegister);
+    	MainMenu chosen = new MainMenu(this, farmerID, mHandler, mRegister);
     	chosen.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -747,5 +755,6 @@ public class EditSheep extends javax.swing.JFrame {
     private java.awt.TextField textField2;
     private java.awt.TextField textField3;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

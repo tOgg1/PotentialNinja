@@ -521,7 +521,7 @@ public class DatabaseHandler {
         if(!rs.next())
             throw new SQLException("Ingen sau med det navnet funnet");
 
-        return new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex"));
+        return new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex"));
     }
 
     public Sheep getSheep(int sheepID) throws SQLException{
@@ -531,7 +531,7 @@ public class DatabaseHandler {
 
         if(!rs.next())
             throw new SQLException("Ingen sau med den ID'en");
-        return new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex"));
+        return new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex"));
     }
 
     /**
@@ -546,10 +546,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
         }
         return results;
     }
@@ -566,10 +566,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
         }
         return results;
     }
@@ -591,9 +591,9 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
+        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
+            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
         }
         return results;
     }
@@ -611,10 +611,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
         }
         return results;
     }
@@ -633,10 +633,10 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getString("name"), rs.getString("sex")));
+            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
         }
         return results;
     }

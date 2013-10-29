@@ -277,6 +277,12 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         map.addMapMarker(dot);
     }
 
+    public void addMarker(String name, double lat, double lon, Color color){
+        MapMarkerDot dot = new MapMarkerDot(name, c(lat,lon));
+        dot.setBackColor(color);
+        map.addMapMarker(dot);
+    }
+
     /**
      * Removes all MapMarkers from the map
      */

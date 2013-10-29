@@ -8,8 +8,10 @@ import db.DatabaseHandler;
 import main.Register;
 import map.MapSheeps;
 import map.MapViewer;
+import model.Sheep;
 import model.SheepMedicalHistory;
 import util.FlagData;
+import util.GeneralUtil;
 import util.Vec2;
 
 import javax.swing.*;
@@ -19,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
-public class MainMenu extends javax.swing.JFrame {
+public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerListener {
 
     /**
      * Creates new form MainMenu
@@ -44,6 +46,7 @@ public class MainMenu extends javax.swing.JFrame {
         this.mainMap = new MapViewer();
         this.sheepMap = new MapViewer();
         this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
+        this.mainMap.addListener(this);
         this.farmedID = farmerID;
         try {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
@@ -437,9 +440,6 @@ public class MainMenu extends javax.swing.JFrame {
 
                     String dato = sdf.format(new Date(datoRaw));
 
-                    datoSyk = dato + "Blåtunge";
-                    System.out.println(datoSyk);
-
                     if ((sykdom  & FlagData.BLATUNGE) > 0) {
                         datoSyk = dato + ": Blåtunge";
                         stringsArray.add(datoSyk);
@@ -526,6 +526,12 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO : legge inn elementene i String []
     }
 
+    private void initFromMap(Sheep sheep){
+        jTextField1.setText(sheep.getName());
+        sheepMap.setMapCenter(sheep.getPos());
+        sheepMap.removeMarkers();
+        sheepMap.addMarker(sheep.getName(), sheep.getPos().x, sheep.getPos().y, GeneralUtil.selectedSheepColor);
+    }
 
     private void initChosen() {
         jButton3.setEnabled(true);
@@ -553,6 +559,7 @@ public class MainMenu extends javax.swing.JFrame {
         jList1.setVisible(true);
 
         jScrollPane3.setVisible(true);
+        sheepMap.getMap().setVisible(true);
 
         pack();
     }
@@ -585,8 +592,10 @@ public class MainMenu extends javax.swing.JFrame {
         jList1.setEnabled(false);
         jList1.setVisible(false);
 
-        jScrollPane3.setVisible(false);
+        sheepMap.getMap().setVisible(false);
+        sheepMap.removeMarkers();
 
+        jScrollPane3.setVisible(false);
     }
 
     /**
@@ -728,5 +737,18 @@ public class MainMenu extends javax.swing.JFrame {
     private java.awt.Label label4;
     private java.awt.TextField textField2;
     private java.awt.TextField textField3;
+
+    @Override
+    public void nodeClicked(MapViewer.NodeInfo n){
+        Sheep sheep = mapLogic.getSheepByDot(n.getDot());
+        initChosen();
+        initFromMap(sheep);
+        info(sheep.getName());
+    }
+
+    @Override
+    public void mapClicked(double x, double y){
+
+    }
     // End of variables declaration//GEN-END:variables
 }

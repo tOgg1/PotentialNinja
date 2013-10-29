@@ -61,6 +61,24 @@ public class MapSheeps
         }
     }
 
+
+    public Sheep getSheepByDot(MapMarkerDot dot){
+        for(MapMarkerDot thisDot : mapMarkers){
+            if(dot == thisDot){
+                return getSheepById(getKeyByValue(dotTreeMap, dot));
+            }
+        }
+        return null;
+    }
+
+    public Sheep getSheepById(int id){
+        for(Sheep sheep : currentSheeps){
+            if(sheep.getId() == id)
+                return sheep;
+        }
+        return null;
+    }
+
     /**
      * Helper function to get sheepID.
      * To be used within listener.
@@ -85,7 +103,6 @@ public class MapSheeps
 	{
 		currentSheeps = register.getAllFarmerSheeps();
 	}
-
 
 
     /**

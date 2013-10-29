@@ -10,7 +10,6 @@ import util.GeneralUtil;
 import util.Vec2;
 
 import javax.swing.*;
-import java.awt.*;
 import java.sql.SQLException;
 
 public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerListener {
@@ -359,7 +358,7 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         this.farmX = x;
         this.farmY = y;
         this.map.removeMarkers();
-        this.map.addMarker(x,y, new Color(0x80, 0x80, 0x80));
+        this.map.addMarker(x,y, GeneralUtil.farmColor);
     }
 
     // End of variables declaration//GEN-END:variables

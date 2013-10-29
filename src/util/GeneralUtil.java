@@ -1,5 +1,7 @@
 package util;
 
+import java.awt.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mayacat
@@ -8,6 +10,9 @@ package util;
  * To change this template use File | Settings | File Templates.
  */
 public class GeneralUtil {
+
+    public static Color selectedSheepColor = new Color(0xAA, 0x40, 0x32);
+    public static Color farmColor = new Color(0x80, 0x80, 0x80);
 
     public static String charToString(char[] array){
         StringBuilder sb = new StringBuilder();

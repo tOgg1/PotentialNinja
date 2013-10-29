@@ -114,7 +114,7 @@ public class MyPage extends javax.swing.JFrame {
 
         Object[] farmer;
         try {
-            farmer = mHandler.getFarmerContactInformation(mRegister.getFarmerID());
+            farmer = mHandler.getFarmerInformation(mRegister.getFarmerID());
         } catch (SQLException e) {
             Error error = new Error(e.getMessage());
             error.setVisible(true);
@@ -142,7 +142,7 @@ public class MyPage extends javax.swing.JFrame {
         label3.setText("Etternavn");
         textField2.setText(lastName);
 
-        String cellphone = (String) farmer[1];
+        String cellphone = (String) farmer[2];
 
         label4.setText("Mobilnummer");
         textField3.setText(cellphone);

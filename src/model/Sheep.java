@@ -76,7 +76,7 @@ public class Sheep
         this.birthdate = birthdate;
         this.name = name;
         this.pulse = pulse;
-        this.pos = new Vec2(0,0);
+        this.pos = new Vec2(0.0d, 0.0d);
 
         if(sex == SEX_MALE || sex == SEX_FEMALE){
             this.sex = sex;
@@ -85,7 +85,7 @@ public class Sheep
         }
     }
 
-    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, float pos_x, float pos_y, int pulse, String name, String sex) {
+    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, double pos_x, double pos_y, int pulse, String name, String sex) {
         //this.age = age;
         this.id = id;
         this.mileage = mileage;
@@ -103,7 +103,7 @@ public class Sheep
         }
     }
 
-    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, float pos_x, float pos_y, String name, String sex) {
+    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, double pos_x, double pos_y, String name, String sex) {
         //this.age = age;
         this.id = id;
         this.mileage = mileage;

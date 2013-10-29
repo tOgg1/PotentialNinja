@@ -248,7 +248,7 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         String accountname = jTextField1.getText();
         String psw = GeneralUtil.charToString(jPasswordField1.getPassword());
         String psw_G = GeneralUtil.charToString(jPasswordField2.getPassword());
-        String farmerName = fornavn + etternavn;
+        String farmerName = fornavn + " " + etternavn;
         double pos_x = this.farmX;
         double pos_y = this.farmY;
 
@@ -261,6 +261,7 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
                 previous.setFocusable(true);
                 this.dispose();
             } catch (SQLException e) {
+                e.printStackTrace();
 				Error error = new Error(e.getMessage());
 				error.setVisible(true);
 			}

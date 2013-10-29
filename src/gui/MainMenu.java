@@ -11,6 +11,7 @@ import util.FlagData;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MainMenu extends javax.swing.JFrame {
@@ -345,6 +346,9 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void info(String sName){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
         try {
             sheepID = mHandler.getSheepByName(sName, mRegister.getFarmerID()).getId();
         } catch (SQLException e) {
@@ -353,7 +357,7 @@ public class MainMenu extends javax.swing.JFrame {
         }
 
         try {
-            textField3.setText((new Date(mHandler.getSheep(sheepID).getBirthdate())).toString()); //Fødselsdatoen på sauen
+            textField3.setText((sdf.format(new Date(mHandler.getSheep(sheepID).getBirthdate())))); //Fødselsdatoen på sauen
         } catch (SQLException e) {
             Error error = new Error(e.getMessage());
             error.setVisible(true);
@@ -401,8 +405,11 @@ public class MainMenu extends javax.swing.JFrame {
                 Set<Map.Entry<Long, Integer>> entries = treeHist.entrySet();
 
                 for(Map.Entry<Long, Integer> entry : entries){
-                    long dato = entry.getKey();
+                    long datoRaw = entry.getKey();
                     int sykdom = entry.getValue();
+
+
+                    String dato = sdf.format(new Date(datoRaw));
 
                     datoSyk = dato + "Blåtunge";
                     System.out.println(datoSyk);

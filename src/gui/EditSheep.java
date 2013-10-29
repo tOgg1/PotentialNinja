@@ -5,6 +5,7 @@
 package gui;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -182,8 +183,11 @@ public class EditSheep extends javax.swing.JFrame {
         checkbox11.setLabel("Sjodogg");
 
         label3.setText("Fødselsdato");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
         try {
-            textField3.setText((new Date(mHandler.getSheep(sheepID).getBirthdate())).toString()); //Fødselsdatoen på sauen
+            textField3.setText((sdf.format(new Date(mHandler.getSheep(sheepID).getBirthdate())))); //Fødselsdatoen på sauen
         } catch (SQLException e) {
             Error error = new Error(e.getMessage());
             error.setVisible(true);

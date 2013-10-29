@@ -121,7 +121,6 @@ public class Sheep
         }
     }
 
-
     public Vec2 getPos() {
         return pos;
     }

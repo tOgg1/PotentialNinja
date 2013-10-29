@@ -28,8 +28,7 @@ public class Main {
             }
 
             this.mHandler = new DatabaseHandler();
-            Welcome welcome = new Welcome(this, this.mHandler);
-            welcome.setVisible(true);
+            this.login();
         }
         catch(Exception f){
             f.printStackTrace();
@@ -37,9 +36,14 @@ public class Main {
         }
     }
 
+    public void login(){
+        Welcome welcome = new Welcome(this, this.mHandler);
+        welcome.setVisible(true);
+    }
+
     public void run(int farmerid){
         mRegister = new Register(mHandler, farmerid);
-        MainMenu mainWindow = new MainMenu(null, farmerid, mHandler, mRegister);
+        MainMenu mainWindow = new MainMenu(this, null, farmerid, mHandler, mRegister);
         mainWindow.setVisible(true);
 
     }

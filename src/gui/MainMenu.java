@@ -5,6 +5,7 @@
 package gui;
 
 import db.DatabaseHandler;
+import main.Main;
 import main.Register;
 import map.MapSheeps;
 import map.MapViewer;
@@ -27,7 +28,9 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     /**
      * Creates new form MainMenu
      */
-	
+
+    private Main main;
+
 	private DatabaseHandler mHandler;
 	private Register mRegister;
 	private String sheepName;
@@ -41,7 +44,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private MapViewer mainMap;
     private MapViewer sheepMap;
 
-    public MainMenu(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(Main main, JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
+        this.main = main;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.mainMap = new MapViewer();
@@ -68,7 +72,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     }
 
 
-    public MainMenu(int farmerID, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(Main main, int farmerID, DatabaseHandler mHandler, Register mRegister){
+        this.main = main;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.mainMap = new MapViewer();
@@ -686,41 +691,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         removeInfo();
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainMenu(4 ,new DatabaseHandler(), new Register(new DatabaseHandler(), 4)).setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

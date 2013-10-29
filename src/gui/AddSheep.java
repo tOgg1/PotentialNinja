@@ -4,13 +4,14 @@
  */
 package gui;
 
-import javax.swing.*;
-
-import main.Register;
 import db.DatabaseHandler;
+import main.Register;
 import util.FlagData;
 
+import javax.swing.*;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class AddSheep extends javax.swing.JFrame {
 
@@ -374,7 +375,15 @@ public class AddSheep extends javax.swing.JFrame {
             sex = "m";
         }
 
-        Long birthdate = Long.parseLong(textField3.getText());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        long birthdate = 0;
+        try {
+            birthdate = sdf.parse(textField3.getText()).getTime();
+        } catch (ParseException e) {
+            Error error = new Error("Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
+            error.setVisible(true);
+        }
 
         int healthflags = 0;
 

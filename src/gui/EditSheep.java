@@ -5,6 +5,7 @@
 package gui;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -426,9 +427,18 @@ public class EditSheep extends javax.swing.JFrame {
             sex = "m";
         }
 
-        Long birthdate = Long.parseLong(textField3.getText());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
-        
+        long birthdate = 0;
+        try {
+            birthdate = sdf.parse(textField3.getText()).getTime();
+        } catch (ParseException e) {
+            Error error = new Error("Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
+            error.setVisible(true);
+        }
+
+
+
         int healthflag = 0;
         
         healthflag |= checkbox7.getState() == true ? FlagData.BLATUNGE : 0;

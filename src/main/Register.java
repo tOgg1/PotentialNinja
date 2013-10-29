@@ -15,6 +15,8 @@ public class Register {
 
     private int farmerID;
 
+    private Vec2 pos;
+
     public Register(DatabaseHandler handler, int farmerID){
         this.mHandler = handler;
         this.farmerID = farmerID;
@@ -25,6 +27,13 @@ public class Register {
         } catch (SQLException e) {
             activeSheeps = new ArrayList<Sheep>();
         }
+
+        try {
+            this.pos = handler.getFarmerLocation(this.farmerID);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
     }
 
     /**
@@ -114,20 +123,12 @@ public class Register {
      * Get all sheeps for farmerID. Returns null if no sheeps are found
      * @return
      */
-    public ArrayList<Sheep> getAllFarmerSheeps(){
+    public ArrayList<Sheep> getAllSheeps(){
         if(this.activeSheeps == null)
         {
             return new ArrayList<Sheep>();
         }
-        ArrayList<Sheep> farmerSheeps = new ArrayList<Sheep>();
-
-        for(Sheep s : this.activeSheeps){
-            if(s.getFarmerid() == farmerID)
-                farmerSheeps.add(s);
-        }
-        if(farmerSheeps.isEmpty())
-            return null;
-        return farmerSheeps;
+        return activeSheeps;
     }
 
     public int getFarmerID() {
@@ -138,7 +139,6 @@ public class Register {
         this.farmerID = farmerID;
     }
 
-
     /**
      * Fetches sheep positions from database.
      * @return
@@ -146,7 +146,7 @@ public class Register {
     public ArrayList<Vec2> getSheepPositions(){
         try{
             ArrayList<Vec2> positions = new ArrayList<Vec2>();
-            ArrayList<Sheep> farmerSheep = this.getAllFarmerSheeps();
+            ArrayList<Sheep> farmerSheep = this.getAllSheeps();
 
             for(Sheep s : farmerSheep){
                 int sheepID = s.getId();
@@ -179,12 +179,26 @@ public class Register {
      * @return
      */
     public Vec2 getFarmerPosition(){
-        try{
-            return mHandler.getFarmerLocation(this.farmerID);
-        }   catch (SQLException e){
-            e.printStackTrace();
+        return this.pos;
+    }
+
+
+
+    public void reFetchSheeps(){
+        try {
+            this.activeSheeps = this.mHandler.getAliveSheeps(this.farmerID);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        return null;
+    }
+
+    public void reFetchFarmerPos(){
+        try{
+            this.pos = this.mHandler.getFarmerLocation(this.farmerID);
+        } catch (SQLException e){
+
+        }
+
     }
 
 

@@ -96,12 +96,17 @@ public class MapSheeps
         return register.getFarmerPosition();
     }
 
+    public void refresh(){
+        this.setSheeps();
+        this.setCurrentSheepPositions();
+    }
+
     /**
      * adds all of the farmers sheep to currentSheeps.
      */
 	public void setSheeps ()
 	{
-		currentSheeps = register.getAllFarmerSheeps();
+		currentSheeps = register.getAllSheeps();
 	}
 
 

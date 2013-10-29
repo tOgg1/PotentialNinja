@@ -1,10 +1,5 @@
 package main;
 
-import db.DatabaseHandler;
-import gui.AddSheep;
-import gui.EditSheep;
-import gui.MainMenu;
-
 import javax.swing.*;
 
 public class Test extends JFrame{
@@ -14,12 +9,12 @@ public class Test extends JFrame{
     }
 
     public Test() throws Exception{
-        DatabaseHandler handler = new DatabaseHandler();
+       /*DatabaseHandler handler = new DatabaseHandler();
         int farmerid = handler.authenticate("farm", "farm");
 
         Register mRegister = new Register(handler, farmerid);
 
-        AddSheep addsheep = new AddSheep(farmerid, handler, mRegister);
+        AddSheep addsheep = new AddSheep(new farmerid, handler, mRegister);
         addsheep.setVisible(true);
 
         //MainMenu chosenSheep = new MainMenu(4, handler, mRegister);

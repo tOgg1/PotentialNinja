@@ -531,6 +531,11 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         // TODO : legge inn elementene i String []
     }
 
+    public void updateSheeps(){
+        this.mRegister.reFetchSheeps();
+        this.mapLogic.refresh();
+    }
+
     private void initFromMap(Sheep sheep){
         jTextField1.setText(sheep.getName());
         sheepMap.setMapCenter(sheep.getPos());

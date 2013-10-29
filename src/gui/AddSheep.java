@@ -7,6 +7,7 @@ package gui;
 import db.DatabaseHandler;
 import main.Register;
 import util.FlagData;
+import util.Vec2;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -22,20 +23,19 @@ public class AddSheep extends javax.swing.JFrame {
 	private DatabaseHandler mHandler;
 	private Register mRegister;
     private int farmerID;
-	
-	public AddSheep(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
-        this.mHandler = mHandler;
-        this.mRegister = mRegister;
-        this.farmerID = farmerID;
-        initComponents();
-    	previous.dispose();
-    }
+    private MainMenu previous;
 
-    public AddSheep(int farmerID, DatabaseHandler mHandler, Register mRegister){
+    private boolean sheepHasBeenAdded;
+	
+	public AddSheep(MainMenu main, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.farmerID = farmerID;
+        this.previous = main;
+        this.sheepHasBeenAdded = false;
         initComponents();
+    	previous.setVisible(false);
+        previous.setFocusable(false);
     }
 
     public AddSheep() {
@@ -371,8 +371,10 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
-    	main.setVisible(true);
+    	previous.setVisible(true);
+        previous.setFocusable(true);
+        previous.updateSheeps();
+        this.dispose();
     	    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -417,28 +419,15 @@ public class AddSheep extends javax.swing.JFrame {
         healthflags |= checkbox4.getState() == true ? FlagData.ANNET : 0;
         healthflags |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
-        int sheepID = 0;
-        try {
-            sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
-        } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
-            error.setVisible(true);
-        }
+        Vec2 pos = this.mRegister.getFarmerPosition();
+
 
         try {
-            mHandler.setSheepHealthFlag(sheepID, healthflags, true);
-        } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
-            error.setVisible(true);
-        }
 
-        try {
-            mHandler.addSheep(sheepName, birthdate, healthflags, sex, mRegister.getFarmerID());
+            mHandler.addSheep(sheepName, birthdate, healthflags, pos.x, pos.y, sex, mRegister.getFarmerID());
             jTextField1.setText("Informasjonen er nå lagret.");
             textField1.setText("");
             textField3.setText("");
-
-
 
             checkbox1.setState(false);
             checkbox7.setState(false);
@@ -456,14 +445,10 @@ public class AddSheep extends javax.swing.JFrame {
             checkbox4.setState(false);
             checkbox6.setState(false);
 
-
-
         } catch (SQLException e) {
             Error error = new Error(e.getMessage());
             error.setVisible(true);
         }
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

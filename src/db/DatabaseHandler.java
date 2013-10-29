@@ -628,17 +628,18 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public ArrayList<Sheep> getAliveSheeps(int farmerID) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE alive = 1 AND farmerid = ?");
-        query.setInt(1,farmerID);
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE alive = ? AND farmerid = ?");
+        query.setInt(1, 1);
+        query.setInt(2, farmerID);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
             return null;
         ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
+        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
 
         while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getInt("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
+            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
         }
         return results;
     }

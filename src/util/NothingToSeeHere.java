@@ -3,13 +3,6 @@ package util;
 import java.util.Date;
 import java.util.Random;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 10/24/13
- * Time: 10:01 AM
- * To change this template use File | Settings | File Templates.
- */
 public class NothingToSeeHere {
 
     // This can be whatever, and replaced in use by `chars`

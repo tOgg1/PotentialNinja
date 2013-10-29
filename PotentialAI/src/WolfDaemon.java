@@ -7,13 +7,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 9/12/13
- * Time: 9:38 AM
- * To change this template use File | Settings | File Templates.
- */
 public class WolfDaemon extends Thread {
     private DatabaseHandler mHandler;
 

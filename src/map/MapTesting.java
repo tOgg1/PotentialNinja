@@ -10,13 +10,6 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created with IntelliJ IDEA.
- * User: FF63
- * Date: 9/23/13
- * Time: 1:46 AM
- * To change this template use File | Settings | File Templates.
- */
 public class MapTesting extends JFrame {
 
     private MapViewer map;

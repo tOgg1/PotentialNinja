@@ -9,10 +9,6 @@ import javax.swing.JFrame;
 import main.Register;
 import db.DatabaseHandler;
 
-/**
- *
- * @author Kumii
- */
 public class Error extends javax.swing.JFrame {
 
     /**

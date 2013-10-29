@@ -7,13 +7,6 @@ import java.io.*;
 import java.util.Date;
 import java.util.Properties;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 10/24/13
- * Time: 9:44 AM
- * To change this template use File | Settings | File Templates.
- */
 public class SMTPHandler {
     private String host = "smtp.gmail.com";
     private String port = "587";

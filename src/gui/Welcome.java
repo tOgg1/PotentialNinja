@@ -9,10 +9,6 @@ import main.Main;
 
 import javax.swing.*;
 
-/**
- *
- * @author Kumii
- */
 public class Welcome extends javax.swing.JFrame {
 
     /**

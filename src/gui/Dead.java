@@ -11,10 +11,6 @@ import db.DatabaseHandler;
 
 import java.sql.SQLException;
 
-/**
- *
- * @author Kumii
- */
 public class Dead extends javax.swing.JFrame {
 
     /**

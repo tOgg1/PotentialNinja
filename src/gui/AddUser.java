@@ -11,10 +11,6 @@ import javax.swing.JFrame;
 import main.Register;
 import db.DatabaseHandler;
 
-/**
- *
- * @author Kumii
- */
 public class AddUser extends javax.swing.JFrame {
 
     /**

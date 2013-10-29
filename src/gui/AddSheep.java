@@ -12,10 +12,6 @@ import util.FlagData;
 
 import java.sql.SQLException;
 
-/**
- *
- * @author Kumii
- */
 public class AddSheep extends javax.swing.JFrame {
 
     /**

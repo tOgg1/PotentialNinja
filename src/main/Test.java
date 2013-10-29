@@ -7,13 +7,6 @@ import map.MapViewer;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 10/9/13
- * Time: 3:52 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Test extends JFrame{
 
     public static void main(String[] args ) throws Exception{
@@ -34,7 +27,7 @@ public class Test extends JFrame{
 
          MapViewer map = new MapViewer();
 
-        final MapSheeps mapSheep = new MapSheeps(handler, farmerid, map);
+        final MapSheeps mapSheep = new MapSheeps(handler, mRegister, farmerid, map);
 
         setSize(700, 700);
         add(map.getMap(), BorderLayout.CENTER);

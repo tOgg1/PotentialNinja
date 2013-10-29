@@ -2,16 +2,8 @@ package model;
 
 import util.Vec2;
 
-import java.util.Collection;
 import java.util.TreeMap;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 9/12/13
- * Time: 10:54 AM
- * To change this template use File | Settings | File Templates.
- */
 public class SheepHistory {
     private int sheepID;
     private TreeMap<Long, Vec2> history;

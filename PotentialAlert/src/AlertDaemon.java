@@ -13,14 +13,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 10/24/13
- * Time: 9:41 AM
- *
- * This class both fetches and stores alerts, and handles them approprietly.
- */
 public class AlertDaemon extends Thread {
 
     private Timer timer;

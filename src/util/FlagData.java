@@ -1,12 +1,5 @@
 package util;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 9/16/13
- * Time: 12:29 PM
- * To change this template use File | Settings | File Templates.
- */
 public class FlagData {
     public static int BLATUNGE = 1;
     public static int DREKTIGHETSFORGIFTNING = 2;

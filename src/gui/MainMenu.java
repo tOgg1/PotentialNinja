@@ -12,10 +12,6 @@ import map.MapViewer;
 import javax.swing.*;
 import java.sql.SQLException;
 
-/**
- *
- * @author Kumii
- */
 public class MainMenu extends javax.swing.JFrame {
 
 	private DatabaseHandler mHandler;

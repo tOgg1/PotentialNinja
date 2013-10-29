@@ -4,10 +4,6 @@
  */
 package gui;
 
-/**
- *
- * @author Kumii
- */
 public class Alarm extends javax.swing.JFrame {
 
     /**

@@ -13,10 +13,6 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.util.Date;
 
-/**
- *
- * @author Kumii
- */
 public class TheChosenSheep extends javax.swing.JFrame {
 
     /**

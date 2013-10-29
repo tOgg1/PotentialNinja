@@ -14,10 +14,6 @@ import util.FlagData;
 import main.Register;
 import db.DatabaseHandler;
 
-/**
- *
- * @author Kumii
- */
 public class EditSheep extends javax.swing.JFrame {
 
     /**

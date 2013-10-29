@@ -1,13 +1,5 @@
 package map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: FF63
- * Date: 9/17/13
- * Time: 11:53 PM
- * To change this template use File | Settings | File Templates.
- */
-
 import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;

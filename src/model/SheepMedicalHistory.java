@@ -4,13 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 9/17/13
- * Time: 12:21 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class SheepMedicalHistory {
 
     private int sheepid;

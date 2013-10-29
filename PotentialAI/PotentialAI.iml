@@ -9,6 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PotentialNinja" />
     <orderEntry type="library" name="javax.mail" level="project" />
+    <orderEntry type="library" name="mysql-connector" level="project" />
   </component>
 </module>
 

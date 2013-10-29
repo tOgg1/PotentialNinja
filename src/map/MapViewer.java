@@ -12,9 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.TreeMap;
-import java.util.Random;
 
 public class MapViewer extends MouseAdapter implements JMapViewerEventListener, MouseListener {
 
@@ -30,7 +28,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     private TreeMap<Integer, MapMarkerDot> dotId = null;
 
     //LinkedList to keep track of listeners
-    private LinkedList<MapViewerListener> listeners = null;
+    private ArrayList<MapViewerListener> listeners = null;
 
     private DecimalFormat df = null;
 
@@ -49,7 +47,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         mapDots = new ArrayList<MapMarkerDot>();
         mouseDotName = new ArrayList<String>();
         dotId = new TreeMap<Integer, MapMarkerDot>();
-        listeners = new LinkedList<MapViewerListener>();
+        listeners = new ArrayList<MapViewerListener>();
 
         //Sets the map type.
         map.setTileSource(new OsmTileSource.CycleMap());
@@ -63,32 +61,23 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         mapController.setMovementMouseButton(MouseEvent.BUTTON1);
         mapController.setDoubleClickZoomEnabled(false);
 
+        map.addMouseListener(new MapListener());
 
+    }
 
-        //Adds a mouse listener to capture mouse activity.
-        map.addMouseListener(
-                new MouseAdapter() {
-
-                    @Override
-                    /**
-                     * When user clicks left mouse button, this method will get the mouse position
-                     */
-                    public void mouseClicked(MouseEvent e) {
-                        if (e.getButton() == MouseEvent.BUTTON1) {
-                            Coordinate pos = map.getPosition(e.getX(), e.getY());
-                            mouseX = pos.getLat();
-                            mouseY = pos.getLon();
-                            setMouseDotName();
-                        }
-
-                    }
-
+    private class MapListener extends MouseAdapter{
+        public void mouseClicked(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                Coordinate pos = map.getPosition(e.getX(), e.getY());
+                mouseX = pos.getLat();
+                mouseY = pos.getLon();
+                for(MapViewerListener listen : listeners){
+                    listen.mapClicked(mouseX, mouseY);
                 }
-        );
+                setMouseDotName();
 
-        //MapDaemon daemon = new MapDaemon(25);
-        //daemon.start();
-
+            }
+        }
     }
 
     /**
@@ -198,7 +187,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
      */
     public static interface MapViewerListener{
         public void nodeClicked(NodeInfo n);
-        public void nodeDoubleClicked();
+        public void mapClicked(double x, double y);
     }
 
     /**
@@ -308,138 +297,5 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     public ArrayList<MapMarkerDot> getMapMarkers(){
         return this.mapDots;
     }
-
-    /**
-     * Generate random MapMarkers
-     */
-    private void testMapMarkers(){
-        Random r = new Random();
-
-        //Creates 10 random dots and adds them to the world map.
-        for (int i = 1; i<11; i++){
-            String name = "dot" + i;
-            double randomValue1 = 70*r.nextDouble();
-            double randomValue2 = 70*r.nextDouble();
-            addMarker(name, randomValue1, randomValue2,i);
-        }
-    }
-
-    class MapDaemon extends Thread{
-
-        double[] positions;
-        double[] velocities;
-        double[] accelerations;
-        String[] names;
-        public boolean running;
-        long counter;
-
-        public MapDaemon(int count){
-            Random ran = new Random();
-
-            positions = new double[2*count];
-            velocities = new double[2*count];
-            accelerations = new double[2*count];
-
-            names = new String[count];
-            for(int i = 0; i < 2*count; ++i){
-                names[i/2] = sheepNames[ran.nextInt(MapViewer.sheepNames.length)];
-                positions[i] = 63.391829 + ran.nextDouble() *0.08 - 0.04;
-                positions[++i] =  10.242294 + ran.nextDouble()*0.08 - 0.04;
-                velocities[i-1] = 5e-6*ran.nextDouble() - 2.5e-6;
-                velocities[i] = 5e-6*ran.nextDouble() - 2.5e-6;
-                accelerations[i-1] = 5e-8*ran.nextDouble() - 2.5e-8;
-                accelerations[i] = 5e-8*ran.nextDouble() - 2.5e-8;
-            }
-            running = true;
-            counter = 0;
-        }
-
-        @Override
-        public void run() {
-            Random ran = new Random();
-            while(running){
-
-                // Markers from 2 thousand and late
-                MapViewer.this.removeMarkers();
-                counter++;
-
-                // Newton integration is really cool
-                for(int i = 0; i < positions.length; ++i){
-                    MapViewer.this.addMarker(names[i/2], positions[i], positions[++i],i);
-                    positions[i-1] += velocities[i-1];
-                    positions[i] += velocities[i];
-                    velocities[i-1] += accelerations[i-1];
-                    velocities[i] += accelerations[i];
-                }
-
-                // Pseudo-Randomized acceleration for scientifically accurate sheep-like behaviour
-                if(counter % 100 == 0){
-                    for(int i = 0; i < positions.length; ++i){
-                        if(ran.nextInt(4) > 3){
-                            accelerations[++i-1] = 5e-8*ran.nextDouble() - 2.5e-8;
-                            accelerations[i] = 5e-8*ran.nextDouble() - 2.5e-8;
-                        }
-                    }
-                }
-
-                // Slow sheep down periodically, to avoid sheep throwing a fit
-                if((counter+10) % 100 == 0){
-                    for(int i = 0; i < positions.length; ++i){
-                        accelerations[++i-1] = -0.05*velocities[i-1];
-                        accelerations[i] = -0.05*velocities[i];
-                    }
-                }
-
-                try {
-                    Thread.sleep(1000/30);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
-        }
-    }
-
-    public static String[] sheepNames = {
-            "Stian the sheepminator",
-            "Sondre, sheep of doom",
-            "Nora, the sheepmother",
-            "Vigdis, sheep of trikom",
-            "Vilde, queen of sheeps",
-            "Tormod, sheep of sweat",
-            "Ragnar",
-            "Bjørnar",
-            "Gudrun",
-            "Arne",
-            "Simon",
-            "Huldra",
-            "Jørunn",
-            "Sigrid",
-            "Anders",
-            "Oddleif",
-            "Torleif",
-            "Thor",
-            "Gud",
-            "Jesus",
-            "Messias",
-            "Moses",
-            "Abraham",
-            "Paul",
-            "Isaac",
-            "Mordi",
-            "Sebastian",
-            "Fredrik",
-            "Frederik",
-            "Kristoffer",
-            "Mikkel",
-            "Nicolas",
-            "Nikolai",
-            "Bernt",
-            "Bjarne",
-            "Berit",
-            "Bertil",
-            "Martine",
-            "Marte",
-            "Judas"
-    };
 
 }

@@ -4,16 +4,16 @@
  */
 package  gui;
 
-import java.sql.SQLException;
-
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
 import map.MapViewer;
+import util.GeneralUtil;
 import util.Vec2;
 
-public class AddUser extends javax.swing.JFrame {
+import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
+
+public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerListener {
 
     /**
      * Creates new form AddUser
@@ -21,18 +21,26 @@ public class AddUser extends javax.swing.JFrame {
 	
 	private DatabaseHandler mHandler;
     private MapViewer map;
+
+    private JFrame previous;
+
+    private double farmX, farmY;
 	
 	public AddUser(JFrame previous, DatabaseHandler mHandler){
         map = new MapViewer();
         map.setMapCenter(new Vec2((float)63.44,(float)10.37));
     	initComponents();
-    	previous.dispose();
+    	this.previous = previous;
+        this.previous.setFocusable(false);
+        this.previous.setVisible(false);
     	this.mHandler = mHandler;
+        this.farmX = 0;
+        this.farmY = 0;
+        this.map.addListener(this);
     }
 		
     public AddUser() {
         initComponents();
-        
     }
     
     /**
@@ -244,23 +252,24 @@ public class AddUser extends javax.swing.JFrame {
         String mobilnr = jTextField2.getText();
         String email = jTextField5.getText();
         String accountname = jTextField1.getText();
-        String psw = jPasswordField1.getText();
-        String psw_G = jPasswordField2.getText();
+        String psw = GeneralUtil.charToString(jPasswordField1.getPassword());
+        String psw_G = GeneralUtil.charToString(jPasswordField2.getPassword());
         String farmerName = fornavn + etternavn;
-        int pos_x = 0;
-        int pos_y = 0;
-        
-        
+        double pos_x = this.farmX;
+        double pos_y = this.farmY;
+
         if (psw.equals(psw_G)){
         	int farmerID;
 			try {
-				farmerID = mHandler.createAccount(accountname, psw, farmerName, pos_x, pos_y);
+				farmerID = mHandler.createAccount(accountname, psw, farmerName, (float)pos_x, (float)pos_y);
 				mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
-			} catch (SQLException e) {
+                previous.setVisible(true);
+                previous.setFocusable(true);
+                this.dispose();
+            } catch (SQLException e) {
 				Error error = new Error(e.getMessage());
 				error.setVisible(true);
 			}
-        	
         }
         else{
         	Error error = new Error("Passordene er ikke like.");
@@ -275,9 +284,9 @@ public class AddUser extends javax.swing.JFrame {
      * Go back to Welcome
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-    	Welcome welcome = new Welcome(this, mHandler);
-        welcome.setVisible(true);
+        previous.setFocusable(true);
+    	previous.setVisible(true);
+        this.dispose();
     	
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -338,5 +347,21 @@ public class AddUser extends javax.swing.JFrame {
     private java.awt.Label label7;
     private java.awt.Label label8;
     private javax.swing.JPanel jPanel1;
+
+    @Override
+    public void nodeClicked(MapViewer.NodeInfo n) {
+      //Do nothing
+
+    }
+
+    @Override
+    public void mapClicked(double x, double y) {
+        System.out.println("Hello we clicked something at" + x + ", " + y);
+        this.farmX = x;
+        this.farmY = y;
+        this.map.removeMarkers();
+        this.map.addMarker(x,y, new Color(0x80, 0x80, 0x80));
+    }
+
     // End of variables declaration//GEN-END:variables
 }

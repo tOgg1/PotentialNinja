@@ -40,7 +40,9 @@ public class MainMenu extends javax.swing.JFrame {
             error.setVisible(true);
         }
         initComponents();
-        previous.dispose();
+
+        if(previous != null)
+            previous.dispose();
     }
 
 

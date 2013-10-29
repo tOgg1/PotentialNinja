@@ -11,10 +11,7 @@ import util.FlagData;
 
 import javax.swing.*;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class MainMenu extends javax.swing.JFrame {
 
@@ -388,6 +385,11 @@ public class MainMenu extends javax.swing.JFrame {
             textField2.setText("Noe rart har skjedd.");
         }
 
+        String datoSyk;
+        //String[] strings = { " " };
+
+        List<String> stringsArray = new ArrayList<String>();
+
         try {
             SheepMedicalHistory medhist = mHandler.getSheepMedicalHistory(sheepID);
             if (medhist == null){
@@ -399,32 +401,96 @@ public class MainMenu extends javax.swing.JFrame {
                 Set<Map.Entry<Long, Integer>> entries = treeHist.entrySet();
 
                 for(Map.Entry<Long, Integer> entry : entries){
-                    entry.getKey();
-                    entry.getValue();
+                    long dato = entry.getKey();
+                    int sykdom = entry.getValue();
+
+                    datoSyk = dato + "Blåtunge";
+                    System.out.println(datoSyk);
+
+                    if ((sykdom  & FlagData.BLATUNGE) > 0) {
+                        datoSyk = dato + ": Blåtunge";
+                        stringsArray.add(datoSyk);
+                    }
+
+                    if ((sykdom  & FlagData.DREKTIGHETSFORGIFTNING) > 0) {
+                        datoSyk = dato + ": Drektighetsforgiftning";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.HJERNEBARKSAR) > 0) {
+                        datoSyk = dato + ": Hjernebarksår";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.KLOSTIDIEINFEKSJONER) > 0) {
+                        datoSyk = dato + ": Klostrideinfeksjoner";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.KOLIINFEKSJON) > 0) {
+                        datoSyk = dato + ": Koliinfeksjon";
+                        stringsArray.add(datoSyk);
+                    }
+
+                    if ((sykdom  & FlagData.LEVERBETENNELSE) > 0) {
+                        datoSyk = dato + ": Leverbetennelse";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.LUNGEBETENNELSE) > 0) {
+                        datoSyk = dato + ": Lungebetennelse";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.MASTITT) > 0) {
+                        datoSyk = dato + ": Mastitt";
+                        stringsArray.add(datoSyk);
+                    }
+
+                    if ((sykdom  & FlagData.MUNNSKURV) > 0) {
+                        datoSyk = dato + ": Munnskurv";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.SJODOGG) > 0) {
+                        datoSyk = dato + ": Sjodogg";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.SKRAPESYKE) > 0) {
+                        datoSyk = dato + ": Skrapesyke";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.TROMMESYKE) > 0) {
+                        datoSyk = dato + ": Trommesyke";
+                        stringsArray.add(datoSyk);
+                    }
+
+                    if ((sykdom  & FlagData.OYESYKDOM) > 0) {
+                        datoSyk = dato + ": Øyesykdom";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.ANNET) > 0) {
+                        datoSyk = dato + ": Annet";
+                        stringsArray.add(datoSyk);
+                    }
+                    if ((sykdom  & FlagData.VAKSINE) > 0) {
+                        datoSyk = dato + ": Vaksine";
+                        stringsArray.add(datoSyk);
+                    }
+
                 }
 
+                final String[] finalStrings = new String[stringsArray.size()];
+                stringsArray.toArray(finalStrings);
+                jList1.setModel(new javax.swing.AbstractListModel() {
+                    public int getSize() { return finalStrings.length; }
+                    public Object getElementAt(int i) { return finalStrings[i]; }
+                });
+                jScrollPane3.setViewportView(jList1);
+                jScrollPane3.setVisible(false);
             }
         } catch (SQLException e) {
             Error error = new Error (e.getMessage());
             error.setVisible(true);
         }
 
-
         // vil ha det inn på formen "dato: sykdom"
 
         // TODO : legge inn elementene i String []
-
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "ITem6", "i", "i", "i" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(jList1);
-        jScrollPane3.setVisible(false);
-
-
-
     }
 
 

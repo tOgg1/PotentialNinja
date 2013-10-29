@@ -627,7 +627,8 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to TheChosenSheep
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	TheChosenSheep chosen = new TheChosenSheep(this, sheepName, mHandler, mRegister);
+        //TODO
+    	TheChosenSheep chosen = new TheChosenSheep(4, mHandler, mRegister);
     	chosen.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed

@@ -205,9 +205,11 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String sheepName;
         sheepName = jTextField1.getText();  //Hvilken sau som skal velges
+
+
         
-        TheChosenSheep chosen = new TheChosenSheep(this, sheepName, mHandler, mRegister);
-        chosen.setVisible(true);
+        /*TheChosenSheep chosen = new TheChosenSheep(this, sheepName, mHandler, mRegister);
+        chosen.setVisible(true);    */
 
         
         

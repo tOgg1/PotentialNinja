@@ -230,18 +230,6 @@ public class DatabaseHandler {
         return rs.getString("email");
     }
 
-    public Vec2 getFarmerPosition(int farmerid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT default_pos_x, default_pos_y FROM farmer WHERE id = ?");
-        query.setInt(1, farmerid);
-
-        ResultSet rs = query.executeQuery();
-
-        if(!rs.next())
-            return null;
-
-        return new Vec2(rs.getDouble("default_pos_x"), rs.getDouble("default_pos_y"));
-    }
-
     /**
      * Fetches all information about given farmers contact
      * @param id

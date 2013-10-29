@@ -205,13 +205,13 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public Object[] getFarmerInformation(int id) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT name, default_pos_x, default_pos_y FROM farmer WHERE id = ?");
+        PreparedStatement query = this.db.prepareStatement("SELECT name, email, number FROM farmer WHERE id = ?");
         query.setInt(1, id);
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
             return null;
-        return new Object[]{rs.getString("name"), rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y")};
+        return new Object[]{rs.getString("name"), rs.getString("email"), rs.getString("number")};
     }
 
     /**
@@ -228,6 +228,18 @@ public class DatabaseHandler {
         if(!rs.next())
             return null;
         return rs.getString("email");
+    }
+
+    public Vec2 getFarmerPosition(int farmerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT default_pos_x, default_pos_y FROM farmer WHERE id = ?");
+        query.setInt(1, farmerid);
+
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        return new Vec2(rs.getDouble("default_pos_x"), rs.getDouble("default_pos_y"));
     }
 
     /**

@@ -13,9 +13,11 @@ import util.FlagData;
 import util.Vec2;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class MainMenu extends javax.swing.JFrame {
 
@@ -47,6 +49,7 @@ public class MainMenu extends javax.swing.JFrame {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
             this.defPos = mHandler.getFarmerLocation(farmerID);
             this.mainMap.setMapCenter(this.defPos);
+            this.sheepMap.setMapCenter(this.defPos);
         } catch (SQLException e) {
             Error error = new Error (e.getMessage());
             error.setVisible(true);
@@ -151,27 +154,31 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        mainMap.getMap().setPreferredSize(new Dimension(400,500));
+        sheepMap.getMap().setPreferredSize(new Dimension(300,150));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 240, Short.MAX_VALUE)
+                        .addGap(0, 240, Short.MAX_VALUE).addComponent(mainMap.getMap())
         );
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 368, Short.MAX_VALUE)
+                        .addGap(0, 368, Short.MAX_VALUE).addComponent(mainMap.getMap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE).addComponent(sheepMap.getMap())
         );
         jPanel2Layout.setVerticalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 100, Short.MAX_VALUE)
+                        .addGap(0, 100, Short.MAX_VALUE).addComponent(sheepMap.getMap())
         );
+
 
 
         textField2.setEditable(false);
@@ -358,6 +365,8 @@ public class MainMenu extends javax.swing.JFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+
 
         pack();
     }// </editor-fold>

@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 public class MapSheeps
 {
+    private DatabaseHandler handler;
 	private Register register;
 	private ArrayList <Sheep> currentSheeps;
 	private int farmerId;
@@ -25,8 +26,9 @@ public class MapSheeps
 	
 	public MapSheeps(DatabaseHandler handler, Register register, int farmerId, final MapViewer map)
 	{
+        this.handler = handler;
 		this.register = register;
-		currentSheeps = new ArrayList<Sheep>();
+		this.currentSheeps = new ArrayList<Sheep>();
 
 		this.farmerId = farmerId;
         this.map = map;

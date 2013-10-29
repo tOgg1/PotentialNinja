@@ -89,15 +89,12 @@ public class MyPage extends javax.swing.JFrame {
         label1.setText("MinSide");
 
 
-        // TODO .setText();
-        String mfornavn = textField1.getText();
-        String metternavn = textField2.getText();
+        // TODO .setText() på disse:
         String mobilnr = textField3.getText();
         String email = textField4.getText();
         String gpsw = jPasswordField1.getText();
         String npsw = jPasswordField2.getText();
         String npswg = jPasswordField3.getText();
-        //String farmerName = mfornavn + metternavn;
 
         // Kontaktpersons-informasjon
         String kfornavn = textField5.getText();
@@ -105,7 +102,17 @@ public class MyPage extends javax.swing.JFrame {
         String kmobilnr = textField7.getText();
         String kemail = textField8.getText();
 
+        String username = null;
+        try {
+            username = mHandler.getFarmerUsername(farmerID);
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
+
         label15.setText("Brukernavn");
+        textField9.setText(username);
+
 
         Object[] farmer;
         try {
@@ -137,9 +144,22 @@ public class MyPage extends javax.swing.JFrame {
         label3.setText("Etternavn");
         textField2.setText(lastName);
 
+        String cellphone = (String) farmer[1];
+
         label4.setText("Mobilnummer");
+        textField3.setText(cellphone);
+
+        String mail = " ";
+
+        try {
+            mail = mHandler.getFarmerEmail(farmerID);
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
 
         label5.setText("E-post");
+        textField3.setText(mail);
 
         label6.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         label6.setText("Skriv inn evt. endringer og trykk \"Lagre endringer nederst\"");
@@ -350,7 +370,14 @@ public class MyPage extends javax.swing.JFrame {
         String npswg = charToString(jPasswordField3.getPassword());
         String farmerName = mfornavn + metternavn;
 
-        
+        try {
+            mHandler.setFarmerInformation(farmerID, account, farmerName, mobilnr, email);
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
+
+
         // Kontaktpersons-informasjon
         String kfornavn = textField5.getText();
         String ketternavn = textField6.getText();

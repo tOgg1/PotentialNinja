@@ -64,6 +64,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         mapController.setDoubleClickZoomEnabled(false);
 
 
+
         //Adds a mouse listener to capture mouse activity.
         map.addMouseListener(
                 new MouseAdapter() {

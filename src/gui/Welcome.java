@@ -186,7 +186,7 @@ public class Welcome extends javax.swing.JFrame {
         this.dispose();
 
        /* else {
-        	TheChosenSheep main = new TheChosenSheep(this, farmerID, mHandler);
+        	MainMenu main = new MainMenu(this, farmerID, mHandler);
         	main.setVisible(true);        	
         }
                             */

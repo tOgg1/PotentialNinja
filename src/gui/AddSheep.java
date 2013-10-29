@@ -20,18 +20,14 @@ public class AddSheep extends javax.swing.JFrame {
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
+    private int farmerID;
 	
-	public AddSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
-    	initComponents();
-    	previous.dispose();
-    	this.mHandler = mHandler;
-    	this.mRegister = mRegister;
-    }
-	
-    public AddSheep(DatabaseHandler mHandler, Register mRegister) {
-        initComponents();
+	public AddSheep(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.mHandler = mHandler;
         this.mRegister = mRegister;
+        this.farmerID = farmerID;
+        initComponents();
+    	previous.dispose();
     }
 
     public AddSheep() {
@@ -329,7 +325,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -337,7 +333,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MyPage from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-      	MyPage mypage = new MyPage(this, mHandler, mRegister);
+      	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -360,7 +356,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     	    	
     }//GEN-LAST:event_jButton2ActionPerformed

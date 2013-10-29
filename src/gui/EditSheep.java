@@ -9,7 +9,6 @@ import java.util.Date;
 
 import javax.swing.JFrame;
 
-import model.Sheep;
 import util.FlagData;
 import main.Register;
 import db.DatabaseHandler;
@@ -25,15 +24,17 @@ public class EditSheep extends javax.swing.JFrame {
 	private String sheepName;
     private int sheepID;
     private int healthflag1;
+    private int farmerID;
 	
     public EditSheep() {
         initComponents();
     }
     
-    public EditSheep(JFrame previous, String sheepName, DatabaseHandler mHandler, Register mRegister){
+    public EditSheep(JFrame previous, int farmerID, String sheepName, DatabaseHandler mHandler, Register mRegister){
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.sheepName = sheepName;
+        this.farmerID = farmerID;
 
         try {
             this.sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
@@ -624,11 +625,11 @@ public class EditSheep extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
-     * Go back to TheChosenSheep
+     * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //TODO
-    	TheChosenSheep chosen = new TheChosenSheep(4, mHandler, mRegister);
+    	MainMenu chosen = new MainMenu(farmerID, mHandler, mRegister);
     	chosen.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -645,7 +646,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to MyPage, from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	MyPage mypage = new MyPage(this, mHandler, mRegister);
+    	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -653,7 +654,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to ManMenu, from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

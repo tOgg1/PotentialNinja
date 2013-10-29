@@ -1,11 +1,9 @@
 package main;
 
 import db.DatabaseHandler;
-import map.MapSheeps;
-import map.MapViewer;
+import gui.MainMenu;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Test extends JFrame{
 
@@ -22,10 +20,10 @@ public class Test extends JFrame{
         //AddSheep addsheep = new AddSheep(handler, mRegister);
         //addsheep.setVisible(true);
 
-        /*TheChosenSheep chosenSheep = new TheChosenSheep("Tormod", handler, mRegister);
-        chosenSheep.setVisible(true); */
+        MainMenu chosenSheep = new MainMenu(4, handler, mRegister);
+        chosenSheep.setVisible(true);
 
-         MapViewer map = new MapViewer();
+         /*MapViewer map = new MapViewer();
 
         final MapSheeps mapSheep = new MapSheeps(handler, mRegister, farmerid, map);
 
@@ -54,6 +52,6 @@ public class Test extends JFrame{
 
         });
 
-        setVisible(true);
+        setVisible(true);  */
     }
 }

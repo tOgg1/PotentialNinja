@@ -19,21 +19,24 @@ public class MyPage extends javax.swing.JFrame {
 	
 	private DatabaseHandler mHandler;
 	private Register mRegister;
+    private int farmerID;
 	
     public MyPage() {
         initComponents();
     }
     
-    public MyPage(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    public MyPage(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
     	this.mHandler = mHandler;
     	this.mRegister = mRegister;
+        this.farmerID = farmerID;
         initComponents();
         previous.dispose();
     }
 
-    public MyPage(DatabaseHandler mHandler, Register mRegister){
+    public MyPage(int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.mHandler = mHandler;
         this.mRegister = mRegister;
+        this.farmerID = farmerID;
         initComponents();
     }
    
@@ -358,7 +361,7 @@ public class MyPage extends javax.swing.JFrame {
      * Go to MainMenu, from the Menu Bar
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

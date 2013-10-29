@@ -21,31 +21,20 @@ public class Dead extends javax.swing.JFrame {
 	private Register mRegister;
     private int sheepID;
     private String sheepName;
+    private int farmerID;
 	
     public Dead() {
         initComponents();
     }
 
-    public Dead (DatabaseHandler mHandler, Register mRegister){
-        initComponents();
-        sheepName = "42";
-        this.mHandler = mHandler;
-        this.mRegister = mRegister;
-        try {
-            sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
-        } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
-            error.setVisible(true);
-        }
 
-    }
-    
-    public Dead(JFrame previous, int sheepID, DatabaseHandler mHandler, Register mRegister){
+    public Dead(JFrame previous, int farmerID, int sheepID, DatabaseHandler mHandler, Register mRegister){
     	initComponents();
     	previous.dispose();
     	this.mHandler = mHandler;
     	this.mRegister = mRegister;
         this.sheepID = sheepID;
+        this.farmerID = farmerID;
     }
 
     /**
@@ -126,7 +115,7 @@ public class Dead extends javax.swing.JFrame {
      * Accept that the sheep is dead and goes back to the main-menu
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    	MainMenu main = new MainMenu(this, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     	
     }//GEN-LAST:event_jButton1ActionPerformed

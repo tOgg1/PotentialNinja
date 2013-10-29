@@ -59,7 +59,7 @@ public class Sheep
         this.name = name;
         this.pos = new Vec2(0,0);
 
-        if(sex == SEX_MALE || sex == SEX_FEMALE){
+        if(sex.equals(SEX_MALE) || sex.equals(SEX_FEMALE)){
             this.sex = sex;
         }else{
             this.sex = "f";

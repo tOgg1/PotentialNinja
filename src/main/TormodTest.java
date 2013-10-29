@@ -1,6 +1,7 @@
 package main;
 
 import db.DatabaseHandler;
+import model.Sheep;
 
 /**
  * STAY AWAY!!!!!!!!!!
@@ -9,11 +10,9 @@ public class TormodTest {
 
     public static void main(String[] args) throws Exception{
 
-        int sheepid = 9;
         DatabaseHandler handler = new DatabaseHandler();
-        handler.reviveSheep(9);
-
-        p(""+handler.isSheepDead(sheepid));
+        Sheep sheep = handler.getSheep(7);
+        p(""+sheep.getSex());
     }
 
     public static void p(String s){

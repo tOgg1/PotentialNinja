@@ -1,6 +1,8 @@
 package main;
 
 import db.DatabaseHandler;
+import gui.AddSheep;
+import gui.EditSheep;
 import gui.MainMenu;
 
 import javax.swing.*;
@@ -17,11 +19,14 @@ public class Test extends JFrame{
 
         Register mRegister = new Register(handler, farmerid);
 
-        //AddSheep addsheep = new AddSheep(handler, mRegister);
-        //addsheep.setVisible(true);
+        AddSheep addsheep = new AddSheep(farmerid, handler, mRegister);
+        addsheep.setVisible(true);
 
-        MainMenu chosenSheep = new MainMenu(4, handler, mRegister);
-        chosenSheep.setVisible(true);
+        //MainMenu chosenSheep = new MainMenu(4, handler, mRegister);
+        //chosenSheep.setVisible(true);
+
+        //EditSheep editSheep = new EditSheep("tormod", handler, mRegister);
+        //editSheep.setVisible(true);
 
          /*MapViewer map = new MapViewer();
 

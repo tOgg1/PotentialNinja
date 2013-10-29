@@ -20,7 +20,7 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
     private JMapViewer map = null;
 
     private int defaultZoom = 10;
-    private float mapCenterX, mapCenterY;
+    private double mapCenterX, mapCenterY;
 
     //ArrayList of all current dots.
     private ArrayList<MapMarkerDot> mapDots = null;

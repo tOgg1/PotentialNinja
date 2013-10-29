@@ -162,73 +162,17 @@ public class TheChosenSheep extends javax.swing.JFrame {
         textField3.setEditable(false);
 
         label3.setText("Fødselsdato");
-        /*try {
-            textField3.setText((new Date(mHandler.getSheep(sheepID).getBirthdate())).toString()); //Fødselsdatoen på sauen
-        } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
-            error.setVisible(true);
-        } */
 
         label4.setText("Kjønn");
 
         label4.setEnabled(false);
         label4.setVisible(false);
 
-        /*String sex = "Søye";
-        try {
-            sex = mHandler.getSheep(sheepID).getSex();
-        } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
-            error.setVisible(true);
-        }
-
-        if (sex.equals("m")){
-            textField2.setText("Vær");
-        }
-        else{
-            textField2.setText("Søye");
-        }
-                 */
         textField2.setEnabled(false);
         textField2.setVisible(false);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setText("Sykdomshistorie");
-
-        /* try {
-            SheepMedicalHistory medhist = mHandler.getSheepMedicalHistory(sheepID);
-            if (medhist == null){
-                // String [] =
-
-            }
-            else{
-                TreeMap<Long, Integer> treeHist = medhist.getHistory();
-                Set<Map.Entry<Long, Integer>> entries = treeHist.entrySet();
-
-                for(Map.Entry<Long, Integer> entry : entries){
-                    entry.getKey();
-                    entry.getValue();
-                }
-
-            }
-        } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
-            error.setVisible(true);
-        }
-
-
-        // vil ha det inn på formen "dato: sykdom"
-
-        // TODO : legge inn elementene i String []
-
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "ITem6", "i", "i", "i" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(jList1);
-        jScrollPane3.setVisible(false);    */
 
         jButton3.setText("Rediger");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -400,7 +344,13 @@ public class TheChosenSheep extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void info(String sName){
-        //TODO
+        try {
+            sheepID = mHandler.getSheepByName(sName, mRegister.getFarmerID()).getId();
+        } catch (SQLException e) {
+            Error error = new Error(e.getMessage());
+            error.setVisible(true);
+        }
+
         try {
             textField3.setText((new Date(mHandler.getSheep(sheepID).getBirthdate())).toString()); //Fødselsdatoen på sauen
         } catch (SQLException e) {
@@ -409,69 +359,6 @@ public class TheChosenSheep extends javax.swing.JFrame {
         }
 
 
-
-    }
-
-
-    private void initChosen() {
-        jButton3.setEnabled(true);
-        jButton3.setVisible(true);
-
-        jButton4.setEnabled(true);
-        jButton4.setVisible(true);
-
-        label4.setEnabled(true);
-        label4.setVisible(true);
-
-        textField2.setEnabled(true);
-        textField2.setVisible(true);
-
-        label3.setEnabled(true);
-        label3.setVisible(true);
-
-        textField3.setEnabled(true);
-        textField3.setVisible(true);
-
-        jLabel1.setEnabled(true);
-        jLabel1.setVisible(true);
-
-        jList1.setEnabled(true);
-        jList1.setVisible(true);
-
-        jScrollPane3.setVisible(true);
-
-        pack();
-    }
-
-    /**
-     * Exits the program, from the Menu Bar
-     */
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    /**
-     * Starts new window with AddSheep
-     */
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	AddSheep addSheep = new AddSheep(this, mHandler, mRegister);
-    	addSheep.setVisible(true);
-    	
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    /**
-     * Starts TheChosenSheep with the ID of the other sheep
-     */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //TODO
-    	sheepName = jTextField1.getText();  //Hvilken sau som skal velges
-
-        try {
-            sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
-        } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
-            error.setVisible(true);
-        }
         try {
             mHandler.getSheepMedicalHistory(sheepID);
         } catch (SQLException e) {
@@ -532,11 +419,64 @@ public class TheChosenSheep extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jList1);
         jScrollPane3.setVisible(false);
 
+
+
+    }
+
+
+    private void initChosen() {
+        jButton3.setEnabled(true);
+        jButton3.setVisible(true);
+
+        jButton4.setEnabled(true);
+        jButton4.setVisible(true);
+
+        label4.setEnabled(true);
+        label4.setVisible(true);
+
+        textField2.setEnabled(true);
+        textField2.setVisible(true);
+
+        label3.setEnabled(true);
+        label3.setVisible(true);
+
+        textField3.setEnabled(true);
+        textField3.setVisible(true);
+
+        jLabel1.setEnabled(true);
+        jLabel1.setVisible(true);
+
+        jList1.setEnabled(true);
+        jList1.setVisible(true);
+
+        jScrollPane3.setVisible(true);
+
+        pack();
+    }
+
+    /**
+     * Exits the program, from the Menu Bar
+     */
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    /**
+     * Starts new window with AddSheep
+     */
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    	AddSheep addSheep = new AddSheep(this, mHandler, mRegister);
+    	addSheep.setVisible(true);
+    	
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * Starts TheChosenSheep with the ID of the other sheep
+     */
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    	sheepName = jTextField1.getText();  //Hvilken sau som skal velges
         info(sheepName);
         initChosen();
-
-       // TheChosenSheep TheChosenSheep = new TheChosenSheep (this, sheepName, mHandler, mRegister);
-        //TheChosenSheep.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

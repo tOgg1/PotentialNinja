@@ -113,13 +113,13 @@ public class DatabaseHandler {
      * @param pos_y
      * @param farmerid
      */
-    public void addSheep(String name, long birthdate, int healthflags, float pos_x, float pos_y, String sex, int farmerid) throws SQLException{
+    public void addSheep(String name, long birthdate, int healthflags, double pos_x, double pos_y, String sex, int farmerid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?,?)");
         query.setString(1, name);
         query.setLong(2, birthdate);
         query.setInt(3, healthflags);
-        query.setFloat(4, pos_x);
-        query.setFloat(5, pos_y);
+        query.setDouble(4, pos_x);
+        query.setDouble(5, pos_y);
         query.setInt(6, farmerid);
         query.setString(7, sex);
         query.setBoolean(8, true);
@@ -175,14 +175,14 @@ public class DatabaseHandler {
      * @param pos_y
      * @return
      */
-    public int createAccount(String accountname, String password, String farmerName, float pos_x, float pos_y) throws SQLException{
+    public int createAccount(String accountname, String password, String farmerName, double pos_x, double pos_y) throws SQLException{
         try {
             int id = getNextAutoIncrement("farmer", "id");
 
             PreparedStatement query = this.db.prepareStatement("INSERT INTO farmer(name, default_pos_x, default_pos_y) VALUES (?,?,?)");
             query.setString(1, farmerName);
-            query.setFloat(2, pos_x);
-            query.setFloat(3, pos_y);
+            query.setDouble(2, pos_x);
+            query.setDouble(3, pos_y);
             query.executeUpdate();
 
             query = this.db.prepareStatement("INSERT INTO user(id, username, password) VALUES (?,?,?)");
@@ -246,6 +246,24 @@ public class DatabaseHandler {
         return new Object[]{rs.getString("name"), rs.getString("number"), rs.getString("email")};
     }
 
+
+    /**
+     * Gets farmers username
+     * @param farmerid
+     * @return Returns null if no username for given farmerid is found
+     * @throws SQLException
+     */
+    public String getFarmerUsername(int farmerid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT username FROM user WHERE farmerid = ?");
+        query.setInt(1, farmerid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        return rs.getString("username");
+    }
+
     /**
      * Set farmers contact
      * @param name
@@ -266,6 +284,30 @@ public class DatabaseHandler {
         query.setInt(2, farmerID);
         query.executeUpdate();
         updateState();
+    }
+
+    /**
+     *
+     * @param farmerid
+     * @param username
+     * @param name
+     * @param number
+     * @param email
+     * @throws SQLException
+     */
+    public void setFarmerInformation(int farmerid, String username, String name, String number, String email)throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE farmer SET name = ?, number = ?, email = ? WHERE id = ? ");
+        query.setString(1, name);
+        query.setString(2, number);
+        query.setString(3, email);
+        query.setInt(4, farmerid);
+        query.executeUpdate();
+
+
+        query = this.db.prepareStatement("UPDATE user SET username = ? WHERE farmerid = ?");
+        query.setString(1, username);
+        query.setInt(2, farmerid);
+        query.executeUpdate();
     }
 
     /**
@@ -613,10 +655,10 @@ public class DatabaseHandler {
             return null;
 
         TreeMap<Long, Vec2> posHistory = new TreeMap<Long, Vec2>();
-        posHistory.put(rs.getLong("timestamp"), new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+        posHistory.put(rs.getLong("timestamp"), new Vec2(rs.getDouble("pos_x"), rs.getDouble("pos_y")));
 
         while(rs.next()){
-            posHistory.put(rs.getLong("timestamp"), new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y")));
+            posHistory.put(rs.getLong("timestamp"), new Vec2(rs.getDouble("pos_x"), rs.getDouble("pos_y")));
         }
         return new SheepHistory(posHistory, sheepid);
     }
@@ -668,7 +710,7 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-        return new Vec2(rs.getFloat("pos_x"), rs.getFloat("pos_y"));
+        return new Vec2(rs.getDouble("pos_x"), rs.getDouble("pos_y"));
     }
 
     /**

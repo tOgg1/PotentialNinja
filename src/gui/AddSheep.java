@@ -31,6 +31,13 @@ public class AddSheep extends javax.swing.JFrame {
     	previous.dispose();
     }
 
+    public AddSheep(int farmerID, DatabaseHandler mHandler, Register mRegister){
+        this.mHandler = mHandler;
+        this.mRegister = mRegister;
+        this.farmerID = farmerID;
+        initComponents();
+    }
+
     public AddSheep() {
         initComponents();
     }
@@ -56,6 +63,7 @@ public class AddSheep extends javax.swing.JFrame {
         label3 = new java.awt.Label();
         label5 = new java.awt.Label();
         label6 = new java.awt.Label();
+        label2 = new java.awt.Label();
         checkbox7 = new java.awt.Checkbox();
         checkbox15 = new java.awt.Checkbox();
         checkbox1 = new java.awt.Checkbox();
@@ -103,6 +111,8 @@ public class AddSheep extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Vær");
+
+        label2.setText("Format: mm/dd/åååå");
 
         checkbox7.setLabel("Blåtunge");
 
@@ -247,11 +257,14 @@ public class AddSheep extends javax.swing.JFrame {
                                                                 .addGap(71, 71, 71)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addComponent(jRadioButton2)
-                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addGroup(layout.createSequentialGroup()
-                                                                                        .addComponent(jRadioButton1)
-                                                                                        .addGap(145, 145, 145)))))
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                        .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                                .addComponent(jRadioButton1)
+                                                                                                .addGap(145, 145, 145)))
+                                                                                .addGap(25, 25, 25)
+                                                                                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -267,7 +280,8 @@ public class AddSheep extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(textField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(label6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -515,6 +529,7 @@ public class AddSheep extends javax.swing.JFrame {
     private java.awt.Label label4;
     private java.awt.Label label5;
     private java.awt.Label label6;
+    private java.awt.Label label2;
     private java.awt.TextField textField1;
     private java.awt.TextField textField3;
     private javax.swing.JTextField jTextField1;

@@ -88,8 +88,6 @@ public class MyPage extends javax.swing.JFrame {
         label1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label1.setText("MinSide");
 
-
-        // TODO .setText() på disse:
         String mobilnr = textField3.getText();
         String email = textField4.getText();
         String gpsw = jPasswordField1.getText();
@@ -358,7 +356,6 @@ public class MyPage extends javax.swing.JFrame {
      * Accept the new information about the user and his/her contact person and save it
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         //Bondens informasjon
         String account = textField9.getText();
         String mfornavn = textField1.getText();

@@ -246,7 +246,6 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
      * Saves the information given in the textFields and the PasswordFields to a user
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
     	String fornavn = jTextField4.getText();
         String etternavn = jTextField3.getText();
         String mobilnr = jTextField2.getText();

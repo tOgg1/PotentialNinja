@@ -649,7 +649,6 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //TODO
     	MainMenu chosen = new MainMenu(farmerID, mHandler, mRegister);
     	chosen.setVisible(true);
     	

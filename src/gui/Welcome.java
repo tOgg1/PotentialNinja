@@ -171,7 +171,6 @@ public class Welcome extends javax.swing.JFrame {
      * Logs in to the program if username and password is correct
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here: - getText er deprecated fordi det er usikkert å legge dette over i poolen, kan bruke getPassword, men det vil gi en char
         String account = textField1.getText();
         String password = GeneralUtil.charToString(jPasswordField1.getPassword());
 

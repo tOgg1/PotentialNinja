@@ -437,8 +437,6 @@ public class EditSheep extends javax.swing.JFrame {
             error.setVisible(true);
         }
 
-
-
         int healthflag = 0;
         
         healthflag |= checkbox7.getState() == true ? FlagData.BLATUNGE : 0;

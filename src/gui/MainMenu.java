@@ -6,8 +6,11 @@ package gui;
 
 import db.DatabaseHandler;
 import main.Register;
+import map.MapSheeps;
+import map.MapViewer;
 import model.SheepMedicalHistory;
 import util.FlagData;
+import util.Vec2;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -27,16 +30,28 @@ public class MainMenu extends javax.swing.JFrame {
     private String bonde;
     private int farmedID;
 
+    private Vec2 defPos;
+
+    private MapSheeps mapLogic;
+    private MapViewer mainMap;
+    private MapViewer sheepMap;
+
     public MainMenu(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.mHandler = mHandler;
         this.mRegister = mRegister;
+        this.mainMap = new MapViewer();
+        this.sheepMap = new MapViewer();
+        this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
         this.farmedID = farmerID;
         try {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+            this.defPos = mHandler.getFarmerLocation(farmerID);
+            this.mainMap.setMapCenter(this.defPos);
         } catch (SQLException e) {
             Error error = new Error (e.getMessage());
             error.setVisible(true);
         }
+
         initComponents();
 
         if(previous != null)
@@ -47,6 +62,8 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu(int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.mHandler = mHandler;
         this.mRegister = mRegister;
+        this.mainMap = new MapViewer();
+        this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
         try {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
         } catch (SQLException e) {

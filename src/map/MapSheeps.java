@@ -37,28 +37,27 @@ public class MapSheeps
         setCurrentSheepPositions();
         //setHistoricSheepPosition(9);
 
-        map.addListener(new MapViewer.MapViewerListener() {
-            @Override
-            public void nodeClicked(MapViewer.NodeInfo n) {
-                mapMarkers = map.getMapMarkers();
-                dotTreeMap = map.getDotId();
-
-                for(MapMarkerDot d : mapMarkers){
-                    if(n.getDot() == d ){
-                        MapListenerSheepId = getKeyByValue(dotTreeMap, d);
-                    }
-                }
-
-            }
-
-            @Override
-            public void nodeDoubleClicked() {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-        });
+        map.addListener(new MapSheepsListener());
 	}
 
+    private class MapSheepsListener implements MapViewer.MapViewerListener{
+        @Override
+        public void nodeClicked(MapViewer.NodeInfo n) {
+            mapMarkers = map.getMapMarkers();
+            dotTreeMap = map.getDotId();
+
+            for(MapMarkerDot d : mapMarkers){
+                if(n.getDot() == d ){
+                    MapListenerSheepId = getKeyByValue(dotTreeMap, d);
+                }
+            }
+        }
+
+        @Override
+        public void mapClicked(double x, double y) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+    }
 
     /**
      * Helper function to get sheepID.
@@ -94,7 +93,7 @@ public class MapSheeps
     public void setCurrentSheepPositions(){
         map.removeMarkers();
 
-        float lat, lon;
+        double lat, lon;
         int counter = 0;
         ArrayList<Vec2> positions = register.getSheepPositions();
 
@@ -113,7 +112,7 @@ public class MapSheeps
     public void setHistoricSheepPosition(int sheepid){
         map.removeMarkers();
 
-        float lat, lon;
+        double lat, lon;
         Color color = null;
 
         SheepHistory history = register.getSheepHistory(sheepid);

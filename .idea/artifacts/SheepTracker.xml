@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SheepTracker">
+    <output-path>$PROJECT_DIR$/out/artifacts/SheepTracker</output-path>
+    <root id="archive" name="SheepTracker.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/JMapViewer_29618.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/jsch-0.1.50.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/mysql-connector.jar" path-in-jar="/" />
+      <element id="module-output" name="PotentialNinja" />
+    </root>
+  </artifact>
+</component>

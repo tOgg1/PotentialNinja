@@ -11,7 +11,6 @@ import util.PotentialNinjaException;
 */
 public class Main {
 
-
     private Register mRegister;
     private DatabaseHandler mHandler;
 
@@ -31,7 +30,6 @@ public class Main {
             this.mHandler = new DatabaseHandler();
             Welcome welcome = new Welcome(this, this.mHandler);
             welcome.setVisible(true);
-
         }
         catch(Exception f){
             f.printStackTrace();
@@ -40,7 +38,7 @@ public class Main {
     }
 
     public void run(int farmerid){
-        Register mRegister = new Register(mHandler, farmerid);
+        mRegister = new Register(mHandler, farmerid);
         MainMenu mainWindow = new MainMenu(null, mHandler, mRegister);
         mainWindow.setVisible(true);
 

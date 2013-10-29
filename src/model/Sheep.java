@@ -1,5 +1,7 @@
 package model;
 
+import util.Vec2;
+
 public class Sheep
 {
     public final static String SEX_MALE = "m";
@@ -17,6 +19,8 @@ public class Sheep
     int pulse;
     String sex;
     String name;
+    Vec2 pos;
+
 
     SheepHistory posHistory;
     SheepMedicalHistory medicalHistory;
@@ -53,6 +57,7 @@ public class Sheep
         this.healthflags = healthflags;
         this.birthdate = birthdate;
         this.name = name;
+        this.pos = new Vec2(0,0);
 
         if(sex == SEX_MALE || sex == SEX_FEMALE){
             this.sex = sex;
@@ -71,12 +76,66 @@ public class Sheep
         this.birthdate = birthdate;
         this.name = name;
         this.pulse = pulse;
+        this.pos = new Vec2(0,0);
 
         if(sex == SEX_MALE || sex == SEX_FEMALE){
             this.sex = sex;
         }else{
             this.sex = "f";
         }
+    }
+
+    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, float pos_x, float pos_y, int pulse, String name, String sex) {
+        //this.age = age;
+        this.id = id;
+        this.mileage = mileage;
+        this.farmerid = farmerid;
+        this.healthflags = healthflags;
+        this.birthdate = birthdate;
+        this.name = name;
+        this.pulse = pulse;
+        this.pos = new Vec2(pos_x, pos_y);
+
+        if(sex == SEX_MALE || sex == SEX_FEMALE){
+            this.sex = sex;
+        }else{
+            this.sex = "f";
+        }
+    }
+
+    public Sheep(int id, long birthdate, int healthflags, int mileage, int farmerid, float pos_x, float pos_y, String name, String sex) {
+        //this.age = age;
+        this.id = id;
+        this.mileage = mileage;
+        this.farmerid = farmerid;
+        this.healthflags = healthflags;
+        this.birthdate = birthdate;
+        this.name = name;
+        this.pulse = 0;
+        this.pos = new Vec2(pos_x, pos_y);
+
+        if(sex == SEX_MALE || sex == SEX_FEMALE){
+            this.sex = sex;
+        }else{
+            this.sex = "f";
+        }
+    }
+
+
+    public Vec2 getPos() {
+        return pos;
+    }
+
+    public void setPos(Vec2 pos) {
+        this.pos = pos;
+    }
+
+    public int getPulse() {
+        return pulse;
+    }
+
+    public void setPulse(int pulse) {
+        this.pulse = pulse;
     }
 
     public boolean hasFlag(int flag){

@@ -5,7 +5,6 @@ import model.Alarm;
 import model.Sheep;
 import model.SheepHistory;
 import model.SheepMedicalHistory;
-import util.FlagData;
 import util.Log;
 import util.Vec2;
 
@@ -147,6 +146,11 @@ public class DatabaseHandler {
         query.executeUpdate();
         updateState();
     }
+
+    public void addSheep(Sheep sheep)throws SQLException{
+        this.addSheep(sheep.getName(), sheep.getBirthdate(), sheep.getHealthflags(), sheep.getPos().x, sheep.getPos().y, sheep.getSex(), sheep.getFarmerid());
+    }
+
 
     /**
      * Adds an alarm to the database
@@ -307,9 +311,11 @@ public class DatabaseHandler {
         PreparedStatement query = this.db.prepareStatement("SELECT alive FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
+
         if(!rs.next())
-            throw new SQLException("Cant find sheep");
-        return !rs.getBoolean(1);
+            return false;
+        return !rs.getBoolean("alive");
+
     }
 
     /**
@@ -319,6 +325,12 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public boolean killSheep(int sheepid, int cause) throws SQLException{
+
+        if(isSheepDead(sheepid))
+            return true;
+
+        Sheep sheep = this.getSheep(sheepid);
+        Vec2 pos = this.getSheepPosition(sheepid);
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET alive = ? WHERE id = ?");
         query.setBoolean(1, false);
         query.setInt(2, sheepid);
@@ -332,8 +344,6 @@ public class DatabaseHandler {
         query.setLong(2, (new Date()).getTime());
         query.setInt(3, cause);
         query.executeUpdate();
-        addAlarm(sheepid, FlagData.ALARMDEATH);
-        updateState();
         return true;
     }
 
@@ -351,7 +361,7 @@ public class DatabaseHandler {
 
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET alive = ? WHERE id = ?");
         query.setBoolean(1, true);
-        query.setInt(2, sheepid);
+        query.setInt(2,sheepid);
 
         if(!(query.executeUpdate() > 0)){
             return false;

@@ -115,6 +115,10 @@ public class Register {
      * @return
      */
     public ArrayList<Sheep> getAllFarmerSheeps(){
+        if(this.activeSheeps == null)
+        {
+            return new ArrayList<Sheep>();
+        }
         ArrayList<Sheep> farmerSheeps = new ArrayList<Sheep>();
 
         for(Sheep s : this.activeSheeps){
@@ -176,7 +180,7 @@ public class Register {
      */
     public Vec2 getFarmerPosition(){
         try{
-            return  mHandler.getFarmerLocation(this.farmerID);
+            return mHandler.getFarmerLocation(this.farmerID);
         }   catch (SQLException e){
             e.printStackTrace();
         }

@@ -40,7 +40,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
      * Constructor
      */
     public MapViewer(){
-
         treeMap = new JMapViewerTree("Zones");
         map = this.getMap();
 
@@ -62,7 +61,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         mapController.setDoubleClickZoomEnabled(false);
 
         map.addMouseListener(new MapListener());
-
     }
 
     private class MapListener extends MouseAdapter{

@@ -7,6 +7,7 @@ package gui;
 import db.DatabaseHandler;
 import main.Main;
 import util.GeneralUtil;
+import util.Log;
 
 import javax.swing.*;
 
@@ -179,8 +180,8 @@ public class Welcome extends javax.swing.JFrame {
         if((farmerID = mHandler.authenticate(account, password)) == -1){
             jTextField1.setText("Feil brukernavn eller passord er skrevet inn. Prøv på nytt.");
         }else{
+            Log.d("GUI", "Farmerid: " + farmerID);
             main.run(farmerID);
-
         }
 
         this.dispose();

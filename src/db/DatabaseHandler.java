@@ -185,10 +185,10 @@ public class DatabaseHandler {
             query.setDouble(3, pos_y);
             query.executeUpdate();
 
-            query = this.db.prepareStatement("INSERT INTO user(id, username, password) VALUES (?,?,?)");
-            query.setInt(1, id);
-            query.setString(2, accountname);
-            query.setString(3, encryptPassword(password));
+            query = this.db.prepareStatement("INSERT INTO user(username, password, farmerid) VALUES (?,?,?)");
+            query.setString(1, accountname);
+            query.setString(2, encryptPassword(password));
+            query.setInt(3, id);
             query.executeUpdate();
             updateState();
             return id;
@@ -208,6 +208,8 @@ public class DatabaseHandler {
         PreparedStatement query = this.db.prepareStatement("SELECT name, email, number FROM farmer WHERE id = ?");
         query.setInt(1, id);
         ResultSet rs = query.executeQuery();
+
+        Log.d("Database", "Getting farmer information");
 
         if(!rs.next())
             return null;
@@ -736,7 +738,7 @@ public class DatabaseHandler {
      * @param posY
      * @throws SQLException
      */
-    public void setSheepPosition(int sheepid, float posX, float posY) throws SQLException{
+    public void setSheepPosition(int sheepid, double posX, double posY) throws SQLException{
         //Get current position
         PreparedStatement query = this.db.prepareStatement("SELECT pos_x, pos_y FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
@@ -761,8 +763,8 @@ public class DatabaseHandler {
 
         //Set new position
         query = this.db.prepareStatement("UPDATE sheep SET pos_x = ?, pos_y = ? WHERE id = ?");
-        query.setFloat(1, posX);
-        query.setFloat(2, posY);
+        query.setDouble(1, posX);
+        query.setDouble(2, posY);
         query.setInt(3, sheepid);
         query.executeUpdate();
         updateState();

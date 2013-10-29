@@ -12,6 +12,7 @@ import model.Sheep;
 import model.SheepMedicalHistory;
 import util.FlagData;
 import util.GeneralUtil;
+import util.Log;
 import util.Vec2;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 	private String sheepName;
     private int sheepID;
     private String bonde;
-    private int farmedID;
+    private int farmerID;
 
     private Vec2 defPos;
 
@@ -47,13 +48,15 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.sheepMap = new MapViewer();
         this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
         this.mainMap.addListener(this);
-        this.farmedID = farmerID;
+        this.farmerID = farmerID;
         try {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
             this.defPos = mHandler.getFarmerLocation(farmerID);
+            Log.d("GUI", "Farmerid: " + this.farmerID);
+            Log.d("GUI", "DefaultPos: " + this.defPos.x + ", " + this.defPos.y);
             this.mainMap.setMapCenter(this.defPos);
             this.sheepMap.setMapCenter(this.defPos);
-        } catch (SQLException e) {
+        }catch (SQLException e){
             Error error = new Error (e.getMessage());
             error.setVisible(true);
         }
@@ -72,6 +75,10 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
         try {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+            this.defPos = mHandler.getFarmerLocation(farmerID);
+            Log.d("GUI", "DefaultPos: " + this.defPos.x +", " + this.defPos.y);
+            this.mainMap.setMapCenter(this.defPos);
+            this.sheepMap.setMapCenter(this.defPos);
         } catch (SQLException e) {
             Error error = new Error (e.getMessage());
             error.setVisible(true);
@@ -96,7 +103,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mRegister = mRegister;
         initComponents();
 
-    }      */
+    }*/
         
 
     /**
@@ -181,8 +188,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGap(0, 100, Short.MAX_VALUE).addComponent(sheepMap.getMap())
         );
-
-
 
         textField2.setEditable(false);
         
@@ -609,7 +614,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Starts new window with AddSheep
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	AddSheep addSheep = new AddSheep(this, farmedID, mHandler, mRegister);
+    	AddSheep addSheep = new AddSheep(this, farmerID, mHandler, mRegister);
     	addSheep.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -628,7 +633,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Starts a new window where the farmer can edit the information about the sheep
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    	EditSheep editSheep = new EditSheep(this, farmedID, sheepName, mHandler, mRegister);
+    	EditSheep editSheep = new EditSheep(this, farmerID, sheepName, mHandler, mRegister);
     	editSheep.setVisible(true);
     	
     	
@@ -642,7 +647,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         int cause = FlagData.DEATHBYEXECUTION;
         try {
             mHandler.killSheep(sheepID, cause);
-            Dead dead = new Dead(this, farmedID, sheepID, mHandler, mRegister);
+            Dead dead = new Dead(this, farmerID, sheepID, mHandler, mRegister);
             dead.setVisible(true);
 
         } catch (SQLException e) {
@@ -665,7 +670,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Go to MyPage, from the MenuBar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MyPage mypage = new MyPage(this, farmedID, mHandler, mRegister);
+    	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

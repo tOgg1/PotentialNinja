@@ -96,6 +96,7 @@ public class Welcome extends javax.swing.JFrame {
 
         jTextField1.setBackground(new java.awt.Color(240, 240, 240));
         jTextField1.setBorder(null);
+        jTextField1.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

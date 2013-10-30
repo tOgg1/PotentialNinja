@@ -44,7 +44,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private MapViewer mainMap;
     private MapViewer sheepMap;
 
-    public MainMenu(Main main, JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.main = main;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
@@ -72,7 +72,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     }
 
 
-    public MainMenu(Main main, int farmerID, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.main = main;
         this.mHandler = mHandler;
         this.mRegister = mRegister;

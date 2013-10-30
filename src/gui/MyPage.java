@@ -8,10 +8,13 @@ import javax.swing.JFrame;
 
 import main.Register;
 import db.DatabaseHandler;
+import map.MapViewer;
+import util.GeneralUtil;
+import util.Vec2;
 
 import java.sql.SQLException;
 
-public class MyPage extends javax.swing.JFrame {
+public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerListener{
 
     /**
      * Creates new form MyPage
@@ -20,16 +23,27 @@ public class MyPage extends javax.swing.JFrame {
 	private DatabaseHandler mHandler;
 	private Register mRegister;
     private int farmerID;
+    private MapViewer map;
+    private JFrame previous;
+    private double farmX, farmY;
 	
     public MyPage() {
         initComponents();
     }
     
     public MyPage(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
-    	this.mHandler = mHandler;
+        map = new MapViewer();
+        map.setMapCenter(new Vec2((float)63.44,(float)10.37));
     	this.mRegister = mRegister;
         this.farmerID = farmerID;
+    	this.mHandler = mHandler;
         initComponents();
+        this.previous = previous;
+        this.previous.setFocusable(false);
+        this.previous.setVisible(false);
+        this.farmX = 0;
+        this.farmY = 0;
+        this.map.addListener(this);
         previous.dispose();
     }
 
@@ -100,7 +114,7 @@ public class MyPage extends javax.swing.JFrame {
         String kmobilnr = textField7.getText();
         String kemail = textField8.getText();
 
-        String username = null;
+        String username = "";
         try {
             username = mHandler.getFarmerUsername(farmerID);
         } catch (SQLException e) {
@@ -271,6 +285,7 @@ public class MyPage extends javax.swing.JFrame {
                                                         .addComponent(textField6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(textField7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(textField8, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addComponent(map.getMap(), javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
@@ -293,6 +308,7 @@ public class MyPage extends javax.swing.JFrame {
                                         .addComponent(textField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(map.getMap(), javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
@@ -423,7 +439,7 @@ public class MyPage extends javax.swing.JFrame {
      * Go to MainMenu, from the Menu Bar
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
+    	MainMenu main = new MainMenu(farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -504,5 +520,19 @@ public class MyPage extends javax.swing.JFrame {
     private java.awt.TextField textField7;
     private java.awt.TextField textField8;
     private java.awt.TextField textField9;
+
+    @Override
+    public void nodeClicked(MapViewer.NodeInfo n) {
+        //Do nothing
+    }
+
+    @Override
+    public void mapClicked(double x, double y) {
+        System.out.println("Hello we clicked something at" + x + ", " + y);
+        this.farmX = x;
+        this.farmY = y;
+        this.map.removeMarkers();
+        this.map.addMarker(x,y, GeneralUtil.farmColor);
+    }
     // End of variables declaration//GEN-END:variables
 }

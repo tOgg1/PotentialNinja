@@ -43,7 +43,7 @@ public class Main {
 
     public void run(int farmerid){
         mRegister = new Register(mHandler, farmerid);
-        MainMenu mainWindow = new MainMenu(this, null, farmerid, mHandler, mRegister);
+        MainMenu mainWindow = new MainMenu(null, farmerid, mHandler, mRegister);
         mainWindow.setVisible(true);
 
     }

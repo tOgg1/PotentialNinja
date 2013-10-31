@@ -36,8 +36,6 @@ public class MapSheeps
         this.map.setMapCenter(getFarmerCenter());
 
 		setSheeps();
-        setCurrentSheepPositions();
-        //setHistoricSheepPosition(9);
 
         map.addListener(new MapSheepsListener());
 	}

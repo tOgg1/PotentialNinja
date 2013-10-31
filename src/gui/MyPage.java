@@ -11,6 +11,7 @@ import util.GeneralUtil;
 import util.Vec2;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 
 public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerListener{
@@ -97,6 +98,8 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        map.getMap().setPreferredSize(new Dimension(200,200));
 
         label1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label1.setText("MinSide");
@@ -308,7 +311,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
                                                                 .addComponent(textField6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                 .addComponent(textField7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                 .addComponent(textField8, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addComponent(map.getMap(), javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addComponent(jLabel1))
                                 .addGap(20, 20, 20))
         );
@@ -346,7 +349,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jLabel1)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(map.getMap(), javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(10, 10, 10)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)

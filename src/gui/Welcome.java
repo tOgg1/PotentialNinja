@@ -182,16 +182,8 @@ public class Welcome extends javax.swing.JFrame {
             Log.d("GUI", "Farmerid: " + farmerID);
             main.run(farmerID, this);
         }
-
-        this.dispose();
-
-       /* else {
-        	MainMenu main = new MainMenu(this, farmerID, mHandler);
-        	main.setVisible(true);        	
-        }
-                            */
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+          this.dispose();
+    }
 
     /**
      * Opens a new window where the user can write userinfo to get back the username and password

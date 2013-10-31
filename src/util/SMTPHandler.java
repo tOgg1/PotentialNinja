@@ -21,10 +21,6 @@ public class SMTPHandler {
     private static boolean debug = false;
     private static boolean readyToGo;
 
-    public SMTPHandler(boolean lol){
-
-    }
-
     public SMTPHandler(String email_account, String email_password, int email_password_factory){
         this.email_account = email_account;
         this.email_password = email_password;
@@ -77,10 +73,10 @@ public class SMTPHandler {
             return false;
         Properties properties;
         properties = System.getProperties();
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", port);
-        properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(properties, new Authenticator(){
             @Override
@@ -96,7 +92,7 @@ public class SMTPHandler {
             mailMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email_to));
             mailMessage.setSubject(message_subject);
             mailMessage.setSentDate(new Date());
-            mailMessage.setText(message_content);
+            mailMessage.setContent(message_content, "text/html; charset=utf-8");
             Transport.send(mailMessage);
             return true;
         } catch(MessagingException e){

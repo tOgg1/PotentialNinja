@@ -5,22 +5,25 @@
 package gui;
 
 import db.DatabaseHandler;
+import net.MailClient;
+import util.NothingToSeeHere;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class ForgottenUserPsw extends javax.swing.JFrame {
 
     /**
      * Creates new form ForgottenUserPsw
      */
-	
-	
+
 	private DatabaseHandler mHandler;
 
     private JFrame previous;
 
 	public ForgottenUserPsw(JFrame previous, DatabaseHandler mHandler){
         this.previous = previous;
+        this.mHandler = mHandler;
     	initComponents();
 
     	this.previous.setVisible(false);
@@ -189,11 +192,54 @@ public class ForgottenUserPsw extends javax.swing.JFrame {
      * (OK-button)
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         String fornavn = jTextField3.getText();
         String etternavn = jTextField2.getText();
         String mobilnr = jTextField1.getText();
         String epost = jTextField4.getText();
+
+        try {
+            int farmerid = mHandler.getFarmerId(epost, mobilnr);
+
+            if(farmerid == -1){
+
+            }
+            int counter = mHandler.getState();
+
+            if(fornavn.length() > 10){
+                fornavn = fornavn.substring(0,10);
+            }
+
+            String newPassword = NothingToSeeHere.t(fornavn.substring(0)+""+counter);
+            String accountName = mHandler.getFarmerUsername(farmerid);
+
+            String mailMessage =
+                    "<p>Dear " + fornavn + " " + etternavn+ ",</p>" +
+                    "<p>You have received this email because you have requested your password to be reset.<br>" +
+                    "If you have not requested this e-mail, please contact ninjasheep(at)tormodhaugland(dot)com.</p>" +
+                    "<p>Your username is: <b>" + accountName +"</b></p>" +
+                    "<p>Your new password is: <b>" + newPassword + "</b></p>" +
+                    "<p>It is highly recommended that you change this password as soon as you login again.</p><br>" +
+                    "</p>Best regards,</p>" +
+                    "<p>Potential Ninja Development Team</p>";
+            String mailSubject = "SheepTracker: Password reset";
+
+            MailClient client = new MailClient();
+
+            try {
+                client.sendMail(epost, mailMessage, mailSubject);
+            } catch (Exception e) {
+                Error error = new Error(this, "Couldn\'t send email" + e.getMessage());
+                error.setVisible(true);
+                return;
+            }
+            mHandler.setFarmerPassword(farmerid, newPassword);
+
+        }catch(SQLException e){
+            Error error = new Error(this, "Error getting information from database: " + e.getMessage());
+            error.setVisible(true);
+            return;
+        }
+
 
         label6.setText(" ");
         label7.setText("Informasjonen er nå sendt. ");

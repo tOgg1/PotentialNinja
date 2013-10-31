@@ -89,23 +89,6 @@ public class DatabaseHandler {
     }
 
     /**
-     * Takes in userid and returns farmerid
-     * @param userid
-     * @return
-     * @throws SQLException
-     */
-    public int getFarmerId(int userid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT farmerid FROM user WHERE id = ?");
-        query.setInt(1, userid);
-        ResultSet rs = query.executeQuery();
-
-        if(!rs.next()){
-            return -1;
-        }
-        return rs.getInt("farmerid");
-    }
-
-    /**
      * Adds a sheep to the database
      * @param name
      * @param healthflags
@@ -151,7 +134,6 @@ public class DatabaseHandler {
         this.addSheep(sheep.getName(), sheep.getBirthdate(), sheep.getHealthflags(), sheep.getPos().x, sheep.getPos().y, sheep.getSex(), sheep.getFarmerid());
     }
 
-
     /**
      * Adds an alarm to the database
      * @param sheepid
@@ -196,6 +178,42 @@ public class DatabaseHandler {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    /**
+     * Takes in userid and returns farmerid
+     * @param userid
+     * @return
+     * @throws SQLException
+     */
+    public int getFarmerId(int userid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT farmerid FROM user WHERE id = ?");
+        query.setInt(1, userid);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next()){
+            return -1;
+        }
+        return rs.getInt("farmerid");
+    }
+
+    /**
+     * Tries to get farmerid from email and/or number
+     * @param email
+     * @param number
+     * @return
+     */
+    public int getFarmerId(String email, String number) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT id FROM farmer WHERE email = ? or number = ?");
+        query.setString(1, email);
+        query.setString(2, number);
+
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return -1;
+
+        return rs.getInt("id");
     }
 
     /**
@@ -247,7 +265,6 @@ public class DatabaseHandler {
             return null;
         return new Object[]{rs.getString("name"), rs.getString("number"), rs.getString("email")};
     }
-
 
     /**
      * Gets farmers username
@@ -308,6 +325,24 @@ public class DatabaseHandler {
 
         query = this.db.prepareStatement("UPDATE user SET username = ? WHERE farmerid = ?");
         query.setString(1, username);
+        query.setInt(2, farmerid);
+        query.executeUpdate();
+    }
+
+    /**
+     * Sets farmers password
+     * @param farmerid
+     * @param password
+     * @throws SQLException
+     */
+    public void setFarmerPassword(int farmerid, String password) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE user SET password = ? WHERE farmerid = ?");
+        try {
+            query.setString(1, this.encryptPassword(password));
+        } catch (NoSuchAlgorithmException e) {
+            throw new SQLException("Password encryption failed");
+        }
+
         query.setInt(2, farmerid);
         query.executeUpdate();
     }

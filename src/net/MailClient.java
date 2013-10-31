@@ -1,5 +1,6 @@
 package net;
 
+import util.GeneralUtil;
 import util.Log;
 import util.PotentialNinjaException;
 import util.ServerInfo;
@@ -8,7 +9,6 @@ import java.io.*;
 import java.net.Socket;
 
 public class MailClient {
-
     private Socket socket;
 
     private BufferedReader is;
@@ -19,8 +19,8 @@ public class MailClient {
     public MailClient(){
         this.running = false;
         try {
-            socket = new Socket("127.0.0.1", ServerInfo.port);
-            //socket = new Socket(ServerInfo.decryptIp(ServerInfo.ipenc), ServerInfo.port);
+            //socket = new Socket("127.0.0.1", ServerInfo.port);
+            socket = new Socket(ServerInfo.decryptIp(ServerInfo.ipenc), ServerInfo.port);
             this.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,7 +42,7 @@ public class MailClient {
         if(!this.running)
             throw new IOException("Socket not running");
 
-        if(!isValidEmail(recipient))
+        if(!GeneralUtil.isEmailValid(recipient))
             throw new PotentialNinjaException(recipient + " is not a valid email.");
 
         char[] buffer = new char[0xF];
@@ -63,12 +63,6 @@ public class MailClient {
         char[] subjectBuffer = (ServerInfo.code_subject+""+subject).toCharArray();
 
         Log.d("Mail", "Writing recipient..");
-
-        System.out.println(ServerInfo.code_recipient +""+recipient);
-
-        for(int i = 0; i < subjectBuffer.length; ++i){
-           System.out.println((int)subjectBuffer[i]);
-        }
 
         this.os.write(recipientBuffer);
         this.os.flush();
@@ -114,22 +108,10 @@ public class MailClient {
         }
     }
 
-    public static boolean isValidEmail(String email){
-        String[] splitt = email.split("@");
-        if(splitt.length != 2)
-            return false;
-
-        splitt = email.split("@")[1].split("\\p{P}");
-        if(splitt.length != 2){
-            return false;
-        }
-        return true;
-    }
-
     public static void main(String[] args){
         MailClient client = new MailClient();
         try {
-            client.sendMail("tormod.haugland@gmail.com", "Hei du er kul! Liksom!", "Hei");
+            client.sendMail("tormod.haugland@gmail.com", "Hei du er kul!<br> Liksom!", "Hei");
         } catch (Exception e) {
             e.printStackTrace();
         }

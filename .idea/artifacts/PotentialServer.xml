@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PotentialServer">
+    <output-path>$PROJECT_DIR$/out/artifacts/PotentialServer</output-path>
+    <root id="archive" name="PotentialServer.jar">
+      <element id="module-output" name="PotentialServer" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/PotentialServer/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="extracted-dir" path="$PROJECT_DIR$/res/javax.mail.jar" path-in-jar="/" />
+      <element id="module-output" name="PotentialNinja" />
+    </root>
+  </artifact>
+</component>

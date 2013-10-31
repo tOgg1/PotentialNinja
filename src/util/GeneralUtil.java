@@ -23,4 +23,16 @@ public class GeneralUtil {
         return sb.toString();
     }
 
+    public static boolean isEmailValid(String email){
+        String[] splitt = email.split("@");
+        if(splitt.length != 2)
+            return false;
+
+        splitt = email.split("@")[1].split("\\p{P}");
+        if(splitt.length != 2){
+            return false;
+        }
+        return true;
+    }
+
 }

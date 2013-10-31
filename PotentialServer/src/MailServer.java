@@ -108,7 +108,7 @@ public class MailServer {
         }
 
         if(this.mailHandler.sendMail(thread.recipient, thread.message, thread.subject)){
-            Log.d("Mail", thread.recipient + ", " + thread.message + ", " + thread.subject);
+            Log.d("Mail", "Mail sent");
             this.connections.remove(thread);
             return true;
         }else{
@@ -140,7 +140,6 @@ public class MailServer {
 
         @Override
         public void run() {
-            Log.d("Server", "Running connectionthread");
             this.begin = false;
             try {
                 is = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -153,7 +152,6 @@ public class MailServer {
             char[] buffer = new char[0xFFF];
             try {
                 while(is.read(buffer) != -1){
-                    Log.d("Server", "Got message");
                     int status = decryptMessage(buffer);
                     if(status == 0){
                         break;
@@ -177,14 +175,11 @@ public class MailServer {
         private int decryptMessage(char[] buffer){
             try{
                 int sendCode = Integer.parseInt(buffer[0]+"");
-                Log.d("Server", "Code: " + sendCode);
 
                 if(sendCode == ServerInfo.code_begin){
-                    Log.d("Server", "Code begin registered");
                     begin = true;
                     return 1;
                 }else if(sendCode == ServerInfo.code_end){
-                    Log.d("Server", "Code end registered");
                     begin = false;
                     try {
                         if(MailServer.this.sendEmail(this)){
@@ -198,30 +193,24 @@ public class MailServer {
                     }
                     return 0;
                 }else if(sendCode == ServerInfo.code_message){
-                    Log.d("Server", "Code message registered");
 
                     if(buffer == null || !begin){
                         return -1;
                     }
-                    Log.d("Mail", new String(buffer).substring(1));
                     this.message = new String(buffer).substring(1);
                     return 1;
                 }else if(sendCode == ServerInfo.code_recipient){
-                    Log.d("Server", "Code recipient registered");
 
                     if(buffer == null || !begin){
                         return -1;
                     }
-                    Log.d("Mail", new String(buffer).substring(1));
                     this.recipient = new String(buffer).substring(1);
                     return 1;
                 }else if(sendCode == ServerInfo.code_subject){
-                    Log.d("Server", "Code subject registered");
 
                     if(buffer == null|| !begin){
                         return -1;
                     }
-                    Log.d("Mail", new String(buffer).substring(1));
                     this.subject = new String(buffer).substring(1);
                     return 1;
 

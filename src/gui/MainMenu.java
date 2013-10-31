@@ -29,7 +29,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Creates new form MainMenu
      */
 
-    private Main main;
+    public Main main;
 
 	private DatabaseHandler mHandler;
 	private Register mRegister;
@@ -44,7 +44,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private MapViewer mainMap;
     private MapViewer sheepMap;
 
-    public MainMenu(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(Main main, JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.main = main;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
@@ -72,11 +72,13 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     }
 
 
-    public MainMenu(int farmerID, DatabaseHandler mHandler, Register mRegister){
+    public MainMenu(Main main, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.main = main;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.mainMap = new MapViewer();
+        this.sheepMap = new MapViewer();
+        this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
         this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
         try {
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
@@ -663,7 +665,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	Welcome welcome = new Welcome(this, mHandler);
+    	Welcome welcome = new Welcome(this.main, mHandler);
         welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -671,7 +673,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Go to MyPage, from the MenuBar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
+    	MyPage mypage = new MyPage(this, this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

@@ -23,7 +23,7 @@ public class AddSheep extends javax.swing.JFrame {
 	private DatabaseHandler mHandler;
 	private Register mRegister;
     private int farmerID;
-    private MainMenu previous;
+    private MainMenu main;
 
     private boolean sheepHasBeenAdded;
 	
@@ -31,11 +31,11 @@ public class AddSheep extends javax.swing.JFrame {
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.farmerID = farmerID;
-        this.previous = main;
+        this.main = main;
         this.sheepHasBeenAdded = false;
         initComponents();
-    	previous.setVisible(false);
-        previous.setFocusable(false);
+    	this.main.setVisible(false);
+        this.main.setFocusable(false);
     }
 
     public AddSheep() {
@@ -340,7 +340,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -348,7 +348,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MyPage from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-      	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
+      	MyPage mypage = new MyPage(this.main, this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -356,7 +356,7 @@ public class AddSheep extends javax.swing.JFrame {
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-      	Welcome welcome = new Welcome(this, mHandler);
+      	Welcome welcome = new Welcome(this.main.main, mHandler);
         welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -371,9 +371,9 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	previous.setVisible(true);
-        previous.setFocusable(true);
-        previous.updateSheeps();
+    	main.setVisible(true);
+        main.setFocusable(true);
+        main.updateSheeps();
         this.dispose();
     	    	
     }//GEN-LAST:event_jButton2ActionPerformed

@@ -4,16 +4,14 @@
  */
 package gui;
 
+import db.DatabaseHandler;
+import main.Register;
+import util.FlagData;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.swing.JFrame;
-
-import util.FlagData;
-import main.Register;
-import db.DatabaseHandler;
 
 public class EditSheep extends javax.swing.JFrame {
 
@@ -27,12 +25,14 @@ public class EditSheep extends javax.swing.JFrame {
     private int sheepID;
     private int healthflag1;
     private int farmerID;
+    private MainMenu main;
 	
     public EditSheep() {
         initComponents();
     }
     
-    public EditSheep(JFrame previous, int farmerID, String sheepName, DatabaseHandler mHandler, Register mRegister){
+    public EditSheep(MainMenu previous, int farmerID, String sheepName, DatabaseHandler mHandler, Register mRegister){
+        this.main = previous;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         this.sheepName = sheepName;
@@ -48,7 +48,8 @@ public class EditSheep extends javax.swing.JFrame {
         previous.dispose();
     }
     
-    public EditSheep(JFrame previous, DatabaseHandler mHandler, Register mRegister){
+    public EditSheep(MainMenu previous, DatabaseHandler mHandler, Register mRegister){
+        this.main = previous;
         this.mHandler = mHandler;
         this.mRegister = mRegister;
         try {
@@ -655,7 +656,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	MainMenu chosen = new MainMenu(this, farmerID, mHandler, mRegister);
+    	MainMenu chosen = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
     	chosen.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -664,7 +665,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    	Welcome welcome = new Welcome(this, mHandler);
+    	Welcome welcome = new Welcome(this.main.main, mHandler);
         welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -672,7 +673,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to MyPage, from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
+    	MyPage mypage = new MyPage(this.main, this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -680,7 +681,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to ManMenu, from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

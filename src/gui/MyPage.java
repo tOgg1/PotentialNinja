@@ -4,14 +4,13 @@
  */
 package gui;
 
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
+import main.Register;
 import map.MapViewer;
 import util.GeneralUtil;
 import util.Vec2;
 
+import javax.swing.*;
 import java.sql.SQLException;
 
 public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerListener{
@@ -26,34 +25,32 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
     private MapViewer map;
     private JFrame previous;
     private double farmX, farmY;
-	
-    public MyPage() {
-        initComponents();
-    }
-    
-    public MyPage(JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
+    private MainMenu main;
+
+    public MyPage(MainMenu main, JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
+        this.main = main;
         map = new MapViewer();
-        map.setMapCenter(new Vec2((float)63.44,(float)10.37));
+
+        Vec2 pos = mRegister.getFarmerPosition();
+        map.setMapCenter(mRegister.getFarmerPosition());
+        map.addMarker("Home", pos.x, pos.y, GeneralUtil.farmColor);
+
     	this.mRegister = mRegister;
         this.farmerID = farmerID;
     	this.mHandler = mHandler;
+
         initComponents();
+
+        this.setLocationRelativeTo(previous);
+
         this.previous = previous;
         this.previous.setFocusable(false);
         this.previous.setVisible(false);
         this.farmX = 0;
         this.farmY = 0;
         this.map.addListener(this);
-        previous.dispose();
     }
 
-    public MyPage(int farmerID, DatabaseHandler mHandler, Register mRegister){
-        this.mHandler = mHandler;
-        this.mRegister = mRegister;
-        this.farmerID = farmerID;
-        initComponents();
-    }
-   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -431,7 +428,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	Welcome welcome = new Welcome(this, mHandler);
+    	Welcome welcome = new Welcome(main.main, mHandler);
         welcome.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -439,7 +436,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
      * Go to MainMenu, from the Menu Bar
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -452,40 +449,6 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         return sb.toString();
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MyPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MyPage().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;

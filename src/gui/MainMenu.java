@@ -51,8 +51,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mRegister = mRegister;
         this.mainMap = new MapViewer();
         this.sheepMap = new MapViewer();
-        this.sheepMapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.sheepMap);
-        this.mainMapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
+        this.sheepMapLogic = new MapSheeps(mRegister, this.sheepMap);
+        this.mainMapLogic = new MapSheeps(mRegister, this.mainMap);
         this.mainMap.addListener(this);
         this.farmerID = farmerID;
         try {

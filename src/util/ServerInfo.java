@@ -1,15 +1,19 @@
 package util;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 10/31/13
- * Time: 3:37 PM
- * To change this template use File | Settings | File Templates.
- */
 public class ServerInfo {
-    
+
+    public static String decryptIp(String hash){
+        String raw_0 = NothingToSeeHere.f(hash, ipfactory);
+
+        if(raw_0.length() != 12)
+            return null;
+
+        return raw_0.substring(0,3) + "." + raw_0.substring(3,6) + "." + raw_0.substring(6,9) + "." + raw_0.substring(9,12);
+    }
+
     public static int port = 2674;
+    public static String ipenc = "32qhRbIP9DMVD8M";
+    public static int ipfactory = 30;
     public static int max_connections = 100;
 
     public static int code_begin = 0x00;

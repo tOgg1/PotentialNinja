@@ -131,7 +131,7 @@ public class NothingToSeeHere {
     }
 
     public static void main(String[] args){
-        String test = "1";
+        String test = "151236216174";
 
         p(t(test));
         p(f(t(test)));

@@ -8,14 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Mayacat
- * Date: 10/31/13
- * Time: 3:33 PM
- * To change this template use File | Settings | File Templates.
- */
-public class EmailServer {
+public class MailServer {
 
     private ServerSocket serverSocket;
     private ArrayList<ConnectionThread> connections;
@@ -25,13 +18,12 @@ public class EmailServer {
 
     private static String configname = "config.txt";
 
-
-    public EmailServer(){
+    public MailServer(){
         try {
             Log.initLogFile();
 
             initSMTP();
-
+            this.connections = new ArrayList<ConnectionThread>();
             serverSocket = new ServerSocket(ServerInfo.port);
             this.run();
             Log.d("Server", "Server running on port: " + ServerInfo.port);
@@ -111,12 +103,12 @@ public class EmailServer {
     }
 
     private boolean sendEmail(ConnectionThread thread)throws PotentialNinjaException{
-
         if(thread.message == null || thread.recipient == null || thread.subject == null){
             throw new PotentialNinjaException("All email info was not set before email was flagged for sending");
         }
 
         if(this.mailHandler.sendMail(thread.recipient, thread.message, thread.subject)){
+            Log.d("Mail", thread.recipient + ", " + thread.message + ", " + thread.subject);
             this.connections.remove(thread);
             return true;
         }else{
@@ -148,6 +140,7 @@ public class EmailServer {
 
         @Override
         public void run() {
+            Log.d("Server", "Running connectionthread");
             this.begin = false;
             try {
                 is = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -156,10 +149,15 @@ public class EmailServer {
                 e.printStackTrace();
             }
 
+            Log.d("Server","Attempting to read");
             char[] buffer = new char[0xFFF];
             try {
-                while(is.read(buffer) != 0){
+                while(is.read(buffer) != -1){
+                    Log.d("Server", "Got message");
                     int status = decryptMessage(buffer);
+                    if(status == 0){
+                        break;
+                    }
 
                     if(status == -1){
                         os.write(ServerInfo.code_error);
@@ -168,9 +166,8 @@ public class EmailServer {
                     }else{
                         os.write(ServerInfo.code_ok);
                     }
-                    if(status == 0){
-                        break;
-                    }
+                    os.flush();
+                    buffer = new char[0xFFF];
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -179,14 +176,18 @@ public class EmailServer {
 
         private int decryptMessage(char[] buffer){
             try{
-                int sendCode = buffer[0];
+                int sendCode = Integer.parseInt(buffer[0]+"");
+                Log.d("Server", "Code: " + sendCode);
+
                 if(sendCode == ServerInfo.code_begin){
+                    Log.d("Server", "Code begin registered");
                     begin = true;
                     return 1;
                 }else if(sendCode == ServerInfo.code_end){
+                    Log.d("Server", "Code end registered");
                     begin = false;
                     try {
-                        if(EmailServer.this.sendEmail(this)){
+                        if(MailServer.this.sendEmail(this)){
                             this.close();
                             return 1;
                         }else{
@@ -197,20 +198,33 @@ public class EmailServer {
                     }
                     return 0;
                 }else if(sendCode == ServerInfo.code_message){
+                    Log.d("Server", "Code message registered");
+
                     if(buffer == null || !begin){
                         return -1;
                     }
-                    this.message = new String(buffer);
+                    Log.d("Mail", new String(buffer).substring(1));
+                    this.message = new String(buffer).substring(1);
+                    return 1;
                 }else if(sendCode == ServerInfo.code_recipient){
+                    Log.d("Server", "Code recipient registered");
+
                     if(buffer == null || !begin){
                         return -1;
                     }
-                    this.recipient = new String(buffer);
+                    Log.d("Mail", new String(buffer).substring(1));
+                    this.recipient = new String(buffer).substring(1);
+                    return 1;
                 }else if(sendCode == ServerInfo.code_subject){
+                    Log.d("Server", "Code subject registered");
+
                     if(buffer == null|| !begin){
                         return -1;
                     }
-                    this.subject = new String(buffer);
+                    Log.d("Mail", new String(buffer).substring(1));
+                    this.subject = new String(buffer).substring(1);
+                    return 1;
+
                 }else{
                     return -2;
                 }
@@ -218,7 +232,6 @@ public class EmailServer {
                 e.printStackTrace();
                 return -1;
             }
-            return -2;
         }
     }
 
@@ -236,7 +249,7 @@ public class EmailServer {
         }
 
         @Override
-        public void run() {
+        public void run(){
             try {
                 String string;
                 p(mReady);
@@ -259,10 +272,11 @@ public class EmailServer {
             args[0] = args[0].toLowerCase();
             args[0] = args[0].replace(" ", "");
             if(args[0].equals("exit") || args[0].equals("close")){
-                EmailServer.this.running = true;
-                try {
-                    EmailServer.this.close();
-                } catch (Exception e) {
+                MailServer.this.running = true;
+
+                try{
+                    MailServer.this.close();
+                }catch (Exception e){
                     e.printStackTrace();
                 }
                 System.exit(0);
@@ -278,6 +292,6 @@ public class EmailServer {
 
 
     public static void main(String[] args){
-        EmailServer server = new EmailServer();
+        MailServer server = new MailServer();
     }
 }

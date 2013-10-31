@@ -256,6 +256,7 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         	int farmerID;
 			try {
 				farmerID = mHandler.createAccount(accountname, psw, farmerName, (float)pos_x, (float)pos_y);
+                mHandler.setFarmerInformation(farmerID,accountname, farmerName,mobilnr,email);
 				mHandler.setFarmerContact(farmerID, farmerName, mobilnr, email);
                 previous.setVisible(true);
                 previous.setFocusable(true);

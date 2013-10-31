@@ -171,7 +171,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         }
 
         label5.setText("E-post");
-        textField3.setText(mail);
+        textField4.setText(mail);
 
         label6.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         label6.setText("Skriv inn evt. endringer og trykk \"Lagre endringer nederst\"");

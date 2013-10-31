@@ -1,6 +1,7 @@
-import db.DatabaseHandler;
 import util.Log;
 import util.PotentialNinjaException;
+import util.SMTPHandler;
+import util.ServerInfo;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -18,19 +19,78 @@ public class EmailServer {
 
     private ServerSocket serverSocket;
     private ArrayList<ConnectionThread> connections;
-    private DatabaseHandler mHandler;
+    private SMTPHandler mailHandler;
 
     private boolean running;
+
+    private static String configname = "config.txt";
+
 
     public EmailServer(){
         try {
             Log.initLogFile();
+
+            initSMTP();
+
             serverSocket = new ServerSocket(ServerInfo.port);
             this.run();
+            Log.d("Server", "Server running on port: " + ServerInfo.port);
         } catch (IOException | PotentialNinjaException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.exit(1);
         }
+    }
+
+    private void initSMTP(){
+        File file = new File(this.configname);
+        String email_account;
+        String email_password;
+        int email_password_factory;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String account = reader.readLine();
+
+            if(account == null){
+                throw new RuntimeException("Error reading ´config.txt´: Missing account");
+            }
+            else{
+                email_account = account;
+            }
+
+            String password = reader.readLine();
+
+            if(password == null){
+                throw new RuntimeException("Error reading ´config.txt´: Missing password");
+            }else{
+                email_password = password;
+            }
+
+            String factoryCode = reader.readLine();
+
+            if(factoryCode == null){
+                throw new RuntimeException("Error reading ´config.txt´: Missing factory code");
+            }
+            else{
+                try{
+                    email_password_factory = Integer.parseInt(factoryCode);
+                }catch(NumberFormatException e){
+                    throw new RuntimeException("Error reading ´config.txt´: Invalid factory code");
+                }
+            }
+
+            this.mailHandler = new SMTPHandler(email_account, email_password, email_password_factory);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File ´config.txt´ not found, or is corrupted");
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading ´config.txt´");
+        }
+    }
+
+    private void close() throws Exception{
+        for(ConnectionThread c : connections){
+            c.close();
+        }
+        this.serverSocket.close();
     }
 
     private void run() throws IOException{
@@ -38,8 +98,11 @@ public class EmailServer {
         InputManager iManage = new InputManager();
         iManage.start();
 
+
         Socket socket;
+        Log.d("Server", "Accepting connections...");
         while((socket = serverSocket.accept()) != null){
+            Log.d("Server", "Connection received from " + socket.getInetAddress().getHostAddress());
             ConnectionThread connection = new ConnectionThread(socket);
             connection.start();
             connections.add(connection);
@@ -47,10 +110,18 @@ public class EmailServer {
         this.running = false;
     }
 
-    private void sendEmail(ConnectionThread thread){
+    private boolean sendEmail(ConnectionThread thread)throws PotentialNinjaException{
 
+        if(thread.message == null || thread.recipient == null || thread.subject == null){
+            throw new PotentialNinjaException("All email info was not set before email was flagged for sending");
+        }
 
-        this.connections.remove(thread);
+        if(this.mailHandler.sendMail(thread.recipient, thread.message, thread.subject)){
+            this.connections.remove(thread);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private class ConnectionThread extends Thread{
@@ -67,45 +138,87 @@ public class EmailServer {
 
         public ConnectionThread(Socket socket){
             this.socket = socket;
-            try {
-                is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                os = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
+        }
+
+        public void close() throws Exception{
+            this.socket.close();
+            this.is.close();
+            this.os.close();
         }
 
         @Override
         public void run() {
             this.begin = false;
-            char[] buffer = new char[0xFF];
+            try {
+                is = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+                os = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            char[] buffer = new char[0xFFF];
             try {
                 while(is.read(buffer) != 0){
-                    decryptMessage(buffer);
+                    int status = decryptMessage(buffer);
+
+                    if(status == -1){
+                        os.write(ServerInfo.code_error);
+                    }else if(status == -2){
+                        os.write(ServerInfo.code_invalid);
+                    }else{
+                        os.write(ServerInfo.code_ok);
+                    }
+                    if(status == 0){
+                        break;
+                    }
                 }
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
 
-        private void decryptMessage(char[] buffer){
+        private int decryptMessage(char[] buffer){
             try{
-                int sendCode = Integer.parseInt(new String(buffer[0] +""+ buffer[1]));
+                int sendCode = buffer[0];
                 if(sendCode == ServerInfo.code_begin){
                     begin = true;
-                    return;
+                    return 1;
                 }else if(sendCode == ServerInfo.code_end){
-
+                    begin = false;
+                    try {
+                        if(EmailServer.this.sendEmail(this)){
+                            this.close();
+                            return 1;
+                        }else{
+                            return -1;
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    return 0;
                 }else if(sendCode == ServerInfo.code_message){
-
+                    if(buffer == null || !begin){
+                        return -1;
+                    }
+                    this.message = new String(buffer);
+                }else if(sendCode == ServerInfo.code_recipient){
+                    if(buffer == null || !begin){
+                        return -1;
+                    }
+                    this.recipient = new String(buffer);
+                }else if(sendCode == ServerInfo.code_subject){
+                    if(buffer == null|| !begin){
+                        return -1;
+                    }
+                    this.subject = new String(buffer);
+                }else{
+                    return -2;
                 }
-                else if(sendCode == ServerInfo.code_message){
-
-                }
-
             }catch(NumberFormatException e){
                 e.printStackTrace();
+                return -1;
             }
+            return -2;
         }
     }
 
@@ -113,7 +226,7 @@ public class EmailServer {
 
         private BufferedReader input;
 
-        private String mStartUp = "Command Parser v1.0 for AlertDaemon\nCreated by tOgg1\n";
+        private String mStartUp = "Command Parser v1.0 for PotentialServer\nCreated by tOgg1\n";
         private String mReady = "Ready for commands ...";
         private final boolean debug = true;
 
@@ -147,9 +260,13 @@ public class EmailServer {
             args[0] = args[0].replace(" ", "");
             if(args[0].equals("exit") || args[0].equals("close")){
                 EmailServer.this.running = true;
+                try {
+                    EmailServer.this.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 System.exit(0);
-            }
-            else{
+            }else{
                 p("Invalid command: " + args[0]);
             }
         }
@@ -161,6 +278,6 @@ public class EmailServer {
 
 
     public static void main(String[] args){
-
+        EmailServer server = new EmailServer();
     }
 }

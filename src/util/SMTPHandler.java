@@ -68,6 +68,7 @@ public class SMTPHandler {
         } catch (IOException e) {
             throw new RuntimeException("Error reading ´config.txt´");
         }
+        Log.d("SMTPHandler", "MailHandler initialized");
         this.readyToGo = true;
     }
 

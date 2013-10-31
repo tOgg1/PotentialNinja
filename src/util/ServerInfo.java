@@ -1,3 +1,5 @@
+package util;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Mayacat
@@ -15,4 +17,8 @@ public class ServerInfo {
     public static int code_recipient = 0x02;
     public static int code_subject = 0x03;
     public static int code_message = 0x04;
+
+    public static int code_ok = 0xF0;
+    public static int code_error = 0xF1;
+    public static int code_invalid = 0xF2;
 }

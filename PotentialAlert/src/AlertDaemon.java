@@ -4,9 +4,7 @@ import util.Log;
 import util.PotentialNinjaException;
 import util.SMTPHandler;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,12 +25,14 @@ public class AlertDaemon extends Thread {
 
     private static String email_subject = "SheepTracker Alarm Notification";
 
+    private static String configname = "config.txt";
+
     private SimpleDateFormat sformat;
     private SimpleDateFormat lformat;
 
     public AlertDaemon(){
         this.handler = new DatabaseHandler();
-        this.mailHandler = new SMTPHandler();
+        initSMTP();
         this.sformat = new SimpleDateFormat("MM/DD");
         this.lformat = new SimpleDateFormat("hh:mm:ss a");
         this.timer = new Timer();
@@ -40,6 +40,51 @@ public class AlertDaemon extends Thread {
             Log.initLogFile();
         } catch (PotentialNinjaException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    private void initSMTP(){
+        File file = new File(this.configname);
+        String email_account;
+        String email_password;
+        int email_password_factory;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String account = reader.readLine();
+
+            if(account == null){
+                throw new RuntimeException("Error reading ´config.txt´: Missing account");
+            }
+            else{
+                email_account = account;
+            }
+
+            String password = reader.readLine();
+
+            if(password == null){
+                throw new RuntimeException("Error reading ´config.txt´: Missing password");
+            }else{
+                email_password = password;
+            }
+
+            String factoryCode = reader.readLine();
+
+            if(factoryCode == null){
+                throw new RuntimeException("Error reading ´config.txt´: Missing factory code");
+            }
+            else{
+                try{
+                    email_password_factory = Integer.parseInt(factoryCode);
+                }catch(NumberFormatException e){
+                    throw new RuntimeException("Error reading ´config.txt´: Invalid factory code");
+                }
+            }
+
+            this.mailHandler = new SMTPHandler(email_account, email_password, email_password_factory);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File ´config.txt´ not found, or is corrupted");
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading ´config.txt´");
         }
     }
 
@@ -51,8 +96,9 @@ public class AlertDaemon extends Thread {
     }
 
     private void scheduleAndPoll(){
-        if(!keepScheduling)
+        if(!keepScheduling){
             return;
+        }
         TimerTask task = new TimerTask(){
             @Override
             public void run(){

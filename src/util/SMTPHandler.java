@@ -21,7 +21,15 @@ public class SMTPHandler {
     private static boolean debug = false;
     private static boolean readyToGo;
 
-    public SMTPHandler(){
+    public SMTPHandler(boolean lol){
+
+    }
+
+    public SMTPHandler(String email_account, String email_password, int email_password_factory){
+        this.email_account = email_account;
+        this.email_password = email_password;
+        this.email_password_factory = email_password_factory;
+
         File file = new File(this.filename);
         this.readyToGo = false;
         try {

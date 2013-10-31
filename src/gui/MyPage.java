@@ -439,7 +439,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
      * Go to MainMenu, from the Menu Bar
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-    	MainMenu main = new MainMenu(farmerID, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

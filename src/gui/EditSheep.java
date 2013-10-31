@@ -655,7 +655,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	MainMenu chosen = new MainMenu(farmerID, mHandler, mRegister);
+    	MainMenu chosen = new MainMenu(this, farmerID, mHandler, mRegister);
     	chosen.setVisible(true);
     	
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -672,7 +672,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to MyPage, from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	MyPage mypage = new MyPage(farmerID, mHandler, mRegister);
+    	MyPage mypage = new MyPage(this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -680,7 +680,7 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to ManMenu, from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(farmerID, mHandler, mRegister);
+    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

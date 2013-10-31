@@ -4,10 +4,8 @@
  */
 package gui;
 
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
+import main.Register;
 
 import java.sql.SQLException;
 
@@ -22,16 +20,18 @@ public class Dead extends javax.swing.JFrame {
     private int sheepID;
     private String sheepName;
     private int farmerID;
-	
-    public Dead() {
-        initComponents();
-    }
 
+    private MainMenu main;
 
-    public Dead(JFrame previous, int farmerID, int sheepID, DatabaseHandler mHandler, Register mRegister){
+    public Dead(MainMenu previous, int farmerID, int sheepID, DatabaseHandler mHandler, Register mRegister){
+        this.main = previous;
+
     	initComponents();
-    	previous.dispose();
-    	this.mHandler = mHandler;
+    	this.main.setVisible(false);
+        this.main.setFocusable(false);
+        this.setLocationRelativeTo(this.main);
+
+        this.mHandler = mHandler;
     	this.mRegister = mRegister;
         this.sheepID = sheepID;
         this.farmerID = farmerID;
@@ -115,8 +115,9 @@ public class Dead extends javax.swing.JFrame {
      * Accept that the sheep is dead and goes back to the main-menu
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    	MainMenu main = new MainMenu(this, farmerID, mHandler, mRegister);
-    	main.setVisible(true);
+        this.main.setFocusable(true);
+        this.main.setVisible(true);
+        this.main.setLocationRelativeTo(this);
     	
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -130,46 +131,12 @@ public class Dead extends javax.swing.JFrame {
             jButton2.setEnabled(false);
 
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dead.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Dead().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

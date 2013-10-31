@@ -61,57 +61,18 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             this.mainMap.setMapCenter(this.defPos);
             this.sheepMap.setMapCenter(this.defPos);
         }catch (SQLException e){
-            Error error = new Error (e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
         initComponents();
+
+        this.setLocationRelativeTo(previous);
 
         if(previous != null)
             previous.dispose();
     }
 
-
-    public MainMenu(Main main, int farmerID, DatabaseHandler mHandler, Register mRegister){
-        this.main = main;
-        this.mHandler = mHandler;
-        this.mRegister = mRegister;
-        this.mainMap = new MapViewer();
-        this.sheepMap = new MapViewer();
-        this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
-        this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
-        try {
-            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
-            this.defPos = mHandler.getFarmerLocation(farmerID);
-            Log.d("GUI", "DefaultPos: " + this.defPos.x +", " + this.defPos.y);
-            this.mainMap.setMapCenter(this.defPos);
-            this.sheepMap.setMapCenter(this.defPos);
-        } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
-            error.setVisible(true);
-        }
-        initComponents();
-    }
-
-
-    /*
-    public MainMenu(String sheepName, DatabaseHandler mHandler, Register mRegister){
-    	this.mHandler = mHandler;
-    	this.mRegister = mRegister;
-        this.sheepName = sheepName;
-
-        int farmerID = mRegister.getFarmerID();
-        try {
-            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
-        } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
-            error.setVisible(true);
-        }
-        this.mRegister = mRegister;
-        initComponents();
-
-    }*/
-        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -384,14 +345,14 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         try {
             sheepID = mHandler.getSheepByName(sName, mRegister.getFarmerID()).getId();
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
         try {
             textField3.setText((sdf.format(new Date(mHandler.getSheep(sheepID).getBirthdate())))); //Fødselsdatoen på sauen
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -399,7 +360,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         try {
             mHandler.getSheepMedicalHistory(sheepID);
         } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -407,7 +368,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         try {
             sex = mHandler.getSheep(sheepID).getSex();
         } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -520,7 +481,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
                 jScrollPane3.setVisible(false);
             }
         } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -638,9 +599,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     	EditSheep editSheep = new EditSheep(this, farmerID, sheepName, mHandler, mRegister);
     	editSheep.setVisible(true);
-    	
-    	
-    	
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -654,7 +613,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             dead.setVisible(true);
 
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -665,8 +624,9 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-    	Welcome welcome = new Welcome(this.main, mHandler);
+    	Welcome welcome = new Welcome(this.main, this, mHandler);
         welcome.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
@@ -709,7 +669,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         Sheep sheep = mapLogic.getSheepByDot(n.getDot());
         initChosen();
         initFromMap(sheep);
-        info(sheep.getName());
+        this.sheepName = sheep.getName();
+        info(this.sheepName);
     }
 
     @Override

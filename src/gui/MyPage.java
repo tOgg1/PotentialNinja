@@ -99,6 +99,10 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         label1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label1.setText("MinSide");
 
+        /*
+        Redundant?
+
+
         String mobilnr = textField3.getText();
         String email = textField4.getText();
         String gpsw = jPasswordField1.getText();
@@ -110,12 +114,12 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         String ketternavn = textField6.getText();
         String kmobilnr = textField7.getText();
         String kemail = textField8.getText();
-
+             */
         String username = "";
         try {
             username = mHandler.getFarmerUsername(farmerID);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -127,7 +131,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         try {
             farmer = mHandler.getFarmerInformation(mRegister.getFarmerID());
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
             return;
         }
@@ -163,7 +167,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         try {
             mail = mHandler.getFarmerEmail(farmerID);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -383,7 +387,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         try {
             mHandler.setFarmerInformation(farmerID, account, farmerName, mobilnr, email);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -398,7 +402,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         try {
             mHandler.setFarmerContact(farmerID, kfarmerName, kmobilnr, kemail);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -411,7 +415,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
                     try {
                         mHandler.resetPassword(farmerID,npsw);
                     } catch (SQLException e) {
-                        Error error = new Error(e.getMessage());
+                        Error error = new Error(this, e.getMessage());
                         error.setVisible(true);
                     }
                 }
@@ -428,16 +432,18 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	Welcome welcome = new Welcome(main.main, mHandler);
+    	Welcome welcome = new Welcome(main.main, this, mHandler);
         welcome.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * Go to MainMenu, from the Menu Bar
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-    	MainMenu main = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
-    	main.setVisible(true);
+    	this.main.setFocusable(true);
+        this.main.setVisible(true);
+        this.main.setLocationRelativeTo(this);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private String charToString(char[] array){

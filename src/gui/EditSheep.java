@@ -41,11 +41,14 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             this.sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
         initComponents();
-        previous.dispose();
+
+        this.main.setVisible(false);
+        this.main.setFocusable(false);
+        this.setLocationRelativeTo(this.main);
     }
     
     public EditSheep(MainMenu previous, DatabaseHandler mHandler, Register mRegister){
@@ -55,7 +58,7 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             this.sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
         initComponents();
@@ -70,7 +73,7 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             this.sheepID = mHandler.getSheepByName(sheepName, mRegister.getFarmerID()).getId();
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
         initComponents();
@@ -193,7 +196,7 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             textField3.setText((sdf.format(new Date(mHandler.getSheep(sheepID).getBirthdate())))); //Fødselsdatoen på sauen
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -206,7 +209,7 @@ public class EditSheep extends javax.swing.JFrame {
                 jRadioButton2.setSelected(true);
             }
         } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -447,7 +450,7 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             birthdate = sdf.parse(textField3.getText()).getTime();
         } catch (ParseException e) {
-            Error error = new Error("Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
+            Error error = new Error(this, "Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
             error.setVisible(true);
         }
 
@@ -615,35 +618,35 @@ public class EditSheep extends javax.swing.JFrame {
         try {
 			mHandler.addSheepHealthFlag(sheepID, healthflagAdd);
 		} catch (SQLException e) {
-			Error error = new Error (e.getMessage());
+			Error error = new Error(this, e.getMessage());
 			error.setVisible(true);
 		}
 
         try {
             mHandler.removeSheepHealthFlag(sheepID, healthfalgRemove);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
         try {
             mHandler.setSheepName(sheepID, sheepName);
         } catch (SQLException e) {
-            Error error = new Error (e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
         try {
             mHandler.setSheepBirthdate(sheepID, birthdate);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
         try {
             mHandler.setSheepSex(sheepID, sex);
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -665,8 +668,9 @@ public class EditSheep extends javax.swing.JFrame {
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    	Welcome welcome = new Welcome(this.main.main, mHandler);
+    	Welcome welcome = new Welcome(this.main.main, this, mHandler);
         welcome.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**

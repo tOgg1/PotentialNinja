@@ -41,9 +41,9 @@ public class Main {
         welcome.setVisible(true);
     }
 
-    public void run(int farmerid){
+    public void run(int farmerid, Welcome welcome){
         mRegister = new Register(mHandler, farmerid);
-        MainMenu mainWindow = new MainMenu(this, null, farmerid, mHandler, mRegister);
+        MainMenu mainWindow = new MainMenu(this, welcome, farmerid, mHandler, mRegister);
         mainWindow.setVisible(true);
 
     }

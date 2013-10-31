@@ -2,6 +2,7 @@ import db.DatabaseHandler;
 import model.Alarm;
 import util.Log;
 import util.PotentialNinjaException;
+import util.SMTPHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;

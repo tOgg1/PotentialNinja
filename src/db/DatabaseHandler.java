@@ -532,7 +532,7 @@ public class DatabaseHandler {
         ResultSet rs = query.executeQuery();
 
         if(!rs.next())
-            throw new SQLException("Ingen sau med den ID'en");
+            throw new SQLException("Ingen sau med ID " + sheepID);
         return new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex"));
     }
 

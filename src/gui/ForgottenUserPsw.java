@@ -4,10 +4,9 @@
  */
 package gui;
 
-import javax.swing.JFrame;
-
-import main.Register;
 import db.DatabaseHandler;
+
+import javax.swing.*;
 
 public class ForgottenUserPsw extends javax.swing.JFrame {
 
@@ -17,10 +16,16 @@ public class ForgottenUserPsw extends javax.swing.JFrame {
 	
 	
 	private DatabaseHandler mHandler;
-	
+
+    private JFrame previous;
+
 	public ForgottenUserPsw(JFrame previous, DatabaseHandler mHandler){
+        this.previous = previous;
     	initComponents();
-    	previous.dispose();
+
+    	this.previous.setVisible(false);
+        this.previous.setFocusable(false);
+        this.setLocationRelativeTo(previous);
     	this.mHandler = mHandler;
     }
     
@@ -176,7 +181,7 @@ public class ForgottenUserPsw extends javax.swing.JFrame {
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         System.exit(0);        
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }
 
     
     /**
@@ -202,8 +207,9 @@ public class ForgottenUserPsw extends javax.swing.JFrame {
      * Go back to Welcome
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Welcome welcome = new Welcome(this, mHandler);
-        welcome.setVisible(true);
+        this.previous.setVisible(true);
+        this.previous.setFocusable(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

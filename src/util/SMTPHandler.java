@@ -1,4 +1,4 @@
-import util.NothingToSeeHere;
+package util;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

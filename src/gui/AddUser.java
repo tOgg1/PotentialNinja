@@ -29,7 +29,10 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         map = new MapViewer();
         map.setMapCenter(new Vec2((float)63.44,(float)10.37));
     	initComponents();
-    	this.previous = previous;
+
+        this.setLocationRelativeTo(previous);
+
+        this.previous = previous;
         this.previous.setFocusable(false);
         this.previous.setVisible(false);
     	this.mHandler = mHandler;
@@ -263,12 +266,12 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
                 this.dispose();
             } catch (SQLException e) {
                 e.printStackTrace();
-				Error error = new Error(e.getMessage());
+				Error error = new Error(this, e.getMessage());
 				error.setVisible(true);
 			}
         }
         else{
-        	Error error = new Error("Passordene er ikke like.");
+        	Error error = new Error(this, "Passordene er ikke like.");
         	error.setVisible(true);
         }
         

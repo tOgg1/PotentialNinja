@@ -9,6 +9,8 @@ import main.Main;
 import util.GeneralUtil;
 import util.Log;
 
+import javax.swing.*;
+
 public class Welcome extends javax.swing.JFrame {
 
     /**
@@ -24,6 +26,13 @@ public class Welcome extends javax.swing.JFrame {
         this.main = main;
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+
+    public Welcome(Main main, JFrame previous, DatabaseHandler mHandler) {
+        this.mHandler = mHandler;
+        this.main = main;
+        initComponents();
+        this.setLocationRelativeTo(previous);
     }
 
     /**
@@ -171,7 +180,7 @@ public class Welcome extends javax.swing.JFrame {
             return;
         }else{
             Log.d("GUI", "Farmerid: " + farmerID);
-            main.run(farmerID);
+            main.run(farmerID, this);
         }
 
         this.dispose();

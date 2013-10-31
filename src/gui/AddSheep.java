@@ -34,6 +34,9 @@ public class AddSheep extends javax.swing.JFrame {
         this.main = main;
         this.sheepHasBeenAdded = false;
         initComponents();
+
+        this.setLocationRelativeTo(main);
+
     	this.main.setVisible(false);
         this.main.setFocusable(false);
     }
@@ -340,8 +343,9 @@ public class AddSheep extends javax.swing.JFrame {
      * Go back to MainMenu from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
-    	main.setVisible(true);
+        this.main.setFocusable(true);
+        this.main.setVisible(true);
+        this.main.setLocationRelativeTo(this);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -356,8 +360,9 @@ public class AddSheep extends javax.swing.JFrame {
      * Logs out of the program, from the Menu Bar
      */
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-      	Welcome welcome = new Welcome(this.main.main, mHandler);
+      	Welcome welcome = new Welcome(this.main.main, this, mHandler);
         welcome.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
@@ -397,7 +402,7 @@ public class AddSheep extends javax.swing.JFrame {
         try {
             birthdate = sdf.parse(textField3.getText()).getTime();
         } catch (ParseException e) {
-            Error error = new Error("Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
+            Error error = new Error(this, "Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
             error.setVisible(true);
         }
 
@@ -446,45 +451,11 @@ public class AddSheep extends javax.swing.JFrame {
             checkbox6.setState(false);
 
         } catch (SQLException e) {
-            Error error = new Error(e.getMessage());
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddSheep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddSheep().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Checkbox checkbox1;
     private java.awt.Checkbox checkbox10;

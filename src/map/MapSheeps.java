@@ -153,10 +153,10 @@ public class MapSheeps
 
             switch(i){
                 case 1:
-                    color = Color.YELLOW;
+                    color = Color.GREEN;
                     break;
                 case 2:
-                    color = Color.BLUE;
+                    color = Color.YELLOW;
                     break;
                 case 3:
                     color = Color.RED;

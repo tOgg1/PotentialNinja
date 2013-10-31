@@ -1,6 +1,8 @@
 package util;
 
 import java.awt.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +23,23 @@ public class GeneralUtil {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Helper function to get the key from a TreeMap by value
+     * @param map
+     * @param value
+     * @param <T>
+     * @param <E>
+     * @return
+     */
+    public static <T, E> T getKeyByValue(TreeMap<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public static boolean isEmailValid(String email){

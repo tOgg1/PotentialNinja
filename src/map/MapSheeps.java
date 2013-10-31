@@ -5,6 +5,7 @@ import main.Register;
 import model.Sheep;
 import model.SheepHistory;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
+import util.GeneralUtil;
 import util.Vec2;
 
 import java.awt.*;
@@ -15,29 +16,23 @@ import java.util.TreeMap;
 
 public class MapSheeps
 {
-    private DatabaseHandler handler;
 	private Register register;
 	private ArrayList <Sheep> currentSheeps;
-	private int farmerId;
     private MapViewer map;
     private ArrayList<MapMarkerDot> mapMarkers = null;
     private TreeMap<Integer, MapMarkerDot> dotTreeMap = null;
-    private int MapListenerSheepId;
 	
-	public MapSheeps(DatabaseHandler handler, Register register, int farmerId, final MapViewer map)
+	public MapSheeps(Register register, final MapViewer map)
 	{
-        this.handler = handler;
-		this.register = register;
+        this.register = register;
 		this.currentSheeps = new ArrayList<Sheep>();
 
-		this.farmerId = farmerId;
         this.map = map;
         //Sets the center of the map
         this.map.setMapCenter(getFarmerCenter());
 
+        //Gets current sheep.
 		setSheeps();
-        setCurrentSheepPositions();
-        //setHistoricSheepPosition(9);
 
         map.addListener(new MapSheepsListener());
 	}
@@ -47,45 +42,39 @@ public class MapSheeps
         public void nodeClicked(MapViewer.NodeInfo n) {
             mapMarkers = map.getMapMarkers();
             dotTreeMap = map.getDotId();
-
-            for(MapMarkerDot d : mapMarkers){
-                if(n.getDot() == d ){
-                    MapListenerSheepId = getKeyByValue(dotTreeMap, d);
-                }
-            }
         }
 
         @Override
         public void mapClicked(double x, double y) {
-            //To change body of implemented methods use File | Settings | File Templates.
+            //Do nothing
         }
     }
 
-
+    /**
+     * Returns sheep from MapMarkerDot.
+     * @param dot
+     * @return
+     */
     public Sheep getSheepByDot(MapMarkerDot dot){
         for(MapMarkerDot thisDot : mapMarkers){
             if(dot == thisDot){
-                return getSheepById(getKeyByValue(dotTreeMap, dot));
+                return getSheepById(GeneralUtil.getKeyByValue(dotTreeMap, dot));
             }
         }
         return null;
     }
 
+    /**
+     * Returns sheep by sheepid.
+     * @param id
+     * @return
+     */
     public Sheep getSheepById(int id){
         for(Sheep sheep : currentSheeps){
             if(sheep.getId() == id)
                 return sheep;
         }
         return null;
-    }
-
-    /**
-     * Helper function to get sheepID.
-     * To be used within listener.
-     * @return
-     */
-    public int getMapListenerSheepID(){
-        return this.MapListenerSheepId;
     }
 
     /**
@@ -96,6 +85,10 @@ public class MapSheeps
         return register.getFarmerPosition();
     }
 
+
+    /**
+     * Refreshes map.
+     */
     public void refresh(){
         this.setSheeps();
         this.setCurrentSheepPositions();
@@ -146,19 +139,20 @@ public class MapSheeps
         Vec2[] array = new Vec2[pairs.size()];
         pairs.toArray(array);
 
-        for (int i = 1; i < 4; i++){
+        //Iterates over Vec2[] array to find the three latest location of sheep
+        for (int i = 3; i > 0; i--){
             Vec2 position = array[array.length-i];
             lat = position.x;
             lon = position.y;
 
-            System.out.println(lat + " " + lon);
+            //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
 
             switch(i){
                 case 1:
-                    color = Color.YELLOW;
+                    color = Color.GREEN;
                     break;
                 case 2:
-                    color = Color.BLUE;
+                    color = Color.YELLOW;
                     break;
                 case 3:
                     color = Color.RED;
@@ -166,23 +160,6 @@ public class MapSheeps
             }
             map.addMarker(lat,lon,color);
         }
-    }
-
-    /**
-     * Helper function to get the key from a TreeMap by value
-     * @param map
-     * @param value
-     * @param <T>
-     * @param <E>
-     * @return
-     */
-    public static <T, E> T getKeyByValue(TreeMap<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (value.equals(entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
 }

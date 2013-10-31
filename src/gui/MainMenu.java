@@ -40,7 +40,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
     private Vec2 defPos;
 
-    private MapSheeps mapLogic;
+    private MapSheeps mainMapLogic;
+    private MapSheeps sheepMapLogic;
     private MapViewer mainMap;
     private MapViewer sheepMap;
 
@@ -50,7 +51,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mRegister = mRegister;
         this.mainMap = new MapViewer();
         this.sheepMap = new MapViewer();
-        this.mapLogic = new MapSheeps(mHandler, mRegister, farmerID, this.mainMap);
+        this.sheepMapLogic = new MapSheeps(mRegister, this.sheepMap);
+        this.mainMapLogic = new MapSheeps(mRegister, this.mainMap);
         this.mainMap.addListener(this);
         this.farmerID = farmerID;
         try {
@@ -60,6 +62,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             Log.d("GUI", "DefaultPos: " + this.defPos.x + ", " + this.defPos.y);
             this.mainMap.setMapCenter(this.defPos);
             this.sheepMap.setMapCenter(this.defPos);
+            this.mainMapLogic.setCurrentSheepPositions();
         }catch (SQLException e){
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
@@ -492,14 +495,14 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
     public void updateSheeps(){
         this.mRegister.reFetchSheeps();
-        this.mapLogic.refresh();
+        this.mainMapLogic.refresh();
     }
 
     private void initFromMap(Sheep sheep){
         jTextField1.setText(sheep.getName());
         sheepMap.setMapCenter(sheep.getPos());
         sheepMap.removeMarkers();
-        sheepMap.addMarker(sheep.getName(), sheep.getPos().x, sheep.getPos().y, GeneralUtil.selectedSheepColor);
+        sheepMapLogic.setHistoricSheepPosition(sheep.getId());
     }
 
     private void initChosen() {
@@ -664,7 +667,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
     @Override
     public void nodeClicked(MapViewer.NodeInfo n){
-        Sheep sheep = mapLogic.getSheepByDot(n.getDot());
+        Sheep sheep = mainMapLogic.getSheepByDot(n.getDot());
         initChosen();
         initFromMap(sheep);
         this.sheepName = sheep.getName();

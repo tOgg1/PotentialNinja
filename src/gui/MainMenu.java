@@ -140,7 +140,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         jButton4 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -234,14 +233,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         jButton4.setVisible(false);
 
         jMenu1.setText("File");
-
-        jMenuItem4.setText("Til hovedmeny");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem4);
 
         jMenuItem1.setText("MinSide");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -684,13 +675,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     	mypage.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    /**
-     * Go to MainMenu from the MenuBar
-     */
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        removeInfo();
 
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -703,7 +688,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

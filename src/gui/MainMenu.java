@@ -635,10 +635,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
     	MyPage mypage = new MyPage(this, this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

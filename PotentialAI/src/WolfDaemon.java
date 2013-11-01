@@ -1,19 +1,27 @@
 import db.DatabaseHandler;
 import model.Sheep;
+import util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class WolfDaemon extends Thread {
     private DatabaseHandler mHandler;
 
-    private Timer timer;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Future<?> task;
 
     private ArrayList<Integer> mSheeps;
     private boolean keepScheduling;
+
+    private int delayHours = 4;
+
+    private double accumulation = 0;
 
     public WolfDaemon(DatabaseHandler mHandler){
         this.mHandler = mHandler;
@@ -26,32 +34,35 @@ public class WolfDaemon extends Thread {
      */
     @Override
     public void run() {
-        timer = new Timer("WolfDaemon", false);
-        scheduleAndAttack();
-        while(keepScheduling){
-            try {
-                Thread.sleep(60*1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        task = scheduler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                scheduleAttack();
             }
-        }
+        }, 0, this.delayHours, TimeUnit.HOURS);
     }
 
     /**
      * Schedulerfunction
      */
-    public void scheduleAndAttack(){
+    public void scheduleAttack(){
         if(!keepScheduling)
-            return;
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                scheduleAndAttack();
-            }
-        };
+            task.cancel(false);
+
         Random ran = new Random();
-        timer.schedule(task, (long)1000*3600*24*(50 + (int)(ran.nextGaussian()*100))/(mSheeps.size() + 1));
+
+        double gauss = Math.abs(ran.nextGaussian()*mSheeps.size()*this.delayHours/(360*24));
+        this.accumulation += ran.nextDouble()*this.accumulation/24 + (ran.nextInt(3)+2)*gauss*this.delayHours/24;
+        Log.d("Wolf", "Accumulation: " + this.accumulation);
+        int killcount = (int)(gauss*this.accumulation);
+        Log.d("Wolf", "Killing " + killcount + " sheeps, gaussian = " + gauss+ ", result = " + gauss*this.accumulation);
+
+        if(killcount == 0)
+            return;
+
         doAttack();
+
+        this.accumulation = 0;
     }
 
     /**
@@ -69,7 +80,7 @@ public class WolfDaemon extends Thread {
         try {
             mHandler.killSheep(id, cause);
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

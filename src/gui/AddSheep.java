@@ -402,6 +402,7 @@ public class AddSheep extends javax.swing.JFrame {
         try {
             birthdate = sdf.parse(textField3.getText()).getTime();
         } catch (ParseException e) {
+            e.printStackTrace();
             Error error = new Error(this, "Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
             error.setVisible(true);
         }

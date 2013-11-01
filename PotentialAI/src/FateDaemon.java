@@ -1,29 +1,39 @@
 import db.DatabaseHandler;
 import model.Sheep;
 import util.FlagData;
+import util.Log;
+import util.PotentialNinjaException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class FateDaemon extends Thread {
     private DatabaseHandler handler;
     private SheepDaemon sheepThread;
     private WolfDaemon wolfThread;
 
-    private Timer timer;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Future<?> task;
     private boolean keepScheduling;
 
     int databaseState;
 
+    private int delayMinutes = 2;
 
     public FateDaemon(){
         handler = new DatabaseHandler();
-
+        try {
+            Log.initLogFile();
+        } catch (PotentialNinjaException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         databaseState = getDBState(handler);
         sheepThread = new SheepDaemon(handler);
         wolfThread = new WolfDaemon(handler);
@@ -60,23 +70,22 @@ public class FateDaemon extends Thread {
 
         this.keepScheduling = true;
 
-        this.timer = new Timer("FateTimer", false);
-        scheduleAndUpdate();
+        this.task = scheduler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run(){
+                update();
+            }
+        }, 0, this.delayMinutes, TimeUnit.MINUTES);
         InputManager iManage = new InputManager();
         iManage.start();
     }
 
-    private void scheduleAndUpdate(){
-        if(keepScheduling){
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    scheduleAndUpdate();
-                }
-            };
-            this.timer.schedule(task, 60000);
-        }
+    private void update(){
         int newState = getDBState(this.handler);
+
+        if(!keepScheduling){
+            this.task.cancel(false);
+        }
 
         if(newState != this.databaseState){
             this.reFetchAllData();
@@ -89,7 +98,6 @@ public class FateDaemon extends Thread {
     }
 
     class InputManager extends Thread{
-
         private BufferedReader input;
 
         private String mStartUp = "Command Parser v1.0 for fateDaemon Software\nCreated by tOgg1\n";

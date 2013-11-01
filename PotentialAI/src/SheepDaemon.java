@@ -1,16 +1,22 @@
 import db.DatabaseHandler;
 import model.Sheep;
 import util.FlagData;
+import util.Log;
 import util.Vec2;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SheepDaemon extends Thread {
 
     private DatabaseHandler mHandler;
 
-    private Timer timer;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Future<?> task;
 
     private ArrayList<Integer> mSheeps;
 
@@ -22,13 +28,13 @@ public class SheepDaemon extends Thread {
 
     //Required because we have two threads accessing functions simultaneously (possibly)
     private boolean keepScheduling;
+    private int delayHours = 8;
 
     private Object lock = new Object();
 
     public SheepDaemon(DatabaseHandler mHandler) {
         this.mHandler = mHandler;
         this.mSheeps = new ArrayList<Integer>();
-        this.timer = new Timer("SheepDaemon", false);
         this.velocities = new HashMap<Integer,Vec2>();
         this.accelerations = new HashMap<Integer,Vec2>();
         this.keepScheduling = true;
@@ -46,29 +52,22 @@ public class SheepDaemon extends Thread {
             this.velocities.put(this.mSheeps.get(i), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
             this.accelerations.put(this.mSheeps.get(i), new Vec2(ran.nextFloat() - 0.5f, ran.nextFloat() - 0.5f));
         }
-        scheduleAndMove();
-        while(keepScheduling){
-            try {
-                Thread.sleep(1000*3600*8);
-            } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        task = scheduler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("Sheep", "Moving sheep");
+                move();
             }
-        }
+        }, this.delayHours, this.delayHours, TimeUnit.HOURS);
+        move();
     }
 
     /**
      * Schedulerfunction
      */
-    public void scheduleAndMove(){
+    public void move(){
         if(!keepScheduling)
-            return;
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                scheduleAndMove();
-            }
-        };
-        timer.schedule(task, 1000*3600*8);
+            this.task.cancel(false);
 
         moveSheeps();
         randomizePulse();

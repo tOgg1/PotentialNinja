@@ -560,6 +560,38 @@ public class DatabaseHandler {
         return results;
     }
 
+    public void setAlarmAsShown(int alarmid) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE alarm SET isshown = ? WHERE id = ?");
+        query.setInt(1,1);
+        query.setInt(2, alarmid);
+        query.executeUpdate();
+    }
+
+    /**
+     * Get all non-shown alarms for farmer
+     * @param farmerID
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Alarm> getNonShownAlarms(int farmerID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid) and isshown = ?");
+        query.setInt(1, farmerID);
+        query.setInt(2, 0);
+
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+
+        ArrayList<Alarm> results = new ArrayList<Alarm>();
+        results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
+
+        while(rs.next()){
+            results.add(new Alarm(rs.getInt("id"), rs.getInt("alarmflags"), rs.getInt("sheepid")));
+        }
+        return results;
+    }
+
     /**
      * Attempts to find sheep by name and farmerid.
      * @param name
@@ -684,6 +716,29 @@ public class DatabaseHandler {
     public ArrayList<Sheep> getAliveSheeps(int farmerID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE alive = ? AND farmerid = ?");
         query.setInt(1, 1);
+        query.setInt(2, farmerID);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return null;
+        ArrayList<Sheep> results = new ArrayList<Sheep>();
+        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
+
+        while(rs.next()){
+            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex")));
+        }
+        return results;
+    }
+
+    /**
+     * Returns all dead sheep of farmer.
+     * @param farmerID
+     * @return Returns an arraylist of sheep, or null of no sheep is found.
+     * @throws SQLException
+     */
+    public ArrayList<Sheep> getDeadSheeps(int farmerID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE alive = ? AND farmerid = ?");
+        query.setInt(1, 0);
         query.setInt(2, farmerID);
         ResultSet rs = query.executeQuery();
 

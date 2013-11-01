@@ -12,6 +12,7 @@ import map.MapViewer;
 import model.Sheep;
 import model.SheepMedicalHistory;
 import util.FlagData;
+import util.GeneralUtil;
 import util.Log;
 import util.Vec2;
 
@@ -27,6 +28,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     /**
      * Creates new form MainMenu
      */
+
+    public static String welcomeMessage = "Welcome to SheepTracker";
 
     public Main main;
 
@@ -55,17 +58,19 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mainMap.addListener(this);
         this.farmerID = farmerID;
         try{
-            this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
+            this.bonde =(String) mHandler.getFarmerInformation(farmerID)[0];
+            this.bonde = welcomeMessage + ", " + this.bonde.substring(0,this.bonde.indexOf(" ")) +".";
             this.defPos = mHandler.getFarmerLocation(farmerID);
-            Log.d("GUI", "Farmerid: " + this.farmerID);
-            Log.d("GUI", "DefaultPos: " + this.defPos.x + ", " + this.defPos.y);
             this.mainMap.setMapCenter(this.defPos);
             this.sheepMap.setMapCenter(this.defPos);
             this.mainMapLogic.setCurrentSheepPositions();
         }catch (SQLException e){
+            e.printStackTrace();
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
+
+        checkForAlarms();
 
         initComponents();
 
@@ -73,6 +78,24 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
         if(previous != null)
             previous.dispose();
+    }
+
+    private void checkForAlarms(){
+        try {
+            ArrayList<model.Alarm> alarms = mHandler.getNonShownAlarms(this.farmerID);
+
+            if(alarms == null){
+                return;
+            }
+
+            for(model.Alarm alarm : alarms){
+                (new Alarm(this, alarm.getSheepID(), mRegister.getSheepName(alarm.getSheepID()), GeneralUtil.alarmMessages[alarm.getAlarmFlags()-1])).setVisible(true);
+                mHandler.setAlarmAsShown(alarm.getAlarmID());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 
@@ -113,11 +136,13 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        label1.setName(""); // NOI18N
+        label1.setName("");
         label1.setText("Velg sau (ID):");
         jTextField1.setText(sheepName);
 
         label2.setText(bonde);
+        label2.setFont(new Font("Serif", Font.PLAIN, 15));
+
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -342,6 +367,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
     private void info(String sName){
 
+        Log.d("Main", sName + ", "+sName.length());
+
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
         try {
@@ -379,7 +406,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             textField2.setText("Vær");
         }
         else if(sex.equals(Sheep.SEX_FEMALE)){
-            Log.d("lol", "hei!");
             textField2.setText("Søye");
         }
         else{
@@ -394,8 +420,16 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         try {
             SheepMedicalHistory medhist = mHandler.getSheepMedicalHistory(sheepID);
             if (medhist == null){
-                // String [] =
-
+                String dato = sdf.format(new Date());
+                stringsArray.add(dato + ": Frisk");
+                final String[] finalStrings = new String[stringsArray.size()];
+                stringsArray.toArray(finalStrings);
+                jList1.setModel(new javax.swing.AbstractListModel(){
+                    public int getSize() { return finalStrings.length; }
+                    public Object getElementAt(int i) { return finalStrings[i]; }
+                });
+                jScrollPane3.setViewportView(jList1);
+                jScrollPane3.setVisible(false);
             }
             else{
                 TreeMap<Long, Integer> treeHist = medhist.getHistory();
@@ -405,8 +439,11 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
                     long datoRaw = entry.getKey();
                     int sykdom = entry.getValue();
 
-
                     String dato = sdf.format(new Date(datoRaw));
+
+                    if(sykdom == 0){
+                        stringsArray.add(dato + ": Frisk");
+                    }
 
                     if ((sykdom  & FlagData.BLATUNGE) > 0) {
                         datoSyk = dato + ": Blåtunge";
@@ -472,7 +509,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
                         datoSyk = dato + ": Vaksine";
                         stringsArray.add(datoSyk);
                     }
-
                 }
 
                 final String[] finalStrings = new String[stringsArray.size()];
@@ -488,10 +524,6 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
-
-        // vil ha det inn på formen "dato: sykdom"
-
-        // TODO : legge inn elementene i String []
     }
 
     public void updateSheeps(){
@@ -510,7 +542,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         sheepMapLogic.setHistoricSheepPosition(sheep.getId());
     }
 
-    private void initChosen() {
+    private void initChosen(){
         jButton3.setEnabled(true);
         jButton3.setVisible(true);
 
@@ -566,6 +598,17 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         jLabel1.setEnabled(false);
         jLabel1.setVisible(false);
 
+        jList1.setModel(new AbstractListModel() {
+            @Override
+            public int getSize() {
+                return 0;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public Object getElementAt(int index) {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
         jList1.setEnabled(false);
         jList1.setVisible(false);
 
@@ -573,6 +616,11 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         sheepMap.removeMarkers();
 
         jScrollPane3.setVisible(false);
+    }
+
+    public void reloadInfo(){
+        this.info(this.sheepName);
+        initChosen();
     }
 
     /**
@@ -680,10 +728,10 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     @Override
     public void nodeClicked(MapViewer.NodeInfo n){
         Sheep sheep = mainMapLogic.getSheepByDot(n.getDot());
-        initChosen();
         initFromMap(sheep);
         this.sheepName = sheep.getName();
         info(this.sheepName);
+        initChosen();
     }
 
     @Override

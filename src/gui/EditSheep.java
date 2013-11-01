@@ -7,10 +7,9 @@ package gui;
 import db.DatabaseHandler;
 import main.Register;
 import util.FlagData;
+import util.GeneralUtil;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditSheep extends javax.swing.JFrame {
@@ -151,11 +150,10 @@ public class EditSheep extends javax.swing.JFrame {
 
         label3.setText("Fødselsdato");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
         try {
-            textField3.setText((sdf.format(new Date(mHandler.getSheep(sheepID).getBirthdate())))); //Fødselsdatoen på sauen
+            textField3.setText((GeneralUtil.sdf.format(new Date(mHandler.getSheep(sheepID).getBirthdate()))));
         } catch (SQLException e) {
+            e.printStackTrace();
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
@@ -202,7 +200,7 @@ public class EditSheep extends javax.swing.JFrame {
             healthflag1 = healthflags;
 
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
 
@@ -389,7 +387,7 @@ public class EditSheep extends javax.swing.JFrame {
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
        System.exit(0);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }
 
     /**
      * Saves the info from the textFields to the given sheep
@@ -404,13 +402,12 @@ public class EditSheep extends javax.swing.JFrame {
             sex = "m";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
         long birthdate = 0;
         try {
-            birthdate = sdf.parse(textField3.getText()).getTime();
-        } catch (ParseException e) {
-            Error error = new Error(this, "Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
+            birthdate = GeneralUtil.validateDate(textField3.getText());
+        } catch(Throwable e) {
+            e.printStackTrace();
+            Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
@@ -433,12 +430,28 @@ public class EditSheep extends javax.swing.JFrame {
         healthflag |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
         int healthflagAdd = 0;
-        int healthfalgRemove = 0;
+        int healthflagRemove = 0;
 
         if (healthflag1 == healthflag){
             //Ingen endring i healthflag
+        }else{
+            // noen grunn til at vi gjør dette og ikke setHealthFlag(healthflag)?
+            healthflagAdd = healthflag&(healthflag^healthflag1);
+            healthflagRemove = ~healthflag&(healthflag^healthflag1);
+            try {
+                if(healthflagAdd != 0)
+                    mHandler.addSheepHealthFlag(sheepID, healthflagAdd);
+                if(healthflagRemove != 0)
+                    mHandler.removeSheepHealthFlag(sheepID, healthflagRemove);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Error error = new Error(this, e.getMessage());
+                error.setVisible(true);
+            }
         }
 
+        /*
+        Redendant code, TO BE REMOVED
         if ((healthflag1 & FlagData.BLATUNGE) != (healthflag & FlagData.BLATUNGE)){
             if ((healthflag & FlagData.BLATUNGE) > 0){
                 healthflagAdd = FlagData.BLATUNGE;
@@ -572,25 +585,13 @@ public class EditSheep extends javax.swing.JFrame {
             else{
                 healthfalgRemove = FlagData.VAKSINE;
             }
-        }
-
-        try {
-			mHandler.addSheepHealthFlag(sheepID, healthflagAdd);
-		} catch (SQLException e) {
-			Error error = new Error(this, e.getMessage());
-			error.setVisible(true);
-		}
-
-        try {
-            mHandler.removeSheepHealthFlag(sheepID, healthfalgRemove);
-        } catch (SQLException e) {
-            Error error = new Error(this, e.getMessage());
-            error.setVisible(true);
-        }
+        }*/
 
         try {
             mHandler.setSheepName(sheepID, sheepName);
         } catch (SQLException e) {
+            e.printStackTrace();
+
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
@@ -598,6 +599,8 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             mHandler.setSheepBirthdate(sheepID, birthdate);
         } catch (SQLException e) {
+            e.printStackTrace();
+
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
@@ -605,6 +608,7 @@ public class EditSheep extends javax.swing.JFrame {
         try {
             mHandler.setSheepSex(sheepID, sex);
         } catch (SQLException e) {
+            e.printStackTrace();
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
@@ -618,9 +622,11 @@ public class EditSheep extends javax.swing.JFrame {
      * Go back to MainMenu
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    	MainMenu chosen = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
-    	chosen.setVisible(true);
-    	
+        main.setVisible(true);
+        main.setFocusable(true);
+        main.setLocationRelativeTo(this);
+        main.reloadInfo();
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -644,8 +650,10 @@ public class EditSheep extends javax.swing.JFrame {
      * Go to ManMenu, from the Menu Bar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    	MainMenu main = new MainMenu(this.main.main, this, farmerID, mHandler, mRegister);
     	main.setVisible(true);
+        main.setFocusable(true);
+        main.setLocationRelativeTo(this);
+        this.dispose();
     }
 
     private javax.swing.JRadioButton jRadioButton1;

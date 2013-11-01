@@ -1,6 +1,9 @@
 package util;
 
 import java.awt.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,6 +19,10 @@ public class GeneralUtil {
     public static Color selectedSheepColor = new Color(0xAA, 0x40, 0x32);
     public static Color farmColor = new Color(0x80, 0x80, 0x80);
 
+    public static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+    public static String[] alarmMessages = {"Sau er død.", "Sau registrert med usedvanlig lav puls over et lengre tidsrom", "Sau registrert med usedvanlig høy puls over et lengre tidsrom"};
+
     public static String charToString(char[] array){
         StringBuilder sb = new StringBuilder();
         for(char c : array){
@@ -23,6 +30,51 @@ public class GeneralUtil {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Validates a date and returns its long value
+     * @param date
+     * @return
+     * @throws PotentialNinjaException
+     */
+    public static long validateDate(String date)throws PotentialNinjaException{
+        String[] splitted = date.split("/");
+
+        if(splitted.length != 3)
+            throw new PotentialNinjaException("Feil format på dato, manglende \"/\".");
+
+        try{
+            int month = Integer.parseInt(splitted[0]);
+            int day = Integer.parseInt(splitted[1]);
+            int year = Integer.parseInt(splitted[2]);
+
+            if(month > 12 || month < 0)
+                throw new PotentialNinjaException("Feil format på dato, det er bare 12 måneder i året");
+            else if((day > 30 && month%2 == 0) || day < 0)
+                throw new PotentialNinjaException("Feil format på dato, den registrerte dagen finnes ikke");
+            else if(day == 29 && month == 2 && year%4 == 0 && year%100 == 0 && year%400 != 0)
+                throw new PotentialNinjaException("Feil format på dato, et år delelig på hundre (1700, 1800 etc.) er bare skuddår hvis det også er delelig på 400 (1600, 2000 etc.");
+            else if(day == 29 && month == 2 && year%4 != 0)
+                throw new PotentialNinjaException("Feil format på dato, februar har bare 29 dager i et skuddår.");
+            else if(day > 28 && month == 2 && year%4 != 0)
+                throw new PotentialNinjaException("Feil format på dato, februar har ikke " + day + " dager.");
+            else if(day > 29 && month == 2 && year%4 == 0)
+                throw new PotentialNinjaException("Feil format på dato, skuddår har bare 29 dager i februar.");
+        }catch(NumberFormatException e ){
+            throw new PotentialNinjaException("Feil format på dato.");
+        }
+
+        try{
+            long dateRaw = sdf.parse(date).getTime();
+            long now = new Date().getTime();
+
+            if(dateRaw > new Date().getTime())
+                throw new PotentialNinjaException("Feil format på dato, Closed Timelike Curves (CTC's) er ikke bevist enda, og du kan ikke lage en dato i fremtiden, desverre.");
+            return dateRaw;
+        } catch (ParseException e) {
+            throw new PotentialNinjaException("Feil format på dato.");
+        }
     }
 
     /**

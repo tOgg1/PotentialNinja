@@ -27,8 +27,6 @@ public class Dead extends javax.swing.JFrame {
         this.main = previous;
 
     	initComponents();
-    	this.main.setVisible(false);
-        this.main.setFocusable(false);
         this.setLocationRelativeTo(this.main);
 
         this.mHandler = mHandler;
@@ -114,10 +112,9 @@ public class Dead extends javax.swing.JFrame {
     /**
      * Accept that the sheep is dead and goes back to the main-menu
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.main.setFocusable(true);
-        this.main.setVisible(true);
-        this.main.setLocationRelativeTo(this);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        this.main.updateSheeps();
+        this.dispose();
     	
     }//GEN-LAST:event_jButton1ActionPerformed
 

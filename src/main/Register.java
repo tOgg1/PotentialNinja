@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Register {
 
     private DatabaseHandler mHandler;
+    private ArrayList<Sheep> deadSheep;
     private ArrayList<Sheep> activeSheeps;
 
     private int farmerID;
@@ -24,6 +25,7 @@ public class Register {
         try {
             //this.activeSheeps = handler.getSheeps(this.farmerID);
             this.activeSheeps = handler.getAliveSheeps(this.farmerID);
+            this.deadSheep = handler.getDeadSheeps(this.farmerID);
         } catch (SQLException e) {
             activeSheeps = new ArrayList<Sheep>();
         }
@@ -70,6 +72,26 @@ public class Register {
             }
         }
         return -1;
+    }
+
+    /**
+     * Takes a sheepid and returns its name if sheep is found
+     * @param sheepid
+     * @return Returns sheepname, and null if no sheep is found
+     */
+    public String getSheepName(int sheepid){
+        for(Sheep s : this.activeSheeps){
+            if(s.getId() == sheepid){
+                return s.getName();
+            }
+        }
+
+        for(Sheep s : this.deadSheep){
+            if(s.getId() == sheepid){
+                return s.getName();
+            }
+        }
+        return null;
     }
 
     /**
@@ -131,11 +153,11 @@ public class Register {
         return activeSheeps;
     }
 
-    public int getFarmerID() {
+    public int getFarmerID(){
         return farmerID;
     }
 
-    public void setFarmerID(int farmerID) {
+    public void setFarmerID(int farmerID){
         this.farmerID = farmerID;
     }
 

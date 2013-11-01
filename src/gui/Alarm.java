@@ -4,12 +4,19 @@
  */
 package gui;
 
+import javax.swing.*;
+
 public class Alarm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Alarm
-     */
-    public Alarm() {
+    private int sheepid;
+    private String sheepName;
+    private String message;
+
+    public Alarm(JFrame previous, int sheepid, String sheepName, String message) {
+        this.setLocationRelativeTo(previous);
+        this.sheepid = sheepid;
+        this.sheepName = sheepName;
+        this.message = message;
         initComponents();
     }
 
@@ -52,8 +59,8 @@ public class Alarm extends javax.swing.JFrame {
             }
         });
 
-        textField1.setText(" ");  // SheepName // TODO
-        textArea1.setText(" ");   //Message   // TODO
+        textField1.setText("InternID: " + sheepid + "      ID/Navn: " + sheepName);
+        textArea1.setText(message);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,55 +100,17 @@ public class Alarm extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    //OK-button
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
 
         this.dispose();
-    }//GEN-LAST:event_button1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Alarm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Alarm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Alarm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Alarm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Alarm().setVisible(true);
-            }
-        });
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+
     private java.awt.Button button1;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.Label label3;
     private java.awt.TextArea textArea1;
     private java.awt.TextField textField1;
-    // End of variables declaration//GEN-END:variables
 }

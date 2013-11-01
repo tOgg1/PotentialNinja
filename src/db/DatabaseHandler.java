@@ -292,10 +292,11 @@ public class DatabaseHandler {
      */
     public void setFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
         int id = getNextAutoIncrement("contact", "id");
+
         PreparedStatement query = this.db.prepareStatement("INSERT INTO contact(name, number, email) VALUES (?,?,?)");
-        query.setString(1,name);
-        query.setString(2,number);
-        query.setString(3,email);
+        query.setString(1, name);
+        query.setString(2, number);
+        query.setString(3, email);
         query.executeUpdate();
 
         query = this.db.prepareStatement("UPDATE farmer SET Contact_id = ? WHERE id = ?");
@@ -303,6 +304,10 @@ public class DatabaseHandler {
         query.setInt(2, farmerID);
         query.executeUpdate();
         updateState();
+    }
+
+    public void updateFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
+
     }
 
     /**
@@ -325,24 +330,6 @@ public class DatabaseHandler {
 
         query = this.db.prepareStatement("UPDATE user SET username = ? WHERE farmerid = ?");
         query.setString(1, username);
-        query.setInt(2, farmerid);
-        query.executeUpdate();
-    }
-
-    /**
-     * Sets farmers password
-     * @param farmerid
-     * @param password
-     * @throws SQLException
-     */
-    public void setFarmerPassword(int farmerid, String password) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("UPDATE user SET password = ? WHERE farmerid = ?");
-        try {
-            query.setString(1, this.encryptPassword(password));
-        } catch (NoSuchAlgorithmException e) {
-            throw new SQLException("Password encryption failed");
-        }
-
         query.setInt(2, farmerid);
         query.executeUpdate();
     }

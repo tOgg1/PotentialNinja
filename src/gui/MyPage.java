@@ -412,10 +412,10 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         try {
             mHandler.setFarmerInformation(farmerID, account, farmerName, mobilnr, email);
         } catch (SQLException e) {
+            e.printStackTrace();
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
-
 
         // Kontaktpersons-informasjon
         String kfornavn = textField5.getText();
@@ -426,32 +426,31 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
 
         try {
             mHandler.setFarmerContact(farmerID, kfarmerName, kmobilnr, kemail);
-        } catch (SQLException e) {
+        }catch(SQLException e){
+            e.printStackTrace();
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
         if (npsw.equals("jPasswordField2") && npswg.equals("jPasswordField3")){
 
-        }
-        else{
+        }else{
             if((farmerID = mHandler.authenticate(account, gpsw)) != -1){
-                if (npsw.equals(npswg)){
+                if(npsw.equals(npswg)){
                     try {
                         mHandler.resetPassword(farmerID,npsw);
                     } catch (SQLException e) {
+                        e.printStackTrace();
                         Error error = new Error(this, e.getMessage());
                         error.setVisible(true);
                     }
                 }
             }
         }
-
-
-//        mHandler.setFarmerContact(farmerID, farmerName, kmobilnr, kemail); // Kontaktpersonens info
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.main.setFocusable(true);
+        this.main.setVisible(true);
+        this.main.setLocationRelativeTo(this);
+    }
 
     /**
      * Logs out of the program, from the Menu Bar
@@ -477,7 +476,6 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         for(char c : array){
             sb.append(c);
         }
-
         return sb.toString();
     }
 

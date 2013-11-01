@@ -1,0 +1,4 @@
+V0.1
+--------------------------------------
+- Fixed MyPage crash
+- Removed redundant method "setFarmerPassword"

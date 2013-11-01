@@ -232,7 +232,7 @@ public class ForgottenUserPsw extends javax.swing.JFrame {
                 error.setVisible(true);
                 return;
             }
-            mHandler.setFarmerPassword(farmerid, newPassword);
+            mHandler.resetPassword(farmerid, newPassword);
 
         }catch(SQLException e){
             Error error = new Error(this, "Error getting information from database: " + e.getMessage());

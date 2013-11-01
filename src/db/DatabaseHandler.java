@@ -339,7 +339,7 @@ public class DatabaseHandler {
         if(!rs.next())
             return false;
 
-        return rs.getBoolean(1);
+        return !rs.getBoolean(1);
     }
 
     /**

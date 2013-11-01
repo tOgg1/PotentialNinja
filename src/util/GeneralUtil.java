@@ -135,4 +135,9 @@ public class GeneralUtil {
         return getDistance(pos1.x, pos1.y, pos2.x, pos2.y);
     }
 
+    public static boolean assertEquals(double one, double two, double epsilonRelative, double epsilonAbsolute){
+        return Math.abs(one-two) < epsilonAbsolute || Math.abs(1 - one/two) < epsilonRelative;
+    }
+
+
 }

@@ -1,22 +1,26 @@
 import db.DatabaseHandler;
 import model.Alarm;
+import net.MailClient;
 import util.Log;
 import util.PotentialNinjaException;
-import util.SMTPHandler;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AlertDaemon extends Thread {
 
-    private Timer timer;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Future<?> task;
     private DatabaseHandler handler;
-    private SMTPHandler mailHandler;
 
     private boolean keepScheduling = true;
 
@@ -32,10 +36,8 @@ public class AlertDaemon extends Thread {
 
     public AlertDaemon(){
         this.handler = new DatabaseHandler();
-        initSMTP();
         this.sformat = new SimpleDateFormat("MM/DD");
         this.lformat = new SimpleDateFormat("hh:mm:ss a");
-        this.timer = new Timer();
         try {
             Log.initLogFile();
         } catch (PotentialNinjaException e) {
@@ -43,73 +45,24 @@ public class AlertDaemon extends Thread {
         }
     }
 
-    private void initSMTP(){
-        File file = new File(this.configname);
-        String email_account;
-        String email_password;
-        int email_password_factory;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String account = reader.readLine();
-
-            if(account == null){
-                throw new RuntimeException("Error reading ´config.txt´: Missing account");
-            }
-            else{
-                email_account = account;
-            }
-
-            String password = reader.readLine();
-
-            if(password == null){
-                throw new RuntimeException("Error reading ´config.txt´: Missing password");
-            }else{
-                email_password = password;
-            }
-
-            String factoryCode = reader.readLine();
-
-            if(factoryCode == null){
-                throw new RuntimeException("Error reading ´config.txt´: Missing factory code");
-            }
-            else{
-                try{
-                    email_password_factory = Integer.parseInt(factoryCode);
-                }catch(NumberFormatException e){
-                    throw new RuntimeException("Error reading ´config.txt´: Invalid factory code");
-                }
-            }
-
-            this.mailHandler = new SMTPHandler(email_account, email_password, email_password_factory);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("File ´config.txt´ not found, or is corrupted");
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading ´config.txt´");
-        }
-    }
-
     @Override
     public void run(){
         InputManager iManage = new InputManager();
         iManage.start();
-        scheduleAndPoll();
-    }
 
-    private void scheduleAndPoll(){
-        if(!keepScheduling){
-            return;
-        }
-        TimerTask task = new TimerTask(){
+        task = scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run(){
-                scheduleAndPoll();
+               poll();
             }
-        };
-        this.timer.schedule(task, 60000);
-        poll();
+        }, 0, 2, TimeUnit.MINUTES);
     }
 
     private void poll(){
+        if(!keepScheduling){
+            task.cancel(false);
+        }
+
         ArrayList<Alarm> alarms = findAlarms();
 
         if(alarms != null){
@@ -129,13 +82,23 @@ public class AlertDaemon extends Thread {
 
                         if(contactInf != null){
                             String contactEmail = (String)contactInf[2];
-                            mailHandler.sendMail(contactEmail, email_message, email_subject);
-                            Log.d("Email", "Email successfully sent to " + contactEmail);
+                            try {
+                                MailClient mailClient = new MailClient();
+                                mailClient.sendMail(contactEmail, email_message, email_subject);
+                                Log.d("Email", "Email successfully sent to " + contactEmail);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            }
                         }
                         String farmerEmail = handler.getFarmerEmail(farmerid);
-                        mailHandler.sendMail(farmerEmail, email_message, email_subject);
-                        Log.d("Email", "Email successfully sent to " + farmerEmail);
-
+                        try {
+                            MailClient mailClient = new MailClient();
+                            mailClient.sendMail(farmerEmail, email_message, email_subject);
+                            Log.d("Email", "Email successfully sent to " + farmerEmail);
+                        } catch (Exception e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
                         handler.inactiveAlarm(alarm.getAlarmID());
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -144,7 +107,6 @@ public class AlertDaemon extends Thread {
                 }
             }
         }
-        Log.d("Alert", "Polling complete");
     }
 
     private ArrayList<Alarm> findAlarms(){

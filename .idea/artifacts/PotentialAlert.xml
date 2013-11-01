@@ -7,6 +7,7 @@
       </element>
       <element id="extracted-dir" path="$PROJECT_DIR$/res/mysql-connector.jar" path-in-jar="/" />
       <element id="module-output" name="PotentialNinja" />
+      <element id="module-output" name="PotentialAlert" />
     </root>
   </artifact>
 </component>

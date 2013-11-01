@@ -4,6 +4,8 @@ import org.openstreetmap.gui.jmapviewer.*;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 import org.openstreetmap.gui.jmapviewer.tilesources.OsmTileSource;
+import util.GeneralUtil;
+import util.Log;
 import util.Vec2;
 
 import java.awt.*;
@@ -13,6 +15,8 @@ import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
+
+import static util.GeneralUtil.assertEquals;
 
 public class MapViewer extends MouseAdapter implements JMapViewerEventListener, MouseListener {
 
@@ -72,8 +76,41 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
                 for(MapViewerListener listen : listeners){
                     listen.mapClicked(mouseX, mouseY);
                 }
-                setMouseDotName();
+                //setMouseDotName();
+                Log.d("Map", "CHECKING FOR CLICKS\n-----------------\n");
 
+                checkForNodeClicks();
+            }
+        }
+    }
+
+    public void checkForNodeClicks(){
+        MapMarkerDot least = null;
+        double leastValue = Double.MAX_VALUE;
+        double leastX = 0, leastY = 0;
+        DecimalFormat df = new DecimalFormat("#.0000000");
+        for (MapMarkerDot mapDot : mapDots) {
+            leastX = mapDot.getLat();
+            leastY = mapDot.getLon();
+
+            int zoom = map.getZoom();
+
+            // Latitude needs to correlate for shrinking latitude at higher longitudes, thus dividing by c*mouseY (This is slightly incorrect, longitude-shrinking is not linear).
+            // It seems that the map is shrinking by a value between 1.5 and 2.0 every time. Therefore the Math.pow(1.8, -zoom+1) logarithmic correction. +1 as zoom starts at 1.
+            if(assertEquals(leastX, mouseX, 0.01f*Math.pow(1.8,-zoom+1)/Math.abs(0.2f*mouseY), Math.pow(1.8,-zoom+1)/Math.abs(0.2f*mouseY)) && assertEquals(leastY, mouseY, 0.01f*Math.pow(1.8, -zoom+1), Math.pow(1.8, -zoom+1))){
+                Log.d("Map", "FOUND ONE!");
+                double distance = GeneralUtil.getDistance(leastX, leastY, mouseX, mouseY);
+                if(GeneralUtil.getDistance(leastX, leastY, mouseX, mouseY) < leastValue){
+                    leastValue = distance;
+                    least = mapDot;
+                }
+            }
+        }
+
+        if(least != null){
+            NodeInfo nodeInfo = new NodeInfo(least.getName(), df.format(leastX), df.format(leastY), least);
+            for (MapViewerListener listener : listeners) {
+                listener.nodeClicked(nodeInfo);
             }
         }
     }
@@ -88,7 +125,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         }
 
         for (MapMarkerDot d : mapDots){
-
             //Sets decimalformat based on zoom.
             //min zoom = 0, max zoom = 18.
             int zoom = map.getZoom();

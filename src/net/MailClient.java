@@ -1,7 +1,6 @@
 package net;
 
 import util.GeneralUtil;
-import util.Log;
 import util.PotentialNinjaException;
 import util.ServerInfo;
 
@@ -37,7 +36,6 @@ public class MailClient {
     }
 
     public void sendMail(String recipient, String message, String subject) throws Exception{
-        Log.d("Mail", "Attempting to send email");
 
         if(!this.running)
             throw new IOException("Socket not running");
@@ -47,7 +45,6 @@ public class MailClient {
 
         char[] buffer = new char[0xF];
 
-        Log.d("Mail", "Writing begin...");
         this.os.write(ServerInfo.code_begin+"");
         this.os.flush();
 
@@ -62,7 +59,6 @@ public class MailClient {
         char[] messageBuffer = (ServerInfo.code_message+""+message).toCharArray();
         char[] subjectBuffer = (ServerInfo.code_subject+""+subject).toCharArray();
 
-        Log.d("Mail", "Writing recipient..");
 
         this.os.write(recipientBuffer);
         this.os.flush();
@@ -73,7 +69,6 @@ public class MailClient {
             }
         }
 
-        Log.d("Mail", "Writing message...");
 
         this.os.write(messageBuffer);
         this.os.flush();
@@ -84,7 +79,6 @@ public class MailClient {
             }
         }
 
-        Log.d("Mail", "Writing subject...");
 
 
         this.os.write(subjectBuffer);
@@ -96,7 +90,6 @@ public class MailClient {
             }
         }
 
-        Log.d("Mail", "Ending transmission");
 
         this.os.write(ServerInfo.code_end+"");
         this.os.flush();
@@ -105,15 +98,6 @@ public class MailClient {
             if(buffer[0] != ServerInfo.code_ok){
                 throw new IOException("Error sending mail: " + buffer[0]);
             }
-        }
-    }
-
-    public static void main(String[] args){
-        MailClient client = new MailClient();
-        try {
-            client.sendMail("tormod.haugland@gmail.com", "Hei du er kul!<br> Liksom!", "Hei");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

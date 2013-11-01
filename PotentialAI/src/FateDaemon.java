@@ -100,7 +100,7 @@ public class FateDaemon extends Thread {
     class InputManager extends Thread{
         private BufferedReader input;
 
-        private String mStartUp = "Command Parser v1.0 for fateDaemon Software\nCreated by tOgg1\n";
+        private String mStartUp = "Command Parser v1.0e\nCreated by tOgg\n";
         private String mReady = "Ready for commands ...";
         private boolean debug = false;
 

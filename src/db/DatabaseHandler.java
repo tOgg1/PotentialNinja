@@ -257,7 +257,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public Object[] getFarmerContactInformation(int id) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT name, number, email FROM contact WHERE id = (SELECT Contact_id from farmer where farmer.id = ?)");
+        PreparedStatement query = this.db.prepareStatement("SELECT name, number, email FROM contact WHERE id = (SELECT contact_id from farmer where farmer.id = ?)");
         query.setInt(1, id);
         ResultSet rs = query.executeQuery();
 
@@ -299,15 +299,41 @@ public class DatabaseHandler {
         query.setString(3, email);
         query.executeUpdate();
 
-        query = this.db.prepareStatement("UPDATE farmer SET Contact_id = ? WHERE id = ?");
+        query = this.db.prepareStatement("UPDATE farmer SET contact_id = ? WHERE id = ?");
         query.setInt(1, id);
         query.setInt(2, farmerID);
         query.executeUpdate();
         updateState();
     }
 
+    /**
+     * Updates farmers contact
+     * @param farmerID
+     * @param name
+     * @param number
+     * @param email
+     * @throws SQLException
+     */
     public void updateFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE contact SET name = ?, number = ?, email = ? WHERE id = (SELECT contact_id FROM farmer WHERE id = ?)");
+        query.setString(1, name);
+        query.setString(2, number);
+        query.setString(3, email);
+        query.setInt(4, farmerID);
 
+        query.executeUpdate();
+        updateState();
+    }
+
+    public boolean hasFarmerContact(int farmerID) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("SELECT ISNULL(contact_id) FROM farmer WHERE id = ?");
+        query.setInt(1, farmerID);
+        ResultSet rs = query.executeQuery();
+
+        if(!rs.next())
+            return false;
+
+        return rs.getBoolean(1);
     }
 
     /**
@@ -351,6 +377,7 @@ public class DatabaseHandler {
 
         return new Vec2(rs.getFloat("default_pos_x"), rs.getFloat("default_pos_y"));
     }
+
     /**
      *
      * @param sheepid

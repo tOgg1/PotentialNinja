@@ -131,10 +131,11 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         label15.setText("Brukernavn");
         textField9.setText(username);
 
-
         Object[] farmer;
+        Object[] contact;
         try {
-            farmer = mHandler.getFarmerInformation(mRegister.getFarmerID());
+            farmer = mHandler.getFarmerInformation(this.farmerID);
+            contact = mHandler.getFarmerContactInformation(this.farmerID);
         } catch (SQLException e) {
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
@@ -142,19 +143,39 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         }
 
         String farmerName = (String) farmer[0];
-
         String[] farmerFullName = farmerName.split(" ");
 
         String firstName = "";
         int i = 0;
-        while(i < farmerFullName.length)
+        while(i < farmerFullName.length){
             firstName += farmerFullName[i++];
+        }
 
         String lastName;
-        if(farmerFullName.length == 1)
+        if(farmerFullName.length == 1){
             lastName = "";
-        else
+        }else{
             lastName = farmerFullName[farmerFullName.length -1];
+        }
+
+        String kFirstName;
+        String kLastName;
+        String kCellPhone;
+        String kMail;
+
+        if(contact != null){
+            String contactFullName = (String)contact[0];
+
+            kFirstName = contactFullName.lastIndexOf(" ") != -1 ? contactFullName.substring(0,contactFullName.lastIndexOf(" ")) : contactFullName;
+            kLastName = contactFullName.lastIndexOf(" ") != -1 ? contactFullName.substring(contactFullName.lastIndexOf(" ")+1 != contactFullName.length() ? contactFullName.lastIndexOf(" ")+1 : contactFullName.lastIndexOf(" ")) : "";
+            kCellPhone = (String)contact[1];
+            kMail = (String)contact[2];
+        }else{
+            kFirstName = "";
+            kLastName = "";
+            kCellPhone = "";
+            kMail = "";
+        }
 
         label2.setText("Fornavn");
         textField1.setText(firstName);
@@ -205,14 +226,18 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         label10.setText("Kontaktperson");
 
         label11.setText("Fornavn");
+        textField5.setText(kFirstName);
 
         label12.setText("Etternavn");
+        textField6.setText(kLastName);
 
         label13.setText("Mobilnummer");
+        textField7.setText(kCellPhone);
 
         jLabel1.setText("Gårdens plassering");
 
         label14.setText("E-post");
+        textField8.setText(kMail);
 
         jMenu1.setText("File");
 
@@ -422,10 +447,14 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         String ketternavn = textField6.getText();
         String kmobilnr = textField7.getText();
         String kemail = textField8.getText();
-        String kfarmerName = kfornavn + ketternavn;
+        String kfarmerName = kfornavn + " " + ketternavn;
 
         try {
-            mHandler.setFarmerContact(farmerID, kfarmerName, kmobilnr, kemail);
+            if(mHandler.hasFarmerContact(farmerID)){
+                mHandler.updateFarmerContact(farmerID, kfarmerName, kmobilnr, kemail);
+            }else{
+                mHandler.setFarmerContact(farmerID, kfarmerName, kmobilnr, kemail);
+            }
         }catch(SQLException e){
             e.printStackTrace();
             Error error = new Error(this, e.getMessage());

@@ -471,6 +471,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         this.main.setFocusable(true);
         this.main.setVisible(true);
         this.main.setLocationRelativeTo(this);
+        this.dispose();
     }
 
     /**

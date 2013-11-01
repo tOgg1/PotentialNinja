@@ -1,6 +1,5 @@
 package map;
 
-import db.DatabaseHandler;
 import main.Register;
 import model.Sheep;
 import model.SheepHistory;
@@ -11,7 +10,6 @@ import util.Vec2;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class MapSheeps
@@ -133,32 +131,36 @@ public class MapSheeps
         Color color = null;
 
         SheepHistory history = register.getSheepHistory(sheepid);
-        TreeMap<Long, Vec2> sheepHistory = history.getHistory();
+        if(history != null){
+            TreeMap<Long, Vec2> sheepHistory = history.getHistory();
+            Collection<Vec2> pairs = sheepHistory.values();
+            Vec2[] array = new Vec2[pairs.size()];
+            pairs.toArray(array);
 
-        Collection<Vec2> pairs = sheepHistory.values();
-        Vec2[] array = new Vec2[pairs.size()];
-        pairs.toArray(array);
+            //Iterates over Vec2[] array to find the three latest location of sheep
+            for (int i = 3; i > 0; i--){
+                Vec2 position = array[array.length-i];
+                lat = position.x;
+                lon = position.y;
 
-        //Iterates over Vec2[] array to find the three latest location of sheep
-        for (int i = 3; i > 0; i--){
-            Vec2 position = array[array.length-i];
-            lat = position.x;
-            lon = position.y;
+                //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
 
-            //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
-
-            switch(i){
-                case 1:
-                    color = Color.GREEN;
-                    break;
-                case 2:
-                    color = Color.YELLOW;
-                    break;
-                case 3:
-                    color = Color.RED;
-                    break;
+                switch(i){
+                    case 1:
+                        color = Color.GREEN;
+                        break;
+                    case 2:
+                        color = Color.YELLOW;
+                        break;
+                    case 3:
+                        color = Color.RED;
+                        break;
+                }
+                map.addMarker(lat,lon,color);
             }
-            map.addMarker(lat,lon,color);
+        }else{
+            Vec2 pos = register.getSheepById(sheepid).getPos();
+            map.addMarker(pos.x,pos.y,Color.GREEN);
         }
     }
 

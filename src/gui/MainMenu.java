@@ -12,7 +12,6 @@ import map.MapViewer;
 import model.Sheep;
 import model.SheepMedicalHistory;
 import util.FlagData;
-import util.GeneralUtil;
 import util.Log;
 import util.Vec2;
 
@@ -55,7 +54,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mainMapLogic = new MapSheeps(mRegister, this.mainMap);
         this.mainMap.addListener(this);
         this.farmerID = farmerID;
-        try {
+        try{
             this.bonde = (String) mHandler.getFarmerInformation(farmerID)[0] ;
             this.defPos = mHandler.getFarmerLocation(farmerID);
             Log.d("GUI", "Farmerid: " + this.farmerID);
@@ -367,18 +366,20 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             error.setVisible(true);
         }
 
-        String sex = "Søye";
+        String sex = "";
         try {
             sex = mHandler.getSheep(sheepID).getSex();
         } catch (SQLException e) {
+            e.printStackTrace();
             Error error = new Error(this, e.getMessage());
             error.setVisible(true);
         }
 
-        if (sex.equals("m")){
+        if(sex.equals(Sheep.SEX_MALE)){
             textField2.setText("Vær");
         }
-        else if (sex.equals("f") ){
+        else if(sex.equals(Sheep.SEX_FEMALE)){
+            Log.d("lol", "hei!");
             textField2.setText("Søye");
         }
         else{
@@ -500,6 +501,10 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
     private void initFromMap(Sheep sheep){
         jTextField1.setText(sheep.getName());
+        initSmallMap(sheep);
+    }
+
+    private void initSmallMap(Sheep sheep){
         sheepMap.setMapCenter(sheep.getPos());
         sheepMap.removeMarkers();
         sheepMapLogic.setHistoricSheepPosition(sheep.getId());
@@ -590,9 +595,16 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      * Starts MainMenu with the ID of the other sheep
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    	sheepName = jTextField1.getText();  //Hvilken sau som skal velges
-        info(sheepName);
-        initChosen();
+    	sheepName = jTextField1.getText();
+        try {
+            Sheep sheep = mHandler.getSheepByName(sheepName, this.farmerID);
+            initSmallMap(sheep);
+            info(sheepName);
+            initChosen();
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -4,3 +4,4 @@ V0.1
 - Removed redundant method "setFarmerPassword"
 - Added "updateFarmerContact" and "hasFarmerContact"
 - Contact information now loads to Mypage
+- No-sheep history causing exception - bug fixed.

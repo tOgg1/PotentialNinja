@@ -219,7 +219,7 @@ public class DatabaseHandler {
     /**
      * Fetches all farmer information for given farmer id
      * @param id
-     * @return Returns an Object[] array of length three as follows {name, posx, posy}, returns null if farmer is not found
+     * @return Returns an Object[] array of length three as follows {name, number, email}, returns null if farmer is not found
      * @throws SQLException
      */
     public Object[] getFarmerInformation(int id) throws SQLException{
@@ -231,7 +231,7 @@ public class DatabaseHandler {
 
         if(!rs.next())
             return null;
-        return new Object[]{rs.getString("name"), rs.getString("email"), rs.getString("number")};
+        return new Object[]{rs.getString("name"), rs.getString("number"), rs.getString("email"),};
     }
 
     /**

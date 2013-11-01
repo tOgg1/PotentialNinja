@@ -142,20 +142,23 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
             return;
         }
 
-        String farmerName = (String) farmer[0];
-        String[] farmerFullName = farmerName.split(" ");
+        String fFirstName;
+        String fLastName;
+        String fCellPhone;
+        String fMail;
 
-        String firstName = "";
-        int i = 0;
-        while(i < farmerFullName.length){
-            firstName += farmerFullName[i++];
-        }
+        if(farmer != null){
+            String farmerFullName = (String)farmer[0];
 
-        String lastName;
-        if(farmerFullName.length == 1){
-            lastName = "";
+            fFirstName = farmerFullName.lastIndexOf(" ") != -1 ? farmerFullName.substring(0,farmerFullName.lastIndexOf(" ")) : farmerFullName;
+            fLastName = farmerFullName.lastIndexOf(" ") != -1 ? farmerFullName.substring(farmerFullName.lastIndexOf(" ")+1 != farmerFullName.length() ? farmerFullName.lastIndexOf(" ")+1 : farmerFullName.lastIndexOf(" ")) : "";
+            fCellPhone = (String)contact[1];
+            fMail = (String)contact[2];
         }else{
-            lastName = farmerFullName[farmerFullName.length -1];
+            fFirstName = "";
+            fLastName = "";
+            fCellPhone = "";
+            fMail = "";
         }
 
         String kFirstName;
@@ -178,27 +181,16 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         }
 
         label2.setText("Fornavn");
-        textField1.setText(firstName);
+        textField1.setText(fFirstName);
 
         label3.setText("Etternavn");
-        textField2.setText(lastName);
-
-        String cellphone = (String) farmer[2];
+        textField2.setText(fLastName);
 
         label4.setText("Mobilnummer");
-        textField3.setText(cellphone);
-
-        String mail = " ";
-
-        try {
-            mail = mHandler.getFarmerEmail(farmerID);
-        } catch (SQLException e) {
-            Error error = new Error(this, e.getMessage());
-            error.setVisible(true);
-        }
+        textField3.setText(fCellPhone);
 
         label5.setText("E-post");
-        textField4.setText(mail);
+        textField4.setText(fMail);
 
         label6.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         label6.setText("Skriv inn evt. endringer og trykk \"Lagre endringer nederst\"");

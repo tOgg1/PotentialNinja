@@ -107,6 +107,11 @@ public class DatabaseHandler {
         query.setString(7, sex);
         query.setBoolean(8, true);
         query.executeUpdate();
+
+        int sheepid = getSheepByName(name, farmerid).getId();
+
+        addToSheepHealthHistory(sheepid, healthflags);
+
         updateState();
     }
 
@@ -831,11 +836,7 @@ public class DatabaseHandler {
     public void setSheepHealthFlag(int sheepid, int flag, boolean storeHistory) throws SQLException{
 
         if(storeHistory){
-            PreparedStatement query = this.db.prepareStatement("INSERT INTO sheepmedicalhistory(healthflag, timestamp, sheepid) VALUES(?,?,?)");
-            query.setInt(1, flag);
-            query.setLong(2, new Date().getTime());
-            query.setInt(3, sheepid);
-            query.executeUpdate();
+            addToSheepHealthHistory(sheepid, flag);
         }
 
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET healthflags = ? WHERE id = ?");
@@ -854,13 +855,9 @@ public class DatabaseHandler {
      */
     public void addSheepHealthFlag(int sheepid, int flag) throws SQLException{
 
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheepmedicalhistory(healthflag, timestamp, sheepid) VALUES(?,?,?)");
-        query.setInt(1, flag);
-        query.setLong(2, new Date().getTime());
-        query.setInt(3, sheepid);
-        query.executeUpdate();
+        addToSheepHealthHistory(sheepid, flag);
 
-        query = this.db.prepareStatement("SELECT healthflags FROM sheep WHERE id = ?");
+        PreparedStatement query = this.db.prepareStatement("SELECT healthflags FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
         ResultSet rs = query.executeQuery();
 
@@ -893,6 +890,14 @@ public class DatabaseHandler {
         mFlags ^= healthflag;
 
         this.setSheepHealthFlag(sheepid, mFlags, true);
+    }
+
+    public void addToSheepHealthHistory(int sheepid, int healthflag) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheepmedicalhistory(healthflag, timestamp, sheepid) VALUES(?,?,?)");
+        query.setInt(1, healthflag);
+        query.setLong(2, new Date().getTime());
+        query.setInt(3, sheepid);
+        query.executeUpdate();
     }
 
     /**

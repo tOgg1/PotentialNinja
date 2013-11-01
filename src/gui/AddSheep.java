@@ -424,8 +424,7 @@ public class AddSheep extends javax.swing.JFrame {
         healthflags |= checkbox4.getState() == true ? FlagData.ANNET : 0;
         healthflags |= checkbox6.getState() == true ? FlagData.VAKSINE : 0;
 
-        Vec2 pos = this.mRegister.getFarmerPosition();
-
+        Vec2 pos = this.mRegister.getFarmerLocation();
 
         try {
 

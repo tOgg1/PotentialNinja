@@ -200,10 +200,19 @@ public class Register {
      * Returns the Vec2 position of the farmer
      * @return
      */
-    public Vec2 getFarmerPosition(){
+    public Vec2 getFarmerLocation(){
         return this.pos;
     }
 
+    public void setFarmerLocation(double x, double y){
+        try {
+            this.mHandler.setFarmerLocation(this.farmerID, x, y);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        this.pos.x = x;
+        this.pos.y = y;
+    }
 
 
     public void reFetchSheeps(){

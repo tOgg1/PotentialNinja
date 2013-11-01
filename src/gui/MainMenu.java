@@ -59,7 +59,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.farmerID = farmerID;
         try{
             this.bonde =(String) mHandler.getFarmerInformation(farmerID)[0];
-            this.bonde = welcomeMessage + ", " + this.bonde.substring(0,this.bonde.indexOf(" ")) +".";
+            this.bonde = welcomeMessage + ", " + this.bonde.substring(0,this.bonde.indexOf(" ")!=-1?this.bonde.indexOf(" "):this.bonde.length()) + ".";
             this.defPos = mHandler.getFarmerLocation(farmerID);
             this.mainMap.setMapCenter(this.defPos);
             this.sheepMap.setMapCenter(this.defPos);

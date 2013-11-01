@@ -80,7 +80,7 @@ public class MapSheeps
      * @return
      */
     public Vec2 getFarmerCenter(){
-        return register.getFarmerPosition();
+        return register.getFarmerLocation();
     }
 
 

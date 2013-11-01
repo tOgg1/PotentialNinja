@@ -32,8 +32,8 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         this.main = main;
         map = new MapViewer();
 
-        Vec2 pos = mRegister.getFarmerPosition();
-        map.setMapCenter(mRegister.getFarmerPosition());
+        Vec2 pos = mRegister.getFarmerLocation();
+        map.setMapCenter(mRegister.getFarmerLocation());
         map.addMarker("Home", pos.x, pos.y, GeneralUtil.farmColor);
 
     	this.mRegister = mRegister;
@@ -424,7 +424,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         String gpsw = charToString(jPasswordField1.getPassword());
         String npsw = charToString(jPasswordField2.getPassword());
         String npswg = charToString(jPasswordField3.getPassword());
-        String farmerName = mfornavn + metternavn;
+        String farmerName = mfornavn + " "+  metternavn;
 
         try {
             mHandler.setFarmerInformation(farmerID, account, farmerName, mobilnr, email);
@@ -453,9 +453,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
             error.setVisible(true);
         }
 
-        if (npsw.equals("jPasswordField2") && npswg.equals("jPasswordField3")){
-
-        }else{
+        if(!(npsw.equals("jPasswordField2") && npswg.equals("jPasswordField3"))){
             if((farmerID = mHandler.authenticate(account, gpsw)) != -1){
                 if(npsw.equals(npswg)){
                     try {
@@ -468,6 +466,9 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
                 }
             }
         }
+
+        mRegister.setFarmerLocation(this.farmX, this.farmY);
+
         this.main.setFocusable(true);
         this.main.setVisible(true);
         this.main.setLocationRelativeTo(this);
@@ -549,7 +550,7 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         this.farmX = x;
         this.farmY = y;
         this.map.removeMarkers();
-        this.map.addMarker(x,y, GeneralUtil.farmColor);
+        this.map.addMarker("Home", x, y, GeneralUtil.farmColor);
     }
     // End of variables declaration//GEN-END:variables
 }

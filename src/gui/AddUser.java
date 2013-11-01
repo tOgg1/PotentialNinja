@@ -252,6 +252,7 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         String psw = GeneralUtil.charToString(jPasswordField1.getPassword());
         String psw_G = GeneralUtil.charToString(jPasswordField2.getPassword());
         String farmerName = fornavn + " " + etternavn;
+
         double pos_x = this.farmX;
         double pos_y = this.farmY;
 
@@ -326,7 +327,7 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         this.farmX = x;
         this.farmY = y;
         this.map.removeMarkers();
-        this.map.addMarker(x,y, GeneralUtil.farmColor);
+        this.map.addMarker("Home", x, y, GeneralUtil.farmColor);
     }
 
     // End of variables declaration//GEN-END:variables

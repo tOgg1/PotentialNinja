@@ -94,6 +94,11 @@ public class GeneralUtil {
         return null;
     }
 
+    /**
+     * Validates the format of an email
+     * @param email
+     * @return
+     */
     public static boolean isEmailValid(String email){
         String[] splitt = email.split("@");
         if(splitt.length != 2)
@@ -104,6 +109,30 @@ public class GeneralUtil {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Gets distance between points
+     * @param pos1x
+     * @param pos1y
+     * @param pos2x
+     * @param pos2y
+     * @return
+     */
+    public static double getDistance(double pos1x, double  pos1y, double  pos2x, double  pos2y){
+        double dx = pos2x - pos1x;
+        double dy = pos2y - pos1y;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    /**
+     * Gets distance between points from two vectors
+     * @param pos1
+     * @param pos2
+     * @return
+     */
+    public static double getDistance(Vec2 pos1, Vec2 pos2){
+        return getDistance(pos1.x, pos1.y, pos2.x, pos2.y);
     }
 
 }

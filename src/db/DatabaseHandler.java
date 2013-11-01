@@ -5,6 +5,7 @@ import model.Alarm;
 import model.Sheep;
 import model.SheepHistory;
 import model.SheepMedicalHistory;
+import util.GeneralUtil;
 import util.Log;
 import util.Vec2;
 
@@ -366,6 +367,21 @@ public class DatabaseHandler {
     }
 
     /**
+     * Sets farmer location.
+     * @param farmerid
+     * @param pos_x
+     * @param pos_y
+     * @throws SQLException
+     */
+    public void setFarmerLocation(int farmerid, double pos_x, double pos_y) throws SQLException{
+        PreparedStatement query = this.db.prepareStatement("UPDATE farmer SET default_pos_x = ?, default_pos_y = ? WHERE id = ?");
+        query.setDouble(1, pos_x);
+        query.setDouble(2, pos_y);
+        query.setInt(3, farmerid);
+        query.executeUpdate();
+    }
+
+    /**
      *
      * @param id
      * @return Returns the Vec2 position of the farmer
@@ -459,7 +475,7 @@ public class DatabaseHandler {
 
         PreparedStatement query = this.db.prepareStatement("UPDATE sheep SET alive = ? WHERE id = ?");
         query.setBoolean(1, true);
-        query.setInt(2,sheepid);
+        query.setInt(2, sheepid);
 
         if(!(query.executeUpdate() > 0)){
             return false;
@@ -871,11 +887,14 @@ public class DatabaseHandler {
         query.setLong(4, timeStamp);
         query.executeUpdate();
 
+        double distance = GeneralUtil.getDistance(tempX, tempY, posX, posY);
+
         //Set new position
-        query = this.db.prepareStatement("UPDATE sheep SET pos_x = ?, pos_y = ? WHERE id = ?");
-        query.setDouble(1, posX);
-        query.setDouble(2, posY);
-        query.setInt(3, sheepid);
+        query = this.db.prepareStatement("UPDATE sheep SET mileage = mileage + ?, pos_x = ?, pos_y = ? WHERE id = ?");
+        query.setDouble(1, distance);
+        query.setDouble(2, posX);
+        query.setDouble(3, posY);
+        query.setInt(4, sheepid);
         query.executeUpdate();
         updateState();
     }

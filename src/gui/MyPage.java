@@ -152,8 +152,8 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
 
             fFirstName = farmerFullName.lastIndexOf(" ") != -1 ? farmerFullName.substring(0,farmerFullName.lastIndexOf(" ")) : farmerFullName;
             fLastName = farmerFullName.lastIndexOf(" ") != -1 ? farmerFullName.substring(farmerFullName.lastIndexOf(" ")+1 != farmerFullName.length() ? farmerFullName.lastIndexOf(" ")+1 : farmerFullName.lastIndexOf(" ")) : "";
-            fCellPhone = (String)contact[1];
-            fMail = (String)contact[2];
+            fCellPhone = (String)farmer[1];
+            fMail = (String)farmer[2];
         }else{
             fFirstName = "";
             fLastName = "";

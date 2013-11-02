@@ -138,25 +138,26 @@ public class MapSheeps
             pairs.toArray(array);
 
             //Iterates over Vec2[] array to find the three latest location of sheep
-            for (int i = 3; i > 0; i--){
-                Vec2 position = array[array.length-i];
+            for (int i = 0; i < array.length && i < 3; i++){
+                Vec2 position = array[i];
                 lat = position.x;
                 lon = position.y;
 
-                //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
+                   //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
 
                 switch(i){
-                    case 1:
-                        color = Color.GREEN;
-                        break;
-                    case 2:
-                        color = Color.YELLOW;
-                        break;
-                    case 3:
-                        color = Color.RED;
-                        break;
+                   case 0:
+                       color = Color.GREEN;
+                       break;
+                   case 1:
+                       color = Color.YELLOW;
+                       break;
+                   case 2:
+                       color = Color.RED;
+                       break;
                 }
                 map.addMarker(lat,lon,color);
+
             }
         }else{
             Vec2 pos = register.getSheepById(sheepid).getPos();

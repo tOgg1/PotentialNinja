@@ -16,12 +16,27 @@ import java.util.TreeMap;
  */
 public class GeneralUtil {
 
-    public static Color selectedSheepColor = new Color(0xAA, 0x40, 0x32);
     public static Color farmColor = new Color(0x80, 0x80, 0x80);
 
     public static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
     public static String[] alarmMessages = {"Sau er død.", "Sau registrert med usedvanlig lav puls over et lengre tidsrom", "Sau registrert med usedvanlig høy puls over et lengre tidsrom"};
+
+    public static Color[] generateSheepColors(int count){
+        int greenStart = 0xF0;
+        int greenEnd = 0x20;
+        int redStart = 0x60;
+        int redEnd = 0xFF;
+
+        int dg = (greenEnd - greenStart)/(count-1);
+        int dr = (redEnd - redStart)/(count-1);
+
+        Color[] colors = new Color[count];
+        for (int i = 0; i < count; i++){
+            colors[i] = new Color(redStart + dr*i, greenStart + dg*i, 0);
+        }
+        return colors;
+    }
 
     public static String charToString(char[] array){
         StringBuilder sb = new StringBuilder();
@@ -138,6 +153,5 @@ public class GeneralUtil {
     public static boolean assertEquals(double one, double two, double epsilonRelative, double epsilonAbsolute){
         return Math.abs(one-two) < epsilonAbsolute || Math.abs(1 - one/two) < epsilonRelative;
     }
-
 
 }

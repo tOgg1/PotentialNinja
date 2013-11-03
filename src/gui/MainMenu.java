@@ -25,10 +25,6 @@ import java.util.List;
 
 public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerListener {
 
-    /**
-     * Creates new form MainMenu
-     */
-
     public static String welcomeMessage = "Welcome to SheepTracker";
 
     public Main main;
@@ -39,6 +35,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private int sheepID;
     private String bonde;
     private int farmerID;
+    private int historyCount;
 
     private Vec2 defPos;
 
@@ -57,6 +54,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         this.mainMapLogic = new MapSheeps(mRegister, this.mainMap);
         this.mainMap.addListener(this);
         this.farmerID = farmerID;
+        this.historyCount = 3;
         try{
             this.bonde =(String) mHandler.getFarmerInformation(farmerID)[0];
             this.bonde = welcomeMessage + ", " + this.bonde.substring(0,this.bonde.indexOf(" ")!=-1?this.bonde.indexOf(" "):this.bonde.length()) + ".";
@@ -94,7 +92,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -539,7 +537,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private void initSmallMap(Sheep sheep){
         sheepMap.setMapCenter(sheep.getPos());
         sheepMap.removeMarkers();
-        sheepMapLogic.setHistoricSheepPosition(sheep.getId());
+        sheepMapLogic.setHistoricSheepPosition(sheep.getId(), historyCount);
     }
 
     private void initChosen(){
@@ -628,7 +626,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }
 
     /**
      * Starts new window with AddSheep
@@ -642,28 +640,26 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     /**
      * Starts MainMenu with the ID of the other sheep
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt){
     	sheepName = jTextField1.getText();
-        try {
-            Sheep sheep = mHandler.getSheepByName(sheepName, this.farmerID);
-            initSmallMap(sheep);
-            info(sheepName);
-            initChosen();
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        Sheep sheep = mRegister.getSheepByName(sheepName);
+        if(sheep == null){
+            Error error = new Error(this, "Fant ingen sau med det navnet");
+            error.setVisible(true);
         }
-
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        initSmallMap(sheep);
+        info(sheepName);
+        initChosen();
+    }
 
     /**
      * Starts a new window where the farmer can edit the information about the sheep
      */
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt){
     	EditSheep editSheep = new EditSheep(this, farmerID, sheepName, mHandler, mRegister);
     	editSheep.setVisible(true);
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }
 
     /**
      * Tell the program that the sheep is dead

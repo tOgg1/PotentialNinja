@@ -141,6 +141,14 @@ public class Register {
         return null;
     }
 
+    public Sheep getSheepByName(String name){
+        for(Sheep s : this.activeSheeps){
+            if(s.getName().equals(name))
+                return s;
+        }
+        return null;
+    }
+
     /**
      * Get all sheeps for farmerID. Returns null if no sheeps are found
      * @return

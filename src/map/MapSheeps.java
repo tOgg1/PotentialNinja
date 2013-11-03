@@ -19,7 +19,7 @@ public class MapSheeps
     private MapViewer map;
     private ArrayList<MapMarkerDot> mapMarkers = null;
     private TreeMap<Integer, MapMarkerDot> dotTreeMap = null;
-	
+
 	public MapSheeps(Register register, final MapViewer map)
 	{
         this.register = register;
@@ -31,7 +31,6 @@ public class MapSheeps
 
         //Gets current sheep.
 		setSheeps();
-
         map.addListener(new MapSheepsListener());
 	}
 
@@ -124,10 +123,12 @@ public class MapSheeps
      * Finds the three last positions of sheep and adds them to map.
      * @param sheepid
      */
-    public void setHistoricSheepPosition(int sheepid){
+    public void setHistoricSheepPosition(int sheepid, int count){
         map.removeMarkers();
 
+
         double lat, lon;
+        Color[] colors = GeneralUtil.generateSheepColors(count);
         Color color = null;
 
         SheepHistory history = register.getSheepHistory(sheepid);
@@ -138,24 +139,15 @@ public class MapSheeps
             pairs.toArray(array);
 
             //Iterates over Vec2[] array to find the three latest location of sheep
-            for (int i = 0; i < array.length && i < 3; i++){
-                Vec2 position = array[i];
+            int mLength = array.length > count ? count : array.length;
+            for (int i = mLength-1; i >= 0; --i){
+                Vec2 position = array[array.length - i - 1];
                 lat = position.x;
                 lon = position.y;
 
-                   //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
+                //System.out.println("[Debug MapSheep History]: " + "Latitude: " + lat + ". Longitude:" + lon + ". Entry number: " + i);
 
-                switch(i){
-                   case 0:
-                       color = Color.GREEN;
-                       break;
-                   case 1:
-                       color = Color.YELLOW;
-                       break;
-                   case 2:
-                       color = Color.RED;
-                       break;
-                }
+                color = colors[i];
                 map.addMarker(lat,lon,color);
 
             }
@@ -164,5 +156,4 @@ public class MapSheeps
             map.addMarker(pos.x,pos.y,Color.GREEN);
         }
     }
-
 }

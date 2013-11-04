@@ -128,7 +128,6 @@ public class MapSheeps
 
 
         double lat, lon;
-        Color[] colors = GeneralUtil.generateSheepColors(count);
         Color color = null;
 
         SheepHistory history = register.getSheepHistory(sheepid);
@@ -140,6 +139,8 @@ public class MapSheeps
 
             //Iterates over Vec2[] array to find the three latest location of sheep
             int mLength = array.length > count ? count : array.length;
+            Color[] colors = GeneralUtil.generateSheepColors(mLength);
+
             for (int i = mLength-1; i >= 0; --i){
                 Vec2 position = array[array.length - i - 1];
                 lat = position.x;

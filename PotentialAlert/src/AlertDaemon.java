@@ -24,11 +24,10 @@ public class AlertDaemon extends Thread {
 
     private boolean keepScheduling = true;
 
-    private static String[] template_message = {"Dear ", "<p>This is an email notifying you that sheep ", ". The alarm triggered at ", "."};
-    private static String[] template_message_causes = {" is dead. <br>Please login to SheepTracker for more information</p>", " is registered with unusually low pulse</p>", " is registered with unusually high pulse</p>"};
+    private static String[] template_message = {"Dear ", "<p>This is an email notifying you that sheep ", "The alarm triggered at ", "."};
+    private static String[] template_message_causes = {" is dead. <br>Please login to SheepTracker for more information.</p>", " is registered with unusually low pulse.</p>", " is registered with unusually high pulse.</p>"};
 
     private static String email_subject = "SheepTracker Alarm Notification";
-
     private static String configname = "config.txt";
 
     private SimpleDateFormat sformat;
@@ -41,7 +40,7 @@ public class AlertDaemon extends Thread {
         try {
             Log.initLogFile();
         } catch (PotentialNinjaException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -89,7 +88,7 @@ public class AlertDaemon extends Thread {
                                 mailClient.sendMail(contactEmail, email_message, email_subject);
                                 Log.d("Email", "Email successfully sent to " + contactEmail);
                             } catch (Exception e) {
-                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                e.printStackTrace();
                             }
                         }
                         String farmerEmail = (String)farmerInf[2];
@@ -100,7 +99,7 @@ public class AlertDaemon extends Thread {
                             mailClient.sendMail(farmerEmail, email_message, email_subject);
                             Log.d("Email", "Email successfully sent to " + farmerEmail);
                         } catch (Exception e) {
-                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            e.printStackTrace();
                         }
                         handler.inactiveAlarm(alarm.getAlarmID());
                     } catch (SQLException e) {

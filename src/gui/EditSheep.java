@@ -88,7 +88,7 @@ public class EditSheep extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        label4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        label4.setFont(new java.awt.Font("Dialog", 1, 14));
         label4.setText("Rediger sau");
 
         label1.setText("ID på sauen");
@@ -380,19 +380,19 @@ public class EditSheep extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
+    }
 
     /**
      * Logs out of the program, from the Menu Bar
      */
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {
        System.exit(0);
     }
 
     /**
      * Saves the info from the textFields to the given sheep
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         this.sheepName = textField1.getText();
         String sex = "m";
         if (jRadioButton1.isSelected()){
@@ -616,40 +616,40 @@ public class EditSheep extends javax.swing.JFrame {
         jLabel2.setText("Informasjonen er nå lagret.");
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
     /**
      * Go back to MainMenu
      */
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         main.setVisible(true);
         main.setFocusable(true);
         main.setLocationRelativeTo(this);
         main.reloadInfo();
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }
 
     /**
      * Logs out of the program, from the Menu Bar
      */
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {
     	Welcome welcome = new Welcome(this.main.main, this, mHandler);
         welcome.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }
 
     /**
      * Go to MyPage, from the Menu Bar
      */
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {
     	MyPage mypage = new MyPage(this.main, this, farmerID, mHandler, mRegister);
     	mypage.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }
 
     /**
      * Go to ManMenu, from the Menu Bar
      */
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
     	main.setVisible(true);
         main.setFocusable(true);
         main.setLocationRelativeTo(this);
@@ -693,5 +693,4 @@ public class EditSheep extends javax.swing.JFrame {
     private java.awt.TextField textField3;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel2;
-    // End of variables declaration//GEN-END:variables
 }

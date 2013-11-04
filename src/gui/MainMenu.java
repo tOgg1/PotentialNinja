@@ -129,6 +129,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         jPanel2 = new javax.swing.JPanel();
 
@@ -246,6 +247,15 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         });
         jMenu1.add(jMenuItem3);
 
+        jToggleButton1.setText("Vis mer historie");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jToggleButton1.setEnabled(false);
+        jToggleButton1.setVisible(false);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -275,10 +285,12 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
                                                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                                 .addComponent(jButton3)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jToggleButton1)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                 .addComponent(jButton4))
                                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING))
-                                                .addContainerGap(20, Short.MAX_VALUE))
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -311,7 +323,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButton4)
-                                        .addComponent(jButton3))
+                                        .addComponent(jButton3)
+                                        .addComponent(jToggleButton1))
                                 .addGap(19, 19, 19))
         );
 
@@ -547,6 +560,9 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
         jButton4.setEnabled(true);
         jButton4.setVisible(true);
 
+        jToggleButton1.setEnabled(true);
+        jToggleButton1.setVisible(true);
+
         label4.setEnabled(true);
         label4.setVisible(true);
 
@@ -689,6 +705,13 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
+     * Show more history
+     */
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+
+    /**
      * Go to MyPage, from the MenuBar
      */
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -720,6 +743,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private java.awt.Label label4;
     private java.awt.TextField textField2;
     private java.awt.TextField textField3;
+    private javax.swing.JToggleButton jToggleButton1;
 
     @Override
     public void nodeClicked(MapViewer.NodeInfo n){

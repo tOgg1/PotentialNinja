@@ -1,7 +1,5 @@
 package util;
 
-import db.DatabaseSettings;
-
 import java.util.Date;
 import java.util.Random;
 
@@ -133,13 +131,9 @@ public class NothingToSeeHere {
     }
 
     public static void main(String[] args){
-        String test = "151236216174";
+        String test = "Hoang";
 
         p(t(test));
-        p(f(t(test)));
-
-        p(t(DatabaseSettings.db_user));
-        p(t(DatabaseSettings.db_pw));
     }
 
     private static void p(String s){

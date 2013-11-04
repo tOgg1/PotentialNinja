@@ -403,6 +403,7 @@ public class AddSheep extends javax.swing.JFrame {
             e.printStackTrace();
             Error error = new Error(this, "Ukjent format på fødselsdato.\nFødseldatoer skal være på formatet \"mm/dd/yyyy\"");
             error.setVisible(true);
+            return;
         }
 
         int healthflags = 0;

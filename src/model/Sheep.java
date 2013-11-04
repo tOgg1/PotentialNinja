@@ -21,7 +21,6 @@ public class Sheep
     String name;
     Vec2 pos;
 
-
     SheepHistory posHistory;
     SheepMedicalHistory medicalHistory;
 

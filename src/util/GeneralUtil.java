@@ -17,9 +17,7 @@ import java.util.TreeMap;
 public class GeneralUtil {
 
     public static Color farmColor = new Color(0x80, 0x80, 0x80);
-
     public static SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
     public static String[] alarmMessages = {"Sau er død.", "Sau registrert med usedvanlig lav puls over et lengre tidsrom", "Sau registrert med usedvanlig høy puls over et lengre tidsrom"};
 
     public static Color[] generateSheepColors(int count){
@@ -84,7 +82,7 @@ public class GeneralUtil {
             long dateRaw = sdf.parse(date).getTime();
             long now = new Date().getTime();
 
-            if(dateRaw > new Date().getTime())
+            if(dateRaw > now)
                 throw new PotentialNinjaException("Feil format på dato, Closed Timelike Curves (CTC's) er ikke bevist enda, og du kan ikke lage en dato i fremtiden, desverre.");
             return dateRaw;
         } catch (ParseException e) {

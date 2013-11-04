@@ -26,8 +26,8 @@ public class Main {
             }catch(PotentialNinjaException e){
                 e.printStackTrace();
             }
-
             this.mHandler = new DatabaseHandler();
+
             this.login();
         }
         catch(Exception f){

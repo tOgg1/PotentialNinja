@@ -22,6 +22,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerListener {
 
@@ -43,6 +47,9 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private MapSheeps sheepMapLogic;
     private MapViewer mainMap;
     private MapViewer sheepMap;
+
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private Future<?> task;
 
     public MainMenu(Main main, JFrame previous, int farmerID, DatabaseHandler mHandler, Register mRegister){
         this.main = main;
@@ -68,14 +75,18 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             error.setVisible(true);
         }
 
-        checkForAlarms();
+        task = scheduler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                checkForAlarms();
+            }
+        }, 0, 2, TimeUnit.MINUTES);
 
         initComponents();
-
-        this.setLocationRelativeTo(previous);
-
-        if(previous != null)
+        if(previous != null){
+            this.setLocationRelativeTo(previous);
             previous.dispose();
+        }
     }
 
     private void checkForAlarms(){

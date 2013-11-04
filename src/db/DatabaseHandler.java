@@ -7,6 +7,7 @@ import model.SheepHistory;
 import model.SheepMedicalHistory;
 import util.GeneralUtil;
 import util.Log;
+import util.NothingToSeeHere;
 import util.Vec2;
 
 import java.security.MessageDigest;
@@ -28,7 +29,7 @@ public class DatabaseHandler {
         try{
             //Connects to database
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            this.db = DriverManager.getConnection(DatabaseSettings.db_url, DatabaseSettings.db_user, DatabaseSettings.db_pw);
+            this.db = DriverManager.getConnection(DatabaseSettings.db_url, NothingToSeeHere.f(DatabaseSettings.db_user), NothingToSeeHere.f(DatabaseSettings.db_pw));
             Log.d("Database", "Database connection established");
 
         }catch(ClassNotFoundException  | InstantiationException | IllegalAccessException | SQLException e){

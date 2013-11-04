@@ -107,7 +107,7 @@ public class SheepDaemon extends Thread {
 
                 double g = g1+g2/2;
 
-                int pulse = (int)(15*g + 100);
+                int pulse = (int)(10*g + 100);
 
                 try {
                     mHandler.setSheepPulse(mSheeps.get(i), pulse);

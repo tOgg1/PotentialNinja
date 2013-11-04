@@ -1,12 +1,10 @@
-import util.Log;
-import util.PotentialNinjaException;
-import util.SMTPHandler;
-import util.ServerInfo;
+import util.*;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MailServer {
 
@@ -16,6 +14,11 @@ public class MailServer {
 
     private boolean running;
 
+    private static int connectCount = 0;
+    private static int connectAccept = 0;
+    private static int connectFail = 0;
+    private static long runStart = 0;
+
     private static String configname = "config.txt";
 
     public MailServer(){
@@ -24,7 +27,7 @@ public class MailServer {
 
             initSMTP();
             this.connections = new ArrayList<ConnectionThread>();
-            serverSocket = new ServerSocket(ServerInfo.port);
+            this.serverSocket = new ServerSocket(ServerInfo.port);
             this.run();
             Log.d("Server", "Server running on port: " + ServerInfo.port);
         } catch (IOException | PotentialNinjaException e) {
@@ -90,6 +93,7 @@ public class MailServer {
         InputManager iManage = new InputManager();
         iManage.start();
 
+        runStart = new Date().getTime();
 
         Socket socket;
         Log.d("Server", "Accepting connections...");
@@ -97,17 +101,19 @@ public class MailServer {
             Log.d("Server", "Connection received from " + socket.getInetAddress().getHostAddress());
             ConnectionThread connection = new ConnectionThread(socket);
             connection.start();
+            connectCount++;
             connections.add(connection);
         }
         this.running = false;
     }
 
-    private boolean sendEmail(ConnectionThread thread)throws PotentialNinjaException{
+    private boolean sendEmail(ConnectionThread thread) throws PotentialNinjaException{
         if(thread.message == null || thread.recipient == null || thread.subject == null){
             throw new PotentialNinjaException("All email info was not set before email was flagged for sending");
         }
 
         if(this.mailHandler.sendMail(thread.recipient, thread.message, thread.subject)){
+            connectAccept++;
             Log.d("Mail", "Mail sent");
             this.connections.remove(thread);
             return true;
@@ -148,18 +154,21 @@ public class MailServer {
                 e.printStackTrace();
             }
 
-            Log.d("Server","Attempting to read");
             char[] buffer = new char[0xFFF];
             try {
                 while(is.read(buffer) != -1){
+                    if(!MailServer.this.running)
+                        return;
                     int status = decryptMessage(buffer);
                     if(status == 0){
                         break;
                     }
 
                     if(status == -1){
+                        connectFail++;
                         os.write(ServerInfo.code_error);
                     }else if(status == -2){
+                        connectFail++;
                         os.write(ServerInfo.code_invalid);
                     }else{
                         os.write(ServerInfo.code_ok);
@@ -193,7 +202,6 @@ public class MailServer {
                     }
                     return 0;
                 }else if(sendCode == ServerInfo.code_message){
-
                     if(buffer == null || !begin){
                         return -1;
                     }
@@ -269,7 +277,19 @@ public class MailServer {
                     e.printStackTrace();
                 }
                 System.exit(0);
-            }else{
+            }
+            else if(args[0].equals("uptime") || args[0].equals("time")){
+                p("Server uptime:\n--------------\n");
+                p(GeneralUtil.formatTimeToString(new Date().getTime() - runStart));
+            }
+            else if(args[0].equals("info") || args[0].equals("information")){
+                p("Server information:\n--------------\n");
+                p("Uptime: " + GeneralUtil.formatTimeToString(new Date().getTime() - runStart));
+                p("Total connections: " + connectCount);
+                p("Failed connections: " + connectFail);
+                p("Successful connections: " + connectAccept);
+            }
+            else{
                 p("Invalid command: " + args[0]);
             }
         }

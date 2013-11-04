@@ -154,4 +154,23 @@ public class GeneralUtil {
         return Math.abs(one-two) < epsilonAbsolute || Math.abs(1 - one/two) < epsilonRelative;
     }
 
+    /**
+     * Takes a timestamp and returns how long time it represents
+     * @return
+     */
+    public static String formatTimeToString(long time)
+    {
+        int days = (int)(time/(60*60*24*1000));
+        int hours = (int)(time/(60*60*1000) - days*24);
+        int minutes = (int)(time/(60*1000) - days*24*60 - hours*60);
+        int seconds = (int)(time/1000 - days*24*60*60 - hours*60*60 - minutes*60);
+
+        String s = days + "d ";
+        s += hours + "h ";
+        s += minutes + "m ";
+        s += seconds + "s";
+
+        return s;
+    }
+
 }

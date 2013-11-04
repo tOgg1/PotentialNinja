@@ -24,8 +24,8 @@ public class AlertDaemon extends Thread {
 
     private boolean keepScheduling = true;
 
-    private static String[] template_message = {"This is an email notifying you that sheep ", ". The alarm triggered at ", "."};
-    private static String[] template_message_causes = {" is dead. Please login to SheepTracker for more information", " is registered with unusually low pulse", " is registered with unusually high pulse"};
+    private static String[] template_message = {"Dear ", "<p>This is an email notifying you that sheep ", ". The alarm triggered at ", "."};
+    private static String[] template_message_causes = {" is dead. <br>Please login to SheepTracker for more information</p>", " is registered with unusually low pulse</p>", " is registered with unusually high pulse</p>"};
 
     private static String email_subject = "SheepTracker Alarm Notification";
 
@@ -36,7 +36,7 @@ public class AlertDaemon extends Thread {
 
     public AlertDaemon(){
         this.handler = new DatabaseHandler();
-        this.sformat = new SimpleDateFormat("MM/DD");
+        this.sformat = new SimpleDateFormat("MM/dd");
         this.lformat = new SimpleDateFormat("hh:mm:ss a");
         try {
             Log.initLogFile();
@@ -76,22 +76,25 @@ public class AlertDaemon extends Thread {
                         int farmerid = handler.getSheepOwner(sheepid);
                         Date now = new Date();
                         String email_subject = AlertDaemon.email_subject + ": Sheep with id " + sheepname  + ", " + this.sformat.format(now);
-                        String email_message = template_message[0] + sheepname + template_message_causes[flags-1] + template_message[1] + lformat.format(now) + template_message[2];
 
                         Object[] contactInf = handler.getFarmerContactInformation(farmerid);
+                        Object[] farmerInf = handler.getFarmerInformation(farmerid);
 
                         if(contactInf != null){
+                            String contactName = (String)contactInf[0];
                             String contactEmail = (String)contactInf[2];
+                            String email_message = template_message[0] + contactName + template_message[1] + sheepname + template_message_causes[flags-1] + template_message[2] + lformat.format(now) + template_message[3];
                             try {
                                 MailClient mailClient = new MailClient();
                                 mailClient.sendMail(contactEmail, email_message, email_subject);
                                 Log.d("Email", "Email successfully sent to " + contactEmail);
-
                             } catch (Exception e) {
                                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                             }
                         }
-                        String farmerEmail = handler.getFarmerEmail(farmerid);
+                        String farmerEmail = (String)farmerInf[2];
+                        String farmerName = (String)farmerInf[0];
+                        String email_message = template_message[0] + farmerName + template_message[1] + sheepname + template_message_causes[flags-1] + template_message[2] + lformat.format(now) + template_message[3];
                         try {
                             MailClient mailClient = new MailClient();
                             mailClient.sendMail(farmerEmail, email_message, email_subject);
@@ -159,6 +162,7 @@ public class AlertDaemon extends Thread {
         public void decryptAndExecute(String[] args){
             args[0] = args[0].toLowerCase();
             args[0] = args[0].replace(" ", "");
+
             if(args[0].equals("exit") || args[0].equals("close")){
                 AlertDaemon.this.keepScheduling = false;
                 System.exit(0);
@@ -170,7 +174,6 @@ public class AlertDaemon extends Thread {
                 p("Invalid command: " + args[0]);
             }
         }
-
     }
     public static void p(String s){
         System.out.println(s);

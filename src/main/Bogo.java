@@ -14,42 +14,82 @@ import java.util.List;
  */
 public class Bogo{
 
-    public static void bogoSort(int[] values){
-        List<Integer> list = new ArrayList<Integer>();
+    /**
+     * This mindblowingly fast algorithm implements bogosort within bubblesort.
+     * The main algorithm uses bubblesort to sort the list. Every iteration the list is randomly permutated until the list where the two adjacent values have swapped place (and the rest is the same as before),
+     * is generated.
+     * The algorithm has a best runtime of O(n^2) an average runtime of O((n!)^2n), and worst case of O(infinity), yeah fuck you too.
+     * @param list
+     */
+    public static <T extends Comparable> void goFuckYourselfSort(List<T> list){
+        for (int i = 0; i < list.size()-1; i++) {
+            for (int j = 0; j < list.size()-1; j++) {
+                // Generate new list
+                List<T> oldList = new ArrayList<T>();
+                for (T t : list) {
+                    oldList.add(t);
+                }
 
-        for(int i = 0; i < values.length; i++){
-            list.add(values[i]);
+                if(oldList.get(j).compareTo(oldList.get(j+1)) > 0){
+                    while(!oldList.get(j).equals(list.get(j+1)) || !oldList.get(j+1).equals(list.get(j)) || !isEqual(list, oldList, 0, j-1) || !isEqual(list, oldList, j+2, list.size())){
+                        shuffle(list);
+                    }
+                }
+            }
         }
+    }
 
+    public static <T extends Comparable> void bogoSort(List<T> list){
         while(!isSorted(list)){
             shuffle(list);
         }
-
-        int i = 0;
-        for (Integer integer : list) {
-            values[i++] = integer;
-        }
     }
 
-    public static void shuffle(List<Integer> list){
+    public static <T extends Comparable> void shuffle(List<T> list){
         Collections.shuffle(list);
-
     }
 
-    public static boolean isSorted(List<Integer> list){
-        int cur = -Integer.MAX_VALUE;
-        for (Integer integer : list) {
-            if(integer < cur)
+    public static <T extends Comparable> boolean isSorted(List<T> list){
+        Comparable cur = list.get(0);
+        for (Comparable comparable : list) {
+            if(comparable.compareTo(cur) < 0){
                 return false;
-            cur = integer;
+            }
+            cur = comparable;
+        }
+        return true;
+    }
+
+    public static <T extends Comparable> boolean isEqual(List<T> list, List<T> olist, int minIndex, int maxIndex){
+        if(minIndex == maxIndex)
+            return true;
+        for (int i = minIndex; i < maxIndex; i++){
+            if(olist.get(i).compareTo(list.get(i)) != 0){
+                return false;
+            }
         }
         return true;
     }
 
     public static void main(String[] args){
-        int[] values = {4,3,5,21,5,6,9,5,12,23,7,39};
         long one = new Date().getTime();
-        bogoSort(values);
+        List<Integer> ints = new ArrayList<Integer>();
+        ints.add(2);
+        ints.add(626);
+        ints.add(23);
+        ints.add(24);
+        ints.add(624);
+        ints.add(124);
+        ints.add(1524);
+        ints.add(424);
+        ints.add(824);
+
+
+        goFuckYourselfSort(ints);
+        System.out.println(isSorted(ints));
+        for (Integer anInt : ints) {
+            System.out.println(""+anInt);
+        }
         long two = new Date().getTime();
         System.out.println("Time elapsed: " + (two-one)*1e-3 + " sekunder.");
     }

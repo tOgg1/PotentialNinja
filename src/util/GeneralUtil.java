@@ -26,6 +26,10 @@ public class GeneralUtil {
         int redStart = 0x60;
         int redEnd = 0xFF;
 
+        if(count == 1){
+            return new Color[]{new Color(redStart, greenStart, 0)};
+        }
+
         int dg = (greenEnd - greenStart)/(count-1);
         int dr = (redEnd - redStart)/(count-1);
 

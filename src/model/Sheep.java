@@ -10,16 +10,16 @@ public class Sheep
     public static int pulseMax = 150;
     public static int pulseMin = 50;
 
-    int id;
-    int farmerid;
+    private int id;
+    private int farmerid;
     //int age;
-    int mileage;
-    int healthflags;
-    long birthdate;
-    int pulse;
-    String sex;
-    String name;
-    Vec2 pos;
+    private int mileage;
+    private int healthflags;
+    private long birthdate;
+    private int pulse;
+    private String sex;
+    private String name;
+    private Vec2 pos;
 
     SheepHistory posHistory;
     SheepMedicalHistory medicalHistory;

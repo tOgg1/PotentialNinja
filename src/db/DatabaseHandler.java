@@ -23,6 +23,9 @@ import java.util.TreeMap;
  */
 public class DatabaseHandler {
 
+    /**
+     * Database connection parameter
+     */
     private Connection db;
 
     public DatabaseHandler(){
@@ -38,50 +41,22 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Closes database connection
+     */
     public void close(){
         try {
-            //Closing connection
             this.db.close();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
-     /*
-    public static void main(String[] args){
-        DatabaseHandler handler = new DatabaseHandler();
-        try {
-            System.out.println(handler.getNextAutoIncrement("farmer", ""));
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    /*
-    public void generateSheeps(int farmerid) throws SQLException{
-        long one = new Date().getTime();
-        PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?)");
-        for (int i = 1; i < 101; i++) {
-            query.setString((i-1)*8+1, "Sau"+i);
-            query.setLong((i-1)*8+2, one);
-            query.setInt((i-1)*8+3, 0);
-            query.setDouble((i-1)*8+4, 62.27354);
-            query.setDouble((i-1)*8+5, 10.12313);
-            query.setInt((i-1)*8+6, farmerid);
-            query.setString((i-1)*8+7, "f");
-            query.setInt((i-1)*8+8, 1);
-        }
-
-        query.executeUpdate();
-
-        long two = new Date().getTime();
-        System.out.println("Time elapsed: " + (two-one)*1e-3 + " sekunder.");
-    }            */
 
 
     /**
      * Takes in an account-name and password, authenticates, and returns the farmerid
-     * @param account
-     * @param password
+     * @param account The account name
+     * @param password The password, this will be SHA-1 encrypted.
      * @return -1 is returned if farmer is not found, or if there were trouble authenticating
      */
     public int authenticate(String account, String password) {
@@ -103,9 +78,9 @@ public class DatabaseHandler {
     }
 
     /**
-     * Simple reset of password. Takes a farmerid and updates the corresponding user
-     * @param farmerid
-     * @param newPassword
+     * Simple reset of password. Takes a farmerid and updates the corresponding user.
+     * @param farmerid The farmerid
+     * @param newPassword The new password
      * @throws SQLException
      */
     public void resetPassword(int farmerid, String newPassword) throws SQLException {
@@ -123,11 +98,11 @@ public class DatabaseHandler {
 
     /**
      * Adds a sheep to the database
-     * @param name
-     * @param healthflags
-     * @param pos_x
-     * @param pos_y
-     * @param farmerid
+     * @param name Sheep name
+     * @param healthflags Sheeps healthflags
+     * @param pos_x Sheeps latitude
+     * @param pos_y Sheeps longitude
+     * @param farmerid Sheeps farmer
      */
     public void addSheep(String name, long birthdate, int healthflags, double pos_x, double pos_y, String sex, int farmerid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("INSERT INTO sheep(name, birthdate, healthflags, pos_x, pos_y, farmerid, sex, alive) VALUES(?,?,?,?,?,?,?,?)");
@@ -150,10 +125,11 @@ public class DatabaseHandler {
 
     /**
      * Adds sheep to database, neglecting sheep position
-     * @param name
-     * @param birthdate
-     * @param healthflags
-     * @param farmerid
+     *
+     * @param name Sheeps name
+     * @param birthdate Sheeps birthdate
+     * @param healthflags Sheeps healthflags
+     * @param farmerid Sheeps farmer
      * @throws SQLException
      */
     public void addSheep(String name, long birthdate, int healthflags, String sex, int farmerid) throws SQLException{
@@ -168,14 +144,19 @@ public class DatabaseHandler {
         updateState();
     }
 
+    /**
+     * Wrapper function that takes a sheep-object and adds it to the database.
+     * @param sheep The sheep-object to be added.
+     * @throws SQLException
+     */
     public void addSheep(Sheep sheep)throws SQLException{
         this.addSheep(sheep.getName(), sheep.getBirthdate(), sheep.getHealthflags(), sheep.getPos().x, sheep.getPos().y, sheep.getSex(), sheep.getFarmerid());
     }
 
     /**
      * Adds an alarm to the database
-     * @param sheepid
-     * @param alarmflag
+     * @param sheepid Sheep's id
+     * @param alarmflag Alarmflags, cause of alarm.
      * @throws SQLException
      */
     public void addAlarm(int sheepid, int alarmflag) throws SQLException{
@@ -188,16 +169,16 @@ public class DatabaseHandler {
 
     /**
      * Creates a farmer account, and returns the new farmer id of the account
-     * @param accountname
-     * @param password
-     * @param farmerName
-     * @param pos_x
-     * @param pos_y
+     * @param accountname Name of account
+     * @param password Password, this will be SHA-1 encrypted.
+     * @param farmerName Farmers name
+     * @param pos_x Latitude of farm
+     * @param pos_y Longitude of farm
      * @return
      */
     public int createAccount(String accountname, String password, String farmerName, double pos_x, double pos_y) throws SQLException{
         try {
-            int id = getNextAutoIncrement("farmer", "id");
+            int id = getNextAutoIncrement("farmer");
 
             PreparedStatement query = this.db.prepareStatement("INSERT INTO farmer(name, default_pos_x, default_pos_y) VALUES (?,?,?)");
             query.setString(1, farmerName);
@@ -220,8 +201,8 @@ public class DatabaseHandler {
 
     /**
      * Takes in userid and returns farmerid
-     * @param userid
-     * @return
+     * @param userid Accountid of farmer
+     * @return integer containing farmerid
      * @throws SQLException
      */
     public int getFarmerId(int userid) throws SQLException{
@@ -237,8 +218,8 @@ public class DatabaseHandler {
 
     /**
      * Tries to get farmerid from email and/or number
-     * @param email
-     * @param number
+     * @param email Farmers email
+     * @param number Farmers telephone number
      * @return
      */
     public int getFarmerId(String email, String number) throws SQLException{
@@ -256,7 +237,7 @@ public class DatabaseHandler {
 
     /**
      * Fetches all farmer information for given farmer id
-     * @param id
+     * @param id Farmers id
      * @return Returns an Object[] array of length three as follows {name, number, email}, returns null if farmer is not found
      * @throws SQLException
      */
@@ -274,8 +255,8 @@ public class DatabaseHandler {
 
     /**
      * Gets farmers email
-     * @param farmerid
-     * @return
+     * @param farmerid Farmers id
+     * @return Farmers email
      * @throws SQLException
      */
     public String getFarmerEmail(int farmerid) throws SQLException{
@@ -290,8 +271,8 @@ public class DatabaseHandler {
 
     /**
      * Fetches all information about given farmers contact
-     * @param id
-     * @return Returns an Object[] array of length three as follows {name, number, email}, returns null if a contact is not found
+     * @param id Farmers id
+     * @return Returns an Object[] array of length three as follows {contactname, contactnumber, contactemail}, returns null if a contact is not found
      * @throws SQLException
      */
     public Object[] getFarmerContactInformation(int id) throws SQLException{
@@ -306,7 +287,7 @@ public class DatabaseHandler {
 
     /**
      * Gets farmers username
-     * @param farmerid
+     * @param farmerid Farmers id
      * @return Returns null if no username for given farmerid is found
      * @throws SQLException
      */
@@ -323,13 +304,12 @@ public class DatabaseHandler {
 
     /**
      * Set farmers contact
-     * @param name
-     * @param number
-     * @param email
-     * @return Returns false if an error occurs
+     * @param name Contact's name
+     * @param number Contact's telephone number
+     * @param email Contact's email
      */
     public void setFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
-        int id = getNextAutoIncrement("contact", "id");
+        int id = getNextAutoIncrement("contact");
 
         PreparedStatement query = this.db.prepareStatement("INSERT INTO contact(name, number, email) VALUES (?,?,?)");
         query.setString(1, name);
@@ -346,10 +326,10 @@ public class DatabaseHandler {
 
     /**
      * Updates farmers contact
-     * @param farmerID
-     * @param name
-     * @param number
-     * @param email
+     * @param farmerID Farmer's id
+     * @param name Contact's name
+     * @param number Contact's telephone number
+     * @param email Contact's email
      * @throws SQLException
      */
     public void updateFarmerContact(int farmerID, String name, String number, String email) throws SQLException{
@@ -363,6 +343,12 @@ public class DatabaseHandler {
         updateState();
     }
 
+    /**
+     * Checks if farmer has a contact present in the system
+     * @param farmerID Farmer's id
+     * @return True if farmer has a contact, false if not, or if farmer is not found.
+     * @throws SQLException
+     */
     public boolean hasFarmerContact(int farmerID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT ISNULL(contact_id) FROM farmer WHERE id = ?");
         query.setInt(1, farmerID);
@@ -375,12 +361,12 @@ public class DatabaseHandler {
     }
 
     /**
-     *
-     * @param farmerid
-     * @param username
-     * @param name
-     * @param number
-     * @param email
+     * Set farmers information
+     * @param farmerid Farmer's id
+     * @param username Farmer's new username
+     * @param name Farmer's new name
+     * @param number Farmer's new telephone number
+     * @param email Farmer's new email
      * @throws SQLException
      */
     public void setFarmerInformation(int farmerid, String username, String name, String number, String email)throws SQLException{
@@ -400,9 +386,9 @@ public class DatabaseHandler {
 
     /**
      * Sets farmer location.
-     * @param farmerid
-     * @param pos_x
-     * @param pos_y
+     * @param farmerid Farmer's id
+     * @param pos_x Farmer's farm's latitude
+     * @param pos_y Farmer's farm's longitude
      * @throws SQLException
      */
     public void setFarmerLocation(int farmerid, double pos_x, double pos_y) throws SQLException{
@@ -415,8 +401,8 @@ public class DatabaseHandler {
 
     /**
      *
-     * @param id
-     * @return Returns the Vec2 position of the farmer
+     * @param id Farmer's id
+     * @return Returns a Vec2-object with the farmer's farm's position
      * @throws SQLException
      */
     public Vec2 getFarmerLocation(int id) throws SQLException{
@@ -432,25 +418,9 @@ public class DatabaseHandler {
     }
 
     /**
-     *
-     * @param sheepid
-     * @return  Returns an Object[] array of length four as follows {birthdate, mileage, healthflags, name}, returns null if sheep is not found
-     * @throws SQLException
-     */
-    public Object[] getSheepInformation(int sheepid) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT birthdate, mileage, healthflags, name FROM sheep WHERE id = ?");
-        query.setInt(1, sheepid);
-        ResultSet rs = query.executeQuery();
-
-        if(!rs.next())
-            return null;
-        return new Object[]{rs.getLong("birthdate"), rs.getInt("mileage"), rs.getInt("healthflags"), rs.getString("name")};
-    }
-
-    /**
-     * Checks if a deadsheep exists
-     * @param sheepid
-     * @return
+     * Checks if a sheep is dead
+     * @param sheepid Sheep's id
+     * @return true if sheep is dead, false if sheep is not found or sheep is not dead.
      * @throws SQLException
      */
     public boolean isSheepDead(int sheepid) throws SQLException{
@@ -466,8 +436,8 @@ public class DatabaseHandler {
 
     /**
      * Flags a sheep as dead
-     * @param sheepid
-     * @return
+     * @param sheepid Sheep's id
+     * @return true if sheep was succesfully killed, false if not.
      * @throws SQLException
      */
     public boolean killSheep(int sheepid, int cause) throws SQLException{
@@ -495,8 +465,8 @@ public class DatabaseHandler {
 
     /**
      * Revives a sheep that is dead
-     * @param sheepid
-     * @return
+     * @param sheepid Sheep's id
+     * @return True if sheep was succesfully revived, false if not.
      * @throws SQLException
      */
     public boolean reviveSheep(int sheepid) throws SQLException{
@@ -522,7 +492,7 @@ public class DatabaseHandler {
 
     /**
      * Fetches all active alarms in database
-     * @return
+     * @return An arraylist of the active alarms. null of no such alarms is found.
      * @throws SQLException
      */
     public ArrayList<Alarm> getAllActiveAlarms() throws SQLException{
@@ -543,8 +513,8 @@ public class DatabaseHandler {
     }
 
     /**
-     * Activates an alarm
-     * @param alarmid
+     * Flags an alarm as active
+     * @param alarmid Alarm's id
      * @throws SQLException
      */
     public void activateAlarm(int alarmid)throws SQLException{
@@ -555,11 +525,11 @@ public class DatabaseHandler {
     }
 
     /**
-     * Inactivates an alarm
-     * @param alarmid
+     * Flags an alarm as inactive.
+     * @param alarmid Alarm's alarm-
      * @throws SQLException
      */
-    public void inactiveAlarm(int alarmid) throws SQLException{
+    public void inactivateAlarm(int alarmid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("UPDATE alarm SET isactive = ? WHERE id = ?");
         query.setInt(1, 0);
         query.setInt(2, alarmid);
@@ -568,7 +538,7 @@ public class DatabaseHandler {
 
     /**
      * Gets all active and inactive alarms in database
-     * @return
+     * @return Arraylist of all alarms.
      * @throws SQLException
      */
     public ArrayList<Alarm> getAllAlarms() throws SQLException{
@@ -588,8 +558,10 @@ public class DatabaseHandler {
     }
 
     /**
-     * Gets all alarms to sheeps that are owned by a farmer
-     * @param farmerID
+     * Gets all alarms associated with farmer.
+     * @param farmerID Farmer's id
+     * @return Arraylist with alarms.
+     * @throws SQLException
      */
     public ArrayList<Alarm> getAlarmsToFarmer(int farmerID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM alarm WHERE ? = (SELECT farmerid from sheep WHERE id = alarm.sheepid) and isactive = 1");
@@ -608,6 +580,11 @@ public class DatabaseHandler {
         return results;
     }
 
+    /**
+     * Flags an alarm as shown. An alarm is shown if it has been loaded into the GUI of the associated farmer.
+     * @param alarmid Alarm's id
+     * @throws SQLException
+     */
     public void setAlarmAsShown(int alarmid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("UPDATE alarm SET isshown = ? WHERE id = ?");
         query.setInt(1,1);
@@ -617,8 +594,8 @@ public class DatabaseHandler {
 
     /**
      * Get all non-shown alarms for farmer
-     * @param farmerID
-     * @return
+     * @param farmerID Farmer's id
+     * @return Arraylist of all alarms associated with farmer that hasn't been shown yet
      * @throws SQLException
      */
     public ArrayList<Alarm> getNonShownAlarms(int farmerID) throws SQLException{
@@ -642,9 +619,9 @@ public class DatabaseHandler {
 
     /**
      * Attempts to find sheep by name and farmerid.
-     * @param name
-     * @param farmerid
-     * @return
+     * @param name Sheep's name
+     * @param farmerid Sheep's farmer's id
+     * @return A sheep object with the found sheep's details. Null if not such sheep is found.
      * @throws SQLException
      */
     public Sheep getSheepByName(String name, int farmerid) throws SQLException{
@@ -660,6 +637,12 @@ public class DatabaseHandler {
         return new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getString("name"), rs.getString("sex"));
     }
 
+    /**
+     * Gets a sheep by its id.
+     * @param sheepID Sheep's id
+     * @return A sheep object.
+     * @throws SQLException
+     */
     public Sheep getSheep(int sheepID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE id = ?");
         query.setInt(1, sheepID);
@@ -671,8 +654,8 @@ public class DatabaseHandler {
     }
 
     /**
-     * Returns ALL sheeps in database. CAUTION, may be slow!
-     * @return
+     * Returns ALL sheeps in database. This might be very slow.
+     * @return Arraylist with sheeps.
      * @throws SQLException
      */
     public ArrayList<Sheep> getAllSheeps() throws SQLException{
@@ -692,7 +675,7 @@ public class DatabaseHandler {
 
     /**
      * Gets all alive sheeps in database.
-     * @return
+     * @return Arraylist with sheeps.
      * @throws SQLException
      */
     public ArrayList<Sheep> getAllAliveSheeps() throws SQLException{
@@ -712,32 +695,9 @@ public class DatabaseHandler {
 
 
     /**
-     * Gets all sheeps within a pulserange
-     * @param pulsemin
-     * @param pulsemax
-     * @return
-     * @throws SQLException
-     */
-    public ArrayList<Sheep> getSheepsByPulse(int pulsemin, int pulsemax) throws SQLException{
-        PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep where pulse > ? and pulse < ? and alive = 1");
-        query.setInt(1, pulsemin);
-        query.setInt(2, pulsemax);
-        ResultSet rs = query.executeQuery();
-
-        if(!rs.next())
-            return null;
-        ArrayList<Sheep> results = new ArrayList<Sheep>();
-        results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
-        while(rs.next()){
-            results.add(new Sheep(rs.getInt("id"), rs.getLong("birthdate"), rs.getInt("healthflags"), rs.getInt("mileage"), rs.getInt("farmerid"), rs.getDouble("pos_x"), rs.getDouble("pos_y"), rs.getInt("pulse"), rs.getString("name"), rs.getString("sex")));
-        }
-        return results;
-    }
-
-    /**
-     * Gets all sheeps of farmer
-     * @param farmerID
-     * @return
+     * Gets all sheeps associated with farmer.
+     * @param farmerID Farmer's id
+     * @return Arraylist of sheeps.
      */
     public ArrayList<Sheep> getSheeps(int farmerID) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheep WHERE farmerid = ? and alive = 1");
@@ -756,9 +716,9 @@ public class DatabaseHandler {
     }
 
     /**
-     * Get all the sheep that are alive
-     * @param farmerID
-     * @return
+     * Get all sheep that are alive, and are associated with farmer.
+     * @param farmerID Farmer's id.
+     * @return Arraylist of sheeps.
      * @throws SQLException
      */
     public ArrayList<Sheep> getAliveSheeps(int farmerID) throws SQLException{
@@ -780,7 +740,7 @@ public class DatabaseHandler {
 
     /**
      * Returns all dead sheep of farmer.
-     * @param farmerID
+     * @param farmerID Farmer's id.
      * @return Returns an arraylist of sheep, or null of no sheep is found.
      * @throws SQLException
      */
@@ -803,8 +763,8 @@ public class DatabaseHandler {
 
     /**
      * Gets all history of sheep
-     * @param sheepid
-     * @return
+     * @param sheepid Sheep's id.
+     * @return SheepHistory object.
      */
     public SheepHistory getSheepHistory(int sheepid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT * FROM sheephistory WHERE sheepid = ?");
@@ -825,8 +785,8 @@ public class DatabaseHandler {
 
     /**
      * Get all medical history of sheep
-     * @param sheepid
-     * @return
+     * @param sheepid Sheep's id.
+     * @return SheepMedicalHistory object.
      * @throws SQLException
      */
     public SheepMedicalHistory getSheepMedicalHistory(int sheepid) throws SQLException{
@@ -846,6 +806,12 @@ public class DatabaseHandler {
         return new SheepMedicalHistory(medHistory, sheepid);
     }
 
+    /**
+     * Gets sheep's name.
+     * @param sheepid Sheep's id.
+     * @return String with sheepname.
+     * @throws SQLException
+     */
     public String getSheepName(int sheepid) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SELECT name FROM sheep WHERE id = ?");
         query.setInt(1, sheepid);
@@ -859,8 +825,8 @@ public class DatabaseHandler {
 
     /**
      * Gets a sheeps current position
-     * @param sheepid
-     * @return
+     * @param sheepid Sheep's id.
+     * @return Vec2 with sheep's current position.
      * @throws SQLException
      */
     public Vec2 getSheepPosition(int sheepid) throws SQLException{
@@ -874,8 +840,8 @@ public class DatabaseHandler {
     }
 
     /**
-     * Gets a sheeps owner
-     * @param sheepid
+     * Gets the farmer associated with this sheep.
+     * @param sheepid sheep's id.
      * @return
      * @throws SQLException
      */
@@ -890,10 +856,10 @@ public class DatabaseHandler {
     }
 
     /**
-     * Sets a sheeps current position, stores the previous position in sheephistory
-     * @param sheepid
-     * @param posX
-     * @param posY
+     * Sets a sheeps current position, stores the previous position in sheephistory.
+     * @param sheepid Sheep's id.
+     * @param posX Sheep's new latitude.
+     * @param posY Sheep's new longitude.
      * @throws SQLException
      */
     public void setSheepPosition(int sheepid, double posX, double posY) throws SQLException{
@@ -934,13 +900,12 @@ public class DatabaseHandler {
     /**
      * Overwrites the flag to passed in variable. Use with caution as already set flags will be removed.
      * The boolean parameter is in place to avoid storing multiple history versions as the method is called internally from "addSheepHealthFlag".
-     * @param sheepid
-     * @param flag
-     * @param storeHistory
+     * @param sheepid Sheep's id.
+     * @param flag Sheep's new healthflag.
+     * @param storeHistory A boolean stating whether or not to store.
      * @throws SQLException
      */
     public void setSheepHealthFlag(int sheepid, int flag, boolean storeHistory) throws SQLException{
-
         if(storeHistory){
             addToSheepHealthHistory(sheepid, flag);
         }
@@ -954,9 +919,9 @@ public class DatabaseHandler {
 
 
     /**
-     * Adds a health flag to the sheep
-     * @param sheepid
-     * @param flag
+     * Adds a health flag to the sheep.
+     * @param sheepid Sheep's id.
+     * @param flag Healthflag that is to be added to the total healthflag.
      * @throws SQLException
      */
     public void addSheepHealthFlag(int sheepid, int flag) throws SQLException{
@@ -978,9 +943,9 @@ public class DatabaseHandler {
     }
 
     /**
-     *
-     * @param sheepid
-     * @param healthflag
+     * Removes parts of the sheep's healthflag.
+     * @param sheepid Sheep's id.
+     * @param healthflag Flag that represents the bits that are to be removed from the healthflag.
      * @throws SQLException
      */
     public void removeSheepHealthFlag(int sheepid, int healthflag) throws SQLException{
@@ -998,6 +963,12 @@ public class DatabaseHandler {
         this.setSheepHealthFlag(sheepid, mFlags, true);
     }
 
+    /**
+     * Adds healthflag to sheep's healthhistory.
+     * @param sheepid Sheep's id.
+     * @param healthflag Healthflag to be stored.
+     * @throws SQLException
+     */
     public void addToSheepHealthHistory(int sheepid, int healthflag) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("INSERT INTO sheepmedicalhistory(healthflag, timestamp, sheepid) VALUES(?,?,?)");
         query.setInt(1, healthflag);
@@ -1008,8 +979,8 @@ public class DatabaseHandler {
 
     /**
      * Sets sheeps pulse
-     * @param sheepid
-     * @param pulse
+     * @param sheepid Sheep's id
+     * @param pulse Sheep's pulse.
      * @throws SQLException
      */
     public void setSheepPulse(int sheepid, int pulse) throws SQLException{
@@ -1022,8 +993,8 @@ public class DatabaseHandler {
 
     /**
      * Set name of sheep
-     * @param sheepid
-     * @param name
+     * @param sheepid Sheep's id.
+     * @param name Sheep's name.
      * @throws SQLException
      */
     public void setSheepName(int sheepid, String name) throws SQLException{
@@ -1036,8 +1007,8 @@ public class DatabaseHandler {
 
     /**
      * Sets sex of the sheep
-     * @param sheepid
-     * @param sex
+     * @param sheepid Sheep's id.
+     * @param sex Sheep's sex.
      * @throws SQLException
      */
     public void setSheepSex(int sheepid, String sex) throws SQLException{
@@ -1050,8 +1021,8 @@ public class DatabaseHandler {
 
     /**
      * Sets birthday of the sheep
-     * @param sheepid
-     * @param timestamp
+     * @param sheepid Sheep's id.
+     * @param timestamp Timestamp indicating sheep's birthdate.
      * @throws SQLException
      */
     public void setSheepBirthdate(int sheepid, long timestamp) throws SQLException{
@@ -1062,8 +1033,10 @@ public class DatabaseHandler {
     }
 
     /**
-     * Gets the state of the database
-     * @return
+     * Gets the state of the database.
+     * The state is an integer deciding how many essential operations have been done on the database since the beginning of time.
+     * This is used to decide when to repoll data from the database.
+     * @return Returns the state as an integer.
      * @throws SQLException
      */
     public int getState() throws SQLException{
@@ -1075,6 +1048,10 @@ public class DatabaseHandler {
         return rs.getInt(1);
     }
 
+    /**
+     * Updates the state by incremenatation.
+     * @throws SQLException
+     */
     private void updateState() throws SQLException{
         int state = getState();
 
@@ -1087,12 +1064,11 @@ public class DatabaseHandler {
 
     /**
      * Find the next autoincrement of column 'column' in table 'table'
-     * @param table
-     * @param column
-     * @return
+     * @param table Table to get autoincrement value of.
+     * @return int containing next autoincrement value.
      * @throws SQLException
      */
-    private int getNextAutoIncrement(String table, String column) throws SQLException{
+    private int getNextAutoIncrement(String table) throws SQLException{
         PreparedStatement query = this.db.prepareStatement("SHOW TABLE STATUS LIKE ?");
         query.setString(1, table);
         ResultSet rs = query.executeQuery();
@@ -1101,9 +1077,9 @@ public class DatabaseHandler {
     }
 
     /**
-     * Encrypt a password with the SHA1 algorithm
-     * @param string
-     * @return
+     * Takes a rawstring password and encrypts it with SHA1.
+     * @param string Password to be encrypted.
+     * @return String containing SHA1-digest.
      */
     private String encryptPassword(String string) throws NoSuchAlgorithmException{
         MessageDigest mDigest = MessageDigest.getInstance("SHA1");

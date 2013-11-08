@@ -8,6 +8,9 @@ import util.Vec2;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Main storage for runtime information.
+ */
 public class Register {
 
     private DatabaseHandler mHandler;
@@ -39,18 +42,18 @@ public class Register {
     }
 
     /**
-     * Checks if register contains sheep by class
-     * @param sheep
-     * @return
+     * Checks if register contains sheep by class.
+     * @param sheep Sheep object.
+     * @return Returns true if the register contains the sheep.
      */
     public boolean containsSheep(Sheep sheep){
         return this.activeSheeps.contains(sheep);
     }
 
     /**
-     * Checks if register contains sheep by id
-     * @param sheepId
-     * @return
+     * Checks if register contains sheep by id.
+     * @param sheepId Sheep's id.
+     * @return Returns true if the register contains the sheep.
      */
     public boolean containsSheepById(int sheepId){
         for(Sheep s : this.activeSheeps){
@@ -61,9 +64,9 @@ public class Register {
     }
 
     /**
-     * Checks if register contains sheep by name
-     * @param name
-     * @return
+     * Checks if register contains sheep by name.
+     * @param name Sheep's name.
+     * @return Returns sheep's id if sheep is found, and -1 if not found.
      */
     public int getSheepIdByName(String name){
         for (Sheep s : this.activeSheeps){
@@ -75,8 +78,8 @@ public class Register {
     }
 
     /**
-     * Takes a sheepid and returns its name if sheep is found
-     * @param sheepid
+     * Takes a sheepid and returns its name if sheep is found.
+     * @param sheepid Sheep's id.
      * @return Returns sheepname, and null if no sheep is found
      */
     public String getSheepName(int sheepid){
@@ -92,41 +95,6 @@ public class Register {
             }
         }
         return null;
-    }
-
-    /**
-     * Adds sheep by class
-     * @param sheep
-     */
-    public void addSheep(Sheep sheep){
-        this.activeSheeps.add(sheep);
-    }
-
-   /**
-     * Fetches sheep from database by id.
-     * @param sheepId
-     */
-    public void addSheepById(int sheepId){
-        try {
-            Sheep sheep = mHandler.getSheep(sheepId);
-            if(sheep != null)
-                 this.activeSheeps.add(sheep);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    /**
-     * Fetches all sheeps for farmer from database.
-     */
-    public void addSheepsByFarmerId(){
-        try {
-            ArrayList<Sheep> farmerSheeps = mHandler.getSheeps(this.farmerID);
-            if(!farmerSheeps.isEmpty())
-                this.activeSheeps.addAll(farmerSheeps);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
     /**
@@ -151,7 +119,7 @@ public class Register {
 
     /**
      * Get all sheeps for farmerID. Returns null if no sheeps are found
-     * @return
+     * @return  Returns arraylist with sheep.
      */
     public ArrayList<Sheep> getAllSheeps(){
         if(this.activeSheeps == null)
@@ -161,17 +129,17 @@ public class Register {
         return activeSheeps;
     }
 
+    /**
+     * Gets farmer's id.
+     * @return farmerid.
+     */
     public int getFarmerID(){
         return farmerID;
     }
 
-    public void setFarmerID(int farmerID){
-        this.farmerID = farmerID;
-    }
-
     /**
      * Fetches sheep positions from database.
-     * @return
+     * @return Returns arraylist with sheeppositions
      */
     public ArrayList<Vec2> getSheepPositions(){
         try{
@@ -191,9 +159,9 @@ public class Register {
     }
 
     /**
-     * Helper method to grab sheep history
-     * @param sheepID
-     * @return
+     * Gets sheep's history from sheepid.
+     * @param sheepID Sheep's id.
+     * @return SheepHistory object.
      */
     public SheepHistory getSheepHistory(int sheepID){
         try {
@@ -205,13 +173,18 @@ public class Register {
     }
 
     /**
-     * Returns the Vec2 position of the farmer
-     * @return
+     * Returns the Vec2 position of the farmer.
+     * @return Vec2 object.
      */
     public Vec2 getFarmerLocation(){
         return this.pos;
     }
 
+    /**
+     * Sets farmer location.
+     * @param x
+     * @param y
+     */
     public void setFarmerLocation(double x, double y){
         try {
             this.mHandler.setFarmerLocation(this.farmerID, x, y);
@@ -223,6 +196,9 @@ public class Register {
     }
 
 
+    /**
+     * Updates register with new sheeps.
+     */
     public void reFetchSheeps(){
         try {
             this.activeSheeps = this.mHandler.getAliveSheeps(this.farmerID);
@@ -231,14 +207,14 @@ public class Register {
         }
     }
 
+    /**
+     * Updates register with farmer position.
+     */
     public void reFetchFarmerPos(){
         try{
             this.pos = this.mHandler.getFarmerLocation(this.farmerID);
         } catch (SQLException e){
-
+            e.printStackTrace();
         }
-
     }
-
-
 }

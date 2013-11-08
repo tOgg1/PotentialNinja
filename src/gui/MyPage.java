@@ -14,6 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Window for editing user and contact information
+ */
 public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerListener{
 
 	private DatabaseHandler mHandler;

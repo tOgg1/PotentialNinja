@@ -101,7 +101,7 @@ public class AlertDaemon extends Thread {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        handler.inactiveAlarm(alarm.getAlarmID());
+                        handler.inactivateAlarm(alarm.getAlarmID());
                     } catch (SQLException e) {
                         e.printStackTrace();
                         continue;

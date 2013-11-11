@@ -14,6 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Window for editing user and contact information
+ */
 public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerListener{
 
 	private DatabaseHandler mHandler;
@@ -43,8 +46,8 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
         this.previous = previous;
         this.previous.setFocusable(false);
         this.previous.setVisible(false);
-        this.farmX = 0;
-        this.farmY = 0;
+        this.farmX = pos.x;
+        this.farmY = pos.y;
         this.map.addListener(this);
     }
 

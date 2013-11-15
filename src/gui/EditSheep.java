@@ -142,7 +142,7 @@ public class EditSheep extends javax.swing.JFrame {
 
         checkbox7.setLabel("Blåtunge");
 
-        checkbox6.setLabel("Vaksinert mot klostidieinfeksjoner");
+        checkbox6.setLabel("Vaksinert mot klostridieinfeksjoner");
 
         checkbox8.setLabel("Lungebetennelse");
 

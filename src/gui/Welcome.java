@@ -63,9 +63,9 @@ public class Welcome extends javax.swing.JFrame {
 
         label4.setText("Passord");
 
-        textField1.setText("Brukernavn");
+        textField1.setText("");
 
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.setText("");
 
         jButton1.setText("Logg inn");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

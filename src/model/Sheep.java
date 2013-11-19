@@ -77,7 +77,7 @@ public class Sheep
         this.pulse = pulse;
         this.pos = new Vec2(0.0d, 0.0d);
 
-        if(sex == SEX_MALE || sex == SEX_FEMALE){
+        if(sex.equals(SEX_MALE) || sex.equals(SEX_FEMALE)){
             this.sex = sex;
         }else{
             this.sex = "f";

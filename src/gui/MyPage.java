@@ -179,15 +179,15 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
 
         label7.setText("Gammelt passord");
 
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.setText("pass");
 
         label8.setText("Nytt passord");
 
-        jPasswordField2.setText("jPasswordField2");
+        jPasswordField2.setText("pass");
 
         label9.setText("Gjenta nytt passord");
 
-        jPasswordField3.setText("jPasswordField3");
+        jPasswordField3.setText("pass");
 
         jButton1.setText("Lagre endringer");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -435,16 +435,15 @@ public class MyPage extends javax.swing.JFrame implements MapViewer.MapViewerLis
             error.setVisible(true);
         }
 
-        if(!(npsw.equals("jPasswordField2") && npswg.equals("jPasswordField3"))){
-            if((farmerID = mHandler.authenticate(account, gpsw)) != -1){
-                if(npsw.equals(npswg)){
-                    try {
-                        mHandler.resetPassword(farmerID,npsw);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        Error error = new Error(this, e.getMessage());
-                        error.setVisible(true);
-                    }
+
+        if((farmerID = mHandler.authenticate(account, gpsw)) != -1){
+            if(npsw.equals(npswg)){
+                try {
+                    mHandler.resetPassword(farmerID,npsw);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Error error = new Error(this, e.getMessage());
+                    error.setVisible(true);
                 }
             }
         }

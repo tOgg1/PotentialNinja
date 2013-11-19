@@ -89,11 +89,11 @@ public class AddUser extends javax.swing.JFrame implements MapViewer.MapViewerLi
         label8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         label8.setText("Lag ny bruker");
 
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.setText("");
 
-        jPasswordField2.setText("jPasswordField2");
+        jPasswordField2.setText("");
 
-        jTextField1.setText("Brukernavn");
+        jTextField1.setText("");
 
         label1.setText("E-post");
 

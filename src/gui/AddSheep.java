@@ -140,7 +140,7 @@ public class AddSheep extends javax.swing.JFrame {
 
         checkbox4.setLabel("Annet");
 
-        checkbox13.setLabel("Øesykdom");
+        checkbox13.setLabel("Øyesykdom");
 
         checkbox14.setLabel("Trommesyke");
 
@@ -148,7 +148,7 @@ public class AddSheep extends javax.swing.JFrame {
 
 
 
-        checkbox6.setLabel("Vaksinert mot klostidieinfeksjoner");
+        checkbox6.setLabel("Vaksinert mot klostridieinfeksjoner");
 
         jButton2.setText("Til hovedmeny");
         jButton2.addActionListener(new java.awt.event.ActionListener() {

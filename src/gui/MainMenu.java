@@ -601,6 +601,10 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
     private void removeInfo(){
         textField2.setText("");
         textField3.setText("");
+        jTextField1.setText("");
+
+        jButton5.setEnabled(false);
+        jButton5.setVisible(false);
 
         jButton3.setEnabled(false);
         jButton3.setVisible(false);
@@ -622,6 +626,8 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
 
         jLabel1.setEnabled(false);
         jLabel1.setVisible(false);
+
+
 
         jList1.setModel(new AbstractListModel() {
             @Override
@@ -703,6 +709,7 @@ public class MainMenu extends javax.swing.JFrame implements MapViewer.MapViewerL
             error.setVisible(true);
         }
 
+        removeInfo();
     	
     }
 

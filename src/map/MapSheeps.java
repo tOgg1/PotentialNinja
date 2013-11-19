@@ -34,6 +34,9 @@ public class MapSheeps
         map.addListener(new MapSheepsListener());
 	}
 
+    /**
+     * MapListener
+     */
     private class MapSheepsListener implements MapViewer.MapViewerListener{
         @Override
         public void nodeClicked(MapViewer.NodeInfo n) {
@@ -49,8 +52,8 @@ public class MapSheeps
 
     /**
      * Returns sheep from MapMarkerDot.
-     * @param dot
-     * @return
+     * @param dot MapMarker
+     * @return sheep, and null if no sheep is found
      */
     public Sheep getSheepByDot(MapMarkerDot dot){
         for(MapMarkerDot thisDot : mapMarkers){
@@ -63,8 +66,8 @@ public class MapSheeps
 
     /**
      * Returns sheep by sheepid.
-     * @param id
-     * @return
+     * @param id SheepID
+     * @return sheep, and null if no sheep is found
      */
     public Sheep getSheepById(int id){
         for(Sheep sheep : currentSheeps){
@@ -76,7 +79,7 @@ public class MapSheeps
 
     /**
      * Gets farmer center from register.
-     * @return
+     * @return farm location
      */
     public Vec2 getFarmerCenter(){
         return register.getFarmerLocation();
@@ -121,7 +124,8 @@ public class MapSheeps
 
     /**
      * Finds the three last positions of sheep and adds them to map.
-     * @param sheepid
+     * @param sheepid SheepID
+     * @param count
      */
     public void setHistoricSheepPosition(int sheepid, int count){
         map.removeMarkers();

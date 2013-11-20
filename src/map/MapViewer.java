@@ -28,7 +28,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
 
     //ArrayList of all current dots.
     private ArrayList<MapMarkerDot> mapDots = null;
-    private ArrayList<String> mouseDotName = null;
     private TreeMap<Integer, MapMarkerDot> dotId = null;
 
     //LinkedList to keep track of listeners
@@ -48,7 +47,6 @@ public class MapViewer extends MouseAdapter implements JMapViewerEventListener, 
         map = this.getMap();
 
         mapDots = new ArrayList<MapMarkerDot>();
-        mouseDotName = new ArrayList<String>();
         dotId = new TreeMap<Integer, MapMarkerDot>();
         listeners = new ArrayList<MapViewerListener>();
 
